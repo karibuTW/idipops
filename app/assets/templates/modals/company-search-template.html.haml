@@ -1,0 +1,4 @@
+%div
+	%img.autocomplete-face{ "ng-src" => "{{data.logo_url}}" }
+	&nbsp; 
+	%span{ "ng-bind-html" => "$highlight($getDisplayText())"}

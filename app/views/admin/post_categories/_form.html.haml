@@ -1,0 +1,23 @@
+.row
+  .col-sm-12
+
+    = form_for [:admin, @post_category] do |f|
+
+      .form-group
+        %label Parent
+        = f.collection_select(:parent_id, PostCategory.sort_by_ancestry(PostCategory.roots), :id, :name, include_blank: true)
+
+      .form-group
+        %label Nom
+        = f.text_field :name, class: "form-control"
+
+      .checkbox
+        %label
+          = f.check_box :active
+          Actif
+
+      .form-group
+        %label Professions liées
+        = f.collection_select(:profession_ids, Profession.roots.order(name: :asc).map { |root| root.children.order(name: :asc) }.to_a.flatten , :id, :name, {selected: @post_category.profession_ids}, {multiple: true, size: 10})
+
+      = f.submit "Enregistrer", class: "btn btn-primary"

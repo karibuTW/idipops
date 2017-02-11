@@ -1,0 +1,26 @@
+.table-responsive  
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Nom
+        %th Actif
+        %th Parent
+        %th Nbre de posts
+        %th Action
+    %tbody
+      - @post_categories.each do |p|
+        %tr
+          %td= p.id
+          %td= p.name
+          %td
+            - if p.active?
+              %span.glyphicon.glyphicon-ok
+          %td
+            - begin
+              = Profession.find_by(id: p.parent_id).name
+            - rescue Exception => e
+              = '-'
+          %td= p.posts.count
+          %td
+            = link_to "Modifier", edit_admin_post_category_path(p), class: "btn btn-default btn-xs"

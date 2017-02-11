@@ -1,0 +1,22 @@
+.how-it-works{ layout: "column", "ng-controller" => "HowItWorksProsController"}
+	%div{ layout: "row", "layout-xs" => "column", "layout-align" => "space-between center" }
+		%div{ layout: "column" }
+			%h1.page-title {{'how_it_works.pros.title' | t}}
+			.page-subtitle {{'how_it_works.pros.subtitle' | t}}
+		.button-stroke.switch-type
+			%button.button.button_js.cyan-fill-white-text.big{ "ui-sref" => "how-it-works-users" }
+				%span.button_label {{'how_it_works.pros.users_button_label' | t}}
+	%div{ layout: "column", flex: "80" }
+		%md-tabs.ccm-tab{ "md-dynamic-height" => "true", "md-selected" => "selectedIndex" }
+			%md-tab{ "ui-sref" => ".profile", label: "{{'how_it_works.pros.profile_label' | t}}" }
+				.ccm-content{ "ui-view" => "profile" }
+			%md-tab{ "ui-sref" => ".space", label: "{{'how_it_works.pros.space_label' | t}}" }
+				.ccm-content{ "ui-view" => "space" }
+			%md-tab{ "ui-sref" => ".classified_ads", label: "{{'how_it_works.pros.classified_ads_label' | t}}" }
+				.ccm-content{ "ui-view" => "classified_ads" }
+			%md-tab{ "ui-sref" => ".quotations", label: "{{'how_it_works.pros.quotations_label' | t}}" }
+				.ccm-content{ "ui-view" => "quotations" }
+			%md-tab{ "ui-sref" => ".deals", label: "{{'how_it_works.pros.deals_label' | t}}" }
+				.ccm-content{ "ui-view" => "deals" }
+			%md-tab{ "ui-sref" => ".visibility", label: "{{'how_it_works.pros.visibility_label' | t}}" }
+				.ccm-content{ "ui-view" => "visibility" }

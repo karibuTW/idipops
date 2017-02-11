@@ -1,0 +1,12 @@
+Bonjour #{@user_to.display_name}
+
+Vous avez été mentionné dans un commentaire dans le post de #{@user_from.pretty_name} dans la catégorie #{@category_name}
+
+- if @title.present?
+  = @title
+
+= l @date, format: :short
+
+= @content
+
+Voir le post : #{@post_path}

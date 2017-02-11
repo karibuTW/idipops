@@ -1,0 +1,26 @@
+%table{:align => "center", :cellpadding => "0", :cellspacing => "0", :style => "padding:10px 0 60px 0;", :width => "100%"}
+  %tbody
+    %tr{:style => ""}
+      %td{:align => "left", :style => "padding:20px 0;"}
+        %p{:style => "font-size:1.5em;color:#f57c00;padding:0 0 20px 0;margin:0"}
+          = "Bonjour #{@user_to.display_name}"
+        %p{:style => "padding:0 0 10px 0;margin:0"}
+          Vous avez reçu un nouveau commentaire de la part de
+          %span{ style: "color:#f57c00"}= "#{@user_from.pretty_name}"
+    %tr
+      %td{:align => "left", :bgcolor => "#fafafa", :style => "padding:20px 40px;border-radius:3px;"}
+
+        - if @title.present?
+          %p{ style: "font-size:1.5em;margin:0" }= @title
+
+        %p{ style: "font-size:0.8em;color:#a5a7a9;margin:0 0 2em 0" }= l @date, format: :short
+
+        %p{:style => "padding:0;margin:0"}
+          = @comment
+
+    %tr
+      %td{:align => "left"}
+
+        %p{ :style => "padding-top:20px" }
+          %a{:href => @post_path, :style => "color: #ffffff;font-size:18px;font-weight:400;padding: 10px 15px; border-radius: 5px; background-color: #ffa726; display: inline-block; width: auto; text-decoration: none;"}
+            VOIR LE POST

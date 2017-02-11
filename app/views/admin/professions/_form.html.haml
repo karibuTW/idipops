@@ -1,0 +1,36 @@
+.row
+  .col-sm-12
+
+    = form_for [:admin, @profession] do |f|
+
+      .form-group
+        %label Parent
+        = f.collection_select(:parent_id, Profession.sort_by_ancestry(Profession.roots), :id, :name, include_blank: true)
+
+      .form-group
+        %label Nom
+        = f.text_field :name, class: "form-control"
+
+      .form-group
+        %label Image
+        = f.file_field :image, class: "form-control"
+        =image_tag @profession.image.thumb('100x100#').url if @profession.image_stored?
+
+      .form-group
+        %label Description
+        = f.text_area :description, size: "60x5", class: "form-control"
+
+      .form-group
+        %label Catégorie de prix
+        = f.collection_select(:pricing_category_id, PricingCategory.all, :id, :name, include_blank: true)
+
+      .form-group
+        %label Formulaire de demande de devis
+        = f.collection_select(:quotation_request_template_id, QuotationRequestTemplate.all.order(name: :asc), :id, :name, include_blank: true)
+
+      .checkbox
+        %label
+          = f.check_box :active
+          Actif
+
+      = f.submit "Enregistrer", class: "btn btn-primary"

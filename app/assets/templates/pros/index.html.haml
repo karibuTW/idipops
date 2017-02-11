@@ -1,0 +1,73 @@
+%div{ "ng-controller" => "ProfessionalsController", layout: "column", "layout-gt-sm" => "row" }
+	%div{ flex: "55", "flex-sm" => "100", "flex-xs" => "100" }
+		%div{ layout: "column" }
+			.form-horizontal
+				.line-separator.no-padding{ layout: "row" }
+					.map-bars{ "hide-xs" => "", "layout-align" => "center center" }
+						%a{ href: "", "ng-click" => "toggleMapMenu()" }
+							= image_tag "menu/burger-menu-w.svg"
+					.form-group.pro-search{ layout: "row", flex: "" }
+						%label.control-label{for: "search-tags"}
+							%i.fa.fa-tag
+							&nbsp; {{"pro_listing.tags" | t}}
+						%div{ flex: "" }
+							%tags-input#tags{"ng-model" => "searchOptions.tags", "placeholder" => "{{'activity_search.what' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true", "on-tag-added" => "searchPros()", "on-tag-removed" => "searchPros()", "display-property" => "label", template: "tag-template" }
+								%auto-complete{ source: "searchAll($query)", "min-length" => 1, template: "tag-complete-template" }
+							%script#tag-template{ type: "text/ng-template" }
+								.tag-search-template{ layout: "row" }
+									= image_tag "icons/profession.svg", "ng-show" => "data.type == 'profession'"
+									= image_tag "icons/societe.svg", "ng-show" => "data.type == 'user'"
+									= image_tag "icons/tag.svg", "ng-show" => "data.type == 'tag'"
+									%div {{data.label}}
+									%a.remove-button{ "ng-click" => "$removeTag()" } x
+							%script#tag-complete-template{ type: "text/ng-template" }
+								.tag-search-template{ layout: "row", "layout-align" => "start center" }
+									= image_tag "icons/profession.svg", "ng-show" => "data.type == 'profession'"
+									= image_tag "icons/societe.svg", "ng-show" => "data.type == 'user'"
+									= image_tag "icons/tag.svg", "ng-show" => "data.type == 'tag'"
+									%div{ "ng-bind-html" => "$highlight($getDisplayText())" }
+				.line-separator.margin-zero.no-padding{ layout: "column", "layout-gt-sm" => "row" }
+					%div{ layout: "column", flex: "100", "flex-md" => "60", "flex-gt-md" => "65" }
+						.form-group.pro-search{ layout: "row" }
+							%label.control-label{for: "search-location"}
+								%i.fa.fa-map-marker
+								&nbsp; {{"pro_listing.city" | t}}
+							%div{ flex: "" }
+								%input.form-control#search-location{type: "text", "ng-model" => "searchOptions.place", "uib-typeahead" => "parloc as (parloc.place_name + ' ' + parloc.postal_code) for parloc in searchCities($viewValue)", "typeahead-loading" => "loadingSearchLocation", "typeahead-min-length" => "3", "typeahead-wait-ms" => "200", "typeahead-editable" => "false", "typeahead-on-select" => "updateCenter($item, $model, $index)" }
+						.form-group.pro-search.less-padding
+							%md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "loadingSearchLocation" }
+						.line-separator.no-padding{ "hide-gt-sm" => "" }
+					.form-group.pro-search.border-left{ flex: "100", "flex-md" => "40", "flex-gt-md" => "35", layout: "row" }
+						%label.control-label{for: "search-rating"}
+							%i.fa.fa-star
+							&nbsp; Note
+						%div{ layout: "row" }
+							%a.zero-rating{ "ng-show" => "searchOptions.rating > 0", "ng-click" => "resetRating()", title: "Toutes les notes" }
+								%i.fa.fa-star-o
+							%uib-rating.rating{ "ng-model" => "searchOptions.rating", readonly: "false", "state-on" => "'fa fa-star on'", "state-off" => "'fa fa-star off'", "ng-change" => "searchPros()" }
+
+		.pro-list.resp-pro-list{ layout: "column" }
+			.map-filters{ layout: "row", "layout-align" => "space-between center", "layout-wrap" => "" }
+				%div{ layout: "row", "layout-align" => "start center" }
+					%label {{"pro_listing.sort_by" | t}}
+					%md-radio-group{ "ng-model" => "searchOptions.sorting", layout: "row", "ng-change" => "searchPros()" }
+						%md-radio-button.md-primary{ value: "distance", "aria-label" => "Proximité"} {{"pro_listing.proximity" | t}}
+						%md-radio-button.md-primary{ value: "rating", "aria-label" => "Note"} {{"pro_listing.rating" | t}}
+				%div{ layout: "row", "layout-align" => "start center", "hide-sm" => "", "hide-xs" => "" }
+					%md-checkbox.md-primary{ "ng-model" => "searchOptions.updateWithMap", "ng-change" => "updateWithMapChanged()", "aria-label" => "{{'pro_listing.search_with_map_update' | t}}", "hide-sm" => "" }
+						{{'pro_listing.search_with_map_update' | t}}
+			%professional-grid{ professionals: "professionals", "selected-professional-id" => "searchOptions.selectedProfessionalId", "can-add-to-favorites" => "session.connected && session.user.user_type != 'pro'", "highlight-callback" => "highlightMarker", "unlight-callback" => "unlightMarker", "is-particulier" => "session.user.user_type == 'particulier'" }
+			%div{ layout: "column", "layout-wrap" => "", "ng-hide" => "isLoading || professionals.length > 0 || isInitializing" }
+				.map-no-result{ "ng-bind-html" => "'pro_listing.no_results' | t" }
+	%div{ flex: "45", "hide-sm" => true, "hide-xs" => true  }
+		%ui-gmap-google-map#map-prolist{ center: "mapOptions.center", zoom: "mapOptions.zoom", "ng-if" => "mapOptions != null", control: "mapControl", pan: "true", events: "{ bounds_changed: boundsChangedHandler, dragend: draggingStoppedHandler}", dragging: "mapOptions.dragging", options: "gmapOptions" }
+
+			%ui-gmap-markers{ models: "professionals", coords: "'self'", click: "markerClickHandler", "do-rebuild-all" => "false", options: "'mapOptions'" }
+			%ui-gmap-marker{ idKey: "highlightedMarker.id", coords: "highlightedMarker.coords", options: "highlightedMarker.options" }
+			%ui-gmap-window{ options: "pro.windowOptions", "ng-repeat" => "pro in enabledMarkers", coords: "pro", "templateUrl" => "'gmap/map-pro-window.html'", "templateParameter" => "pro", show: "true", "closeClick" => "windowCloseHandler" }
+				
+	%md-progress-circular.top-centered{ "md-mode" => "indeterminate", "ng-show" => "isLoading"}
+	.map-deals.show-slide-down{ "ng-show" => "promotedDeals.length > 0", "hide-sm" => true, "hide-md" => true }
+		.deal-list{ layout: "row", "layout-align" => "start center" }
+			%deal-row{ deals: "promotedDeals", wide: "true", "reload-callback" => "loadPromotedDeals", "num-of-deals" => "3" }
+			-# %deal-small-box{ "ng-repeat" => "deal in promotedDeals", deal: "deal" }

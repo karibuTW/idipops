@@ -1,0 +1,32 @@
+%not-connected-info{ "ng-hide" => "session.connected" }
+
+.home{ layout: "row", "ng-show" => "session.connected", "ng-controller" => "PostQuotationRequestController" }
+	%div{ layout: "row", flex: "100", "layout-sm" => "column" }
+		%div{ layout: "column", flex: "75", "ng-show" => "isLoading", "layout-align" => "center center" }
+			%md-progress-circular{ "md-mode" => "indeterminate" }
+		.grey-bg.rounded6{ flex: "75", "flex-sm" => "100", "ng-hide" => "isLoading" }
+			%h2.form-box.line-separator
+				{{'quotation_request.send_to' | t}}
+				%a.orange{ "ui-sref" => "pro({pid: professional.id})" } {{professional.company_name}}
+
+			.form-box
+				
+			.form-box{ layout: "column", "layout-padding" => ""}
+				%form.form-horizontal{role: "form", "ng-submit" => "postQuotationRequest()"}
+					.form-group
+						%label.col-sm-3.control-label{ for: "more-pros" } {{'quotation_request.added_pros_label' | t}}
+						.col-sm-9
+							%tags-input#more-pros{"ng-model" => "addedPros", "placeholder" => "{{'quotation_request.added_pros_placeholder' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true" }
+								%auto-complete{ source: "searchPros($query)", "min-length" => 2, "template" => "modals/company-search-template.html" }
+					%formly-form{ model: "newQuotation", fields: "qrFields" }
+						.form-group.submit-group
+							%label.col-sm-3
+							%div.col-sm-9.button-stroke
+								%button.button.button_js.orange_border_black_text{ type: "submit" }
+									%span.button_label {{'quotation_request.send_label' | t}}
+		%div{ flex: "25", "flex-sm" => "100", "hide-sm" => "" }
+			.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+				%div{ "ng-bind-html" => "'quotation_request.tip' | t" }
+				.button-stroke
+					%a.button.button_js.orange_border_black_text.btn-block.tip{ "ui-sref" => "how-it-works-users.search", target: "_blank" }
+						%span.button_label {{'quotation_request.know_more_label' | t}}

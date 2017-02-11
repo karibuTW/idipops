@@ -1,0 +1,2 @@
+.result-pros{ layout: "row", "layout-wrap" => "", "ng-show" => "professionals.length > 0" }
+	%list-pro-box{ "ng-repeat" => "professional in professionals", professional: "professional", selected: "professional.id == selectedProfessionalId", "can-add-to-favorites" => "canAddToFavorites", "ng-mouseenter" => "highlightCallback(professional)", "ng-mouseleave" => "unlightCallback(professional)", "is-particulier" => "isParticulier" }

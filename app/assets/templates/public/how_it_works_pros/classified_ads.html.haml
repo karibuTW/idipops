@@ -1,0 +1,25 @@
+%div{ layout: "column", "layout-align" => "center center", "layout-fill" => "" }
+	%h2.ccm-title {{'how_it_works.pros.classified_ads_tab.title' | t}}
+	%hr.search-title
+	%ul.ccm-carousel{ "rn-carousel" => "", "rn-carousel-auto-slide" => "8", "rn-carousel-pause-on-hover" => "", "rn-carousel-controls" => "", "rn-carousel-controls-allow-loop" => "", "layout-align" => "center center" }
+		%li
+			.ccm-box{ "layout-gt-md" => "row", layout: "column", "layout-align" => "center center" }
+				%div{ flex: "5", "hide-sm" => "", "hide-md" => "" }
+				.ccm-image{ flex: "100", "flex-gt-md" =>"45" }
+					= image_tag "how-it-works/pros/CCM-Pros-12.jpg"
+				.ccm-description{ flex: "100", "flex-gt-md" =>"50" } {{'how_it_works.pros.classified_ads_tab.content_0' | t}}
+
+		%li
+			.ccm-box{ "layout-gt-md" => "row", layout: "column", "layout-align" => "center center" }
+				.ccm-description{ flex: "100", "flex-gt-md" =>"50" } {{'how_it_works.pros.classified_ads_tab.content_1' | t}}
+				%div{ flex: "5", "hide-sm" => "", "hide-md" => "" }
+				.ccm-image{ flex: "100", "flex-gt-md" =>"40" }
+					= image_tag "how-it-works/pros/CCM-Pros-14-2.jpg"
+				%div{ flex: "5", "hide-sm" => "", "hide-md" => "" }
+
+		%li
+			.ccm-box{ "layout-gt-md" => "row", layout: "column", "layout-align" => "center center" }
+				.ccm-image{ flex: "100", "flex-gt-md" =>"45" }
+					= image_tag "how-it-works/pros/CCM-Pros-13.jpg"
+				%div{ flex: "5", "hide-sm" => "", "hide-md" => "" }
+				.ccm-description{ flex: "100", "flex-gt-md" =>"50" } {{'how_it_works.pros.classified_ads_tab.content_2' | t}}

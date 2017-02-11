@@ -1,0 +1,310 @@
+%div{ layout: "row" }
+  .grey-bg.center-column{ flex: "100", "flex-gt-md" => "70", layout: "column", "ng-controller" => "ProfileController"}
+    %div{ layout: "row", "layout-align" => "space-between center" }
+      .button-stroke
+        %button.button.button_js.grey_border_black_text{ "ui-sref" => "home.pros-dashboard", "ng-show" => "session.connected && session.user.user_type != null" }
+          %span.button_label {{'general.back' | t}}
+      .button-stroke
+        %button.button.button_js.orange_border_black_text{ "ui-sref" => "home.password", "ng-show" => "session.connected && session.user.user_type != null" }
+          %span.button_label {{'user.edit.change_password_label' | t}}
+    %h1 {{'user.edit.title' | t}}
+    .line-separator.no-padding.no-margin
+    .user-type{ layout: "row", "layout-align" => "center center", "ng-show" => "session.user.user_type == null" }
+      -# %label {{'user.edit.i_am' | t}}
+      %md-radio-group{ "ng-model" => "accountType", layout: "row" }
+        %md-radio-button.md-primary{ value: "particulier", "aria-label" => "Particulier"} {{'user.edit.user' | t}}
+        %md-radio-button.md-primary{ value: "pro", "aria-label" => "Professionnel"} {{'user.edit.pro' | t}}
+    .user-type-message{ "ng-bind-html" => "('user.edit.message_' + accountType) | t"}
+    .line-separator.no-padding.no-margin
+
+    %div{ "ng-switch" => "accountType" }
+      %form.form-horizontal{role: "form", "ng-submit" => "saveProfile()", "ng-switch-when" => "particulier", name: 'profileForm'}
+        .form-group.required
+          %label.col-sm-4.control-label{for: "first-name"} {{'user.edit.first_name' | t}}
+          %div.col-sm-8
+            %input.form-control#first-name{type: "text", "ng-model" => "userCopy.first_name", maxlength: 100, required: "" }
+        .form-group.required
+          %label.col-sm-4.control-label{for: "last-name"} {{'user.edit.last_name' | t}}
+          %div.col-sm-8
+            %input.form-control#last-name{type: "text", "ng-model" => "userCopy.last_name", maxlength: 100, required: "" }
+        .form-group.required
+          %label.col-sm-4.control-label{for: "nickname"} {{'user.edit.nickname' | t}}
+          %div.col-sm-8
+            %input.form-control#nickname{type: "text", "ng-model" => "userCopy.pretty_name", maxlength: 100, required: "", "pattern" => "[a-zA-Z0-9\-]+" }
+            %span.help-block {{'user.edit.username_help' | t}}
+        %div
+          .form-group.required
+            %label.col-sm-4.control-label{for: "parlocation"} {{'user.edit.city' | t}}
+            %div.col-sm-8
+              %input.form-control#parlocation{type: "text", "ng-model" => "userCopy.place", "uib-typeahead" => "parloc as (parloc.place_name + ' ' + parloc.postal_code) for parloc in searchCities($viewValue)", "typeahead-loading" => "loadingParLocation", "typeahead-min-length" => "3", "typeahead-wait-ms" => "200", "typeahead-editable" => "false", required: "", autocomplete: "off" }
+          .form-group
+            .col-sm-4
+            .col-sm-8
+              %md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "loadingParLocation" }
+        .form-group
+          %label.col-sm-4.control-label{for: "birthdate"} {{'user.edit.birth_date' | t}}
+          .form-inline.col-sm-8
+            %select.form-control{ "ng-model" => "birthdate.date", "ng-options" => "day for day in days" }
+              %option{ value: "" } {{'datetime.prompts.day' | t}}
+            %select.form-control{ "ng-model" => "birthdate.month", "ng-options" => "month.value as month.label for month in months" }
+              %option{ value: "" } {{'datetime.prompts.month' | t}}
+            %select.form-control{ "ng-model" => "birthdate.year", "ng-options" => "year for year in years"}
+              %option{ value: "" } {{'datetime.prompts.year' | t}}
+        .form-group
+          %label.col-sm-4.control-label{for: "lphone"} {{'user.edit.land_line' | t}}
+          %div.col-sm-8
+            %input.form-control#lphone{type: "tel", "ng-model" => "userCopy.land_phone", maxlength: 10 }
+        .form-group
+          %label.col-sm-4.control-label{for: "mphone"} {{'user.edit.mobile_line' | t}}
+          %div.col-sm-8
+            %input.form-control#mphone{type: "tel", "ng-model" => "userCopy.mobile_phone", maxlength: 10 }
+        .form-group
+          %label.col-sm-4.control-label{for: "photo"} {{'user.edit.photo' | t}}
+          %div.col-sm-8
+            %avatar-upload#photo{ user: "session.user", "has-image" => "particulierAvatarHasImage" }
+            .help-block {{'user.edit.featured_image_help' | t}}
+        .form-group
+          %label.col-sm-4.control-label{for: "newsletter"} {{'user.edit.newsletter_registration' | t}}
+          %div.col-sm-8
+            %md-checkbox.md-primary#newsletter{ "ng-model" => "userCopy.newsletter", "aria-label" => "{{'user.edit.newsletter_registration' | t}}" }
+        .form-group
+          %label.col-sm-4.control-label{for: "email_notifications"} {{'user.edit.email_notifications' | t}}
+          %div.col-sm-8
+            %md-checkbox.md-primary#email_notifications{ "ng-model" => "userCopy.email_notifications", "aria-label" => "{{'user.edit.email_notifications' | t}}" }
+
+        .form-group
+          .col-sm-4
+            %md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isSavingProfile" }
+          %div.col-sm-8.button-stroke
+            %span.help-block{ "ng-show" => "particulierAvatarHasImage" } {{'user.edit.avatar_not_saved' | t}}
+            %button.button.button_js.orange_border_black_text{ type: "submit", "ng-disabled" => "isSavingProfile || particulierAvatarHasImage" }
+              %span.button_label {{ isSavingProfile ? ('user.edit.saving' | t) : ('user.edit.save' | t) }}
+
+      %form.form-horizontal#pro-form{role: "form", name: "pro-form", "ng-submit" => "saveProfile()", "ng-switch-when" => "pro"}
+        .form-group.required
+          %label.col-sm-4.control-label{for: "primary_activity"} {{'user.edit.main_activity' | t}}
+          %div.col-sm-6
+            %profession-selection-button#primary_activity{ "selection-callback" => "onPrimaryActivityChanged", "profession-id" => "userCopy.primary_activity_id", "button-classes" => "'profession-user-edit'", "default-label" => "'user.edit.select_activity' | t" }
+            -# %select.form-control#primary_activity{ "ng-model" => "userCopy.primary_activity_id", "ng-options" => "prof.id as prof.name group by prof.parent for prof in professions", required: ""}
+        .form-group
+          %label.col-sm-4.control-label{for: "secondary_activity"}
+            {{'user.edit.other_activity' | t}}
+            &nbsp;
+            %a.black.trash-icon{ "ng-click" => "disableActivity('secondary_activity_id')", "ng-show" => "userCopy.secondary_activity_id != null && userCopy.tertiary_activity_id == null" }
+              %i.fa.fa-trash-o
+          %div.col-sm-6
+            %profession-selection-button#secondary_activity{ "selection-callback" => "onSecondaryActivityChanged", "profession-id" => "userCopy.secondary_activity_id", "button-classes" => "'profession-user-edit'", "default-label" => "'user.edit.select_activity' | t" }
+            -# %select.form-control#secondary_activity{ "ng-model" => "userCopy.secondary_activity_id", "ng-options" => "prof.id as prof.name group by prof.parent for prof in professions" }
+          %div.col-sm-2{ "ng-show" => "userCopy.secondary_activity_id != null && userCopy.tertiary_activity_id == null" }
+            %a.black.form-icon-button{ "ng-click" => "enableActivity('tertiary_activity_id')", href: "" }
+              %i.fa.fa-plus
+        .form-group.show-slide-down{ "ng-show" => "userCopy.secondary_activity_id != null && userCopy.tertiary_activity_id != null" }
+          %label.col-sm-4.control-label{for: "tertiary_activity"}
+            {{'user.edit.other_activity' | t}}
+            &nbsp;
+            %a.black.trash-icon{ "ng-click" => "disableActivity('tertiary_activity_id')", "ng-show" => "userCopy.tertiary_activity_id != null && userCopy.quaternary_activity_id == null" }
+              %i.fa.fa-trash-o
+          %div.col-sm-6
+            %profession-selection-button#tertiary_activity{ "selection-callback" => "onTertiaryActivityChanged", "profession-id" => "userCopy.tertiary_activity_id", "button-classes" => "'profession-user-edit'", "default-label" => "'user.edit.select_activity' | t" }
+            -# %select.form-control#tertiary_activity{ "ng-model" => "userCopy.tertiary_activity_id", "ng-options" => "prof.id as prof.name group by prof.parent for prof in professions" }
+          %div.col-sm-2.button-stroke{ "ng-show" => "userCopy.tertiary_activity_id != null && userCopy.quaternary_activity_id == null" }
+            %a.black.form-icon-button{ "ng-click" => "enableActivity('quaternary_activity_id')", href: "" }
+              %i.fa.fa-plus
+        .form-group.show-slide-down{ "ng-show" => "userCopy.tertiary_activity_id != null && userCopy.quaternary_activity_id != null" }
+          %label.col-sm-4.control-label{for: "quaternary_activity"}
+            {{'user.edit.other_activity' | t}}
+            &nbsp;
+            %a.black.trash-icon{ "ng-click" => "disableActivity('quaternary_activity_id')", "ng-show" => "userCopy.quaternary_activity_id != null" }
+              %i.fa.fa-trash-o
+          %div.col-sm-6
+            %profession-selection-button#quaternary_activity{ "selection-callback" => "onQuaternaryActivityChanged", "profession-id" => "userCopy.quaternary_activity_id", "button-classes" => "'profession-user-edit'", "default-label" => "'user.edit.select_activity' | t" }
+            -# %select.form-control#quaternary_activity{ "ng-model" => "userCopy.quaternary_activity_id", "ng-options" => "prof.id as prof.name group by prof.parent for prof in professions" }
+        .form-group.required
+          %label.col-sm-4.control-label{for: "name"} {{'user.edit.company_name' | t}}
+          %div.col-sm-6
+            %input#name.form-control{type: "text", placeholder: "Nom", "ng-model" => "userCopy.company_name", required: "", maxlength: 40, "ng-blur" => "getNickname()"}
+        .form-group
+          %label.col-sm-4.control-label{for: "siret"} SIRET
+          %div.col-sm-6
+            %input#siret.form-control{type: "text", placeholder: "SIRET", "ng-model" => "userCopy.siret", maxlength: 14}
+            %span.help-block {{'user.edit.siret_help' | t}}
+        .form-group.required
+          %label.col-sm-4.control-label{for: "nickname"} {{'user.edit.nickname' | t}}
+          %div.col-sm-6
+            %input.form-control#nickname{type: "text", name: "nickname", "ng-model" => "userCopy.pretty_name", maxlength: 100, required: "", "pattern" => "[a-zA-Z0-9\-]+" }
+            %span.help-block {{'user.edit.username_help' | t}}
+        .form-group
+          %label.col-sm-4.control-label{for: "facturation"} {{'user.edit.billing' | t}}
+          .col-sm-8#facturation
+            %div{ layout: "row"}
+              %md-checkbox.md-primary{ "ng-model" => "userCopy.quotation" } {{'user.edit.by_quotation' | t}}
+              %md-checkbox.md-primary{ "ng-model" => "userCopy.prestation" } {{'user.edit.by_prestation' | t}}
+            %div{ layout: "row"}
+              %md-checkbox.md-primary{ flex: "25", "flex-sm" => "35", "ng-model" => "userInfo.hasHourlyRate", "ng-change" => "toggleHourlyRate()" } {{'user.edit.hourly' | t}}
+              .input-group.show-slide-down{ flex: "45", "flex-sm" => "55", "ng-show" => "userInfo.hasHourlyRate" }
+                %input.form-control#hourlyRate{ type: "number", "ng-model" => "userCopy.hourly_rate" }
+                %span.input-group-addon €/h
+        %div{ "ng-repeat" => "address in userCopy.addresses" }
+          .form-group{ "ng-class" => "{required: $first}" }
+            %label.col-sm-4.control-label{for: "pro-ad"}
+              {{'user.edit.address' | t}} {{$index+1}}
+              &nbsp;
+              %a.black.trash-icon{ "ng-click" => "removeAddress($index)", "ng-show" => "address.place_id != null && $index != 0" }
+                %i.fa.fa-trash-o
+            %div.col-sm-6
+              %input.form-control#pro-ad{type: "text", "ng-model" => "address", "uib-typeahead" => "gaddress as gaddress.formatted_address for gaddress in searchAddresses($viewValue)", "typeahead-loading" => "loadingAddressesFor[$index]", "typeahead-min-length" => "5", "typeahead-wait-ms" => "200", "typeahead-editable" => "false", "typeahead-on-select" => "updateAddress($item, $model, $index)", autocomplete: "off", "ng-required" => "{{$first}}" }
+            %div.col-sm-2.button-stroke.show-slide-down{ "ng-show" => "address.place_id != null && $last && userCopy.addresses.length < 3" }
+              %a.black.form-icon-button{ "ng-click" => "addAddress()", href: "" }
+                %i.fa.fa-plus
+          %md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "loadingAddressesFor[$index]" }
+          .form-group
+            %label.col-sm-4.control-label{for: "land_phone"}
+              {{'user.edit.land_line' | t}} {{$index+1}}
+            %div.col-sm-6
+              %input.form-control#lphone{type: "tel", "ng-model" => "address.land_phone", maxlength: 10 }
+          .form-group
+            %label.col-sm-4.control-label{for: "mobile_phone"}
+              {{'user.edit.mobile_line' | t}} {{$index+1}}
+            %div.col-sm-6
+              %input.form-control#mphone{type: "tel", "ng-model" => "address.mobile_phone", maxlength: 10 }
+          .form-group
+            %label.col-sm-4.control-label{for: "fax"} {{'user.edit.fax' | t}} {{$index+1}}
+            %div.col-sm-6
+              %input.form-control#fax{type: "tel", "ng-model" => "address.fax", maxlength: 10 }
+          .form-group
+            %label.col-sm-4.control-label{for: "action-range"}
+              {{'user.edit.action_range' | t}} {{$index+1}}
+              %br
+              %span.orange {{address.action_range}} km
+            %div.col-sm-6
+              %md-slider.md-primary#action-range{ flex: "", "ng-model" => "address.action_range", step: "10", min: "10", max: "500", "aria-label" => "Rayon d'action" }
+          .form-group{"ng-if" => "address.place_id"}
+            %label.col-sm-4.control-label
+              {{'general.opening_hour' | t}}
+            .col-sm-6
+              %a.btn.btn-sm.btn-default{"ng-click" => "initialOpeningHours(address)", "ng-if" => "address.opening_hours == null || address.opening_hours.length == 0"}
+                {{'user.edit.opening_hour.configure' | t}}
+              %a.btn.btn-sm.btn-default{"ng-click" => "makeOpeningHoursSameAs1stAddress(address)", "ng-if" => "$index !== 0 && userCopy.addresses[0].opening_hours.length > 0"}
+                {{'user.edit.opening_hour.same_as_the_1st_address' | t}}
+          .form-group{"ng-if" => "address.place_id"}
+            .col-sm-4
+            .col-sm-8
+              .opening-hour-row{"ng-repeat" => "opening_hour in address.opening_hours"}
+                %div{ layout: "row", "layout-align" => "start center" }
+                  %uib-timepicker{"ng-model" => "opening_hour.period.open", "ng-change" => "changed()", "hour-step" => "1", "minute-step" => "15", "show-meridian" => "false", "max" => "period.close"}
+                  .split -
+                  %uib-timepicker{"ng-model" => "opening_hour.period.close", "ng-change" => "changed()", "hour-step" => "1", "minute-step" => "15", "show-meridian" => "false", "min" => "period.open"}
+                  .show-slide-down.time-add{"ng-if" => "($index + 1 == address.opening_hours.length) && (address.opening_hours.length < 7)", flex: "" }
+                    %a.black.form-icon-button{ "ng-click" => "addOpeningHour(address, $index + 1)", href: "" }
+                      %i.fa.fa-plus
+                %div{ layout: "row", "layout-wrap" => true }
+                  %label{"ng-repeat" => "day in opening_hour.days", "ng-if" => "$index < 7"}
+                    %md-checkbox.md-primary{"ng-model" => "day.value","ng-change" => "updateOpeningDays(opening_hour,$index,day.value)"}
+                      {{ ("date.abbr_day_names" | t)[day.label] }}
+                  %label
+                    %md-checkbox.md-primary{"ng-model" => "opening_hour.days[7].value","ng-change" => "updateOpeningDays(opening_hour,7,opening_hour.days[7].value)"}
+                      {{ "user_dashboard.all" | t }}
+                  %a.black{ "ng-click" => "removeOpeningHour(address, $index)", href: "" }
+                    %i.fa.fa-trash.fa-2x
+            -# .col-sm-12.opening-hours-edit
+            -#   .opening-hour-row{"ng-repeat" => "opening_hour in address.opening_hours"}
+            -#     .row
+            -#       .col-md-6.col-md-offset-4.col-sm-12
+            -#         .row.period
+            -#           %timepicker.col-md-5.col-sm-5.col-xs-5{"ng-model" => "opening_hour.period.open", "ng-change" => "changed()", "hour-step" => "1", "minute-step" => "15", "show-meridian" => "false", "max" => "period.close"}
+            -#           .col-md-1.col-sm-2.col-xs-2.split -
+            -#           %timepicker.col-md-5.col-sm-5.col-xs-5{"ng-model" => "opening_hour.period.close", "ng-change" => "changed()", "hour-step" => "1", "minute-step" => "15", "show-meridian" => "false", "min" => "period.open"}
+            -#         %div
+            -#           %label{"ng-repeat" => "day in opening_hour.days", "ng-if" => "$index < 7"}
+            -#             %md-checkbox.md-primary{"ng-model" => "day.value","ng-change" => "updateOpeningDays(opening_hour,$index,day.value)"}
+            -#               {{ ("date.abbr_day_names" | t)[day.label] }}
+            -#           %label
+            -#             %md-checkbox.md-primary{"ng-model" => "opening_hour.days[7].value","ng-change" => "updateOpeningDays(opening_hour,7,opening_hour.days[7].value)"}
+            -#               {{ "user_dashboard.all" | t }}
+            -#           %a.black{ "ng-click" => "removeOpeningHour(address, $index)", href: "" }
+            -#             %i.fa.fa-trash.fa-2x
+                  
+        .form-group
+          %label.col-sm-4.control-label{for: "contact"} {{'user.edit.contact' | t}}
+          %div.col-sm-6
+            %md-checkbox.md-primary#contact{ "ng-model" => "userCopy.name_is_public" } Visible publiquement
+        .form-group
+          %label.col-sm-4.control-label{for: "first-name"} {{'user.edit.first_name' | t}}
+          %div.col-sm-6
+            %input.form-control#first-name{type: "text", "ng-model" => "userCopy.first_name", maxlength: 100, "ng-required" => "true" }
+        .form-group
+          %label.col-sm-4.control-label{for: "last-name"} {{'user.edit.last_name' | t}}
+          %div.col-sm-6
+            %input.form-control#last-name{type: "text", "ng-model" => "userCopy.last_name", maxlength: 100 }
+        .form-group
+          %label.col-sm-4.control-label{for: "website"} {{'user.edit.website' | t}}
+          %div.col-sm-6
+            %input.form-control#website{type: "text", "ng-model" => "userCopy.website", maxlength: 255, placeholder: "http://..." }
+        .form-group
+          %label.col-sm-4.control-label{for: "logo"} {{'user.edit.logo' | t}}
+          %div.col-sm-6
+            %img.photo-thumb.with-margin-bottom{ "ng-src" => "{{session.user.avatar_url}}", "ng-if" => "session.user.avatar_url && userCopy.logo_image == null" }
+            %single-image-upload#logo{ "image-blob" => "userCopy.logo_image", "image-height" => "150", "image-width" => "150", "min-width" => "512", "min-height" => "512" }
+            .help-block {{'user.edit.featured_image_help' | t}}
+            -# %avatar-upload#logo{ user: "session.user", "has-image" => "proAvatarHasImage" }
+        .form-group
+          %label.col-sm-4.control-label{for: "tags"} {{'user.edit.tags' | t}}
+          %div.col-sm-8
+            %tags-input#tags{"ng-model" => "userCopy.tag_list", "placeholder" => "{{'user.edit.enter_tags' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "max-tags" => "15", "on-tag-adding" => "checkTagLimit()", "min-length" => "2" }
+              %auto-complete{ source: "searchTags($query)", "min-length" => 1 }
+            .help-block{ "ng-bind-html" => "'user.edit.tags_helper' | t" }
+              %span{ "ng-show" => "session.user.user_type == null" } {{'user.edit.tags_helper_more' | t}}
+        .form-group.required
+          %label.col-sm-4.control-label{for: "sdescription"} {{'user.edit.short_description' | t}}
+          %div.col-sm-8
+            %textarea.form-control#sdescription{rows: "3", "ng-model" => "userCopy.short_description", maxlength: 100, required: "" }
+        .form-group.required
+          %label.col-sm-4.control-label{for: "ldescription"} {{'user.edit.long_description' | t}}
+          %div.col-sm-8
+            %textarea.form-control#ldescription{rows: "4", "ng-model" => "userCopy.long_description", maxlength: 400, required: "" }
+        .form-group
+          %label.col-sm-4.control-label{for: "references"} {{'user.edit.references' | t}}
+          %div.col-sm-8
+            %textarea.form-control#references{rows: "3", "ng-model" => "userCopy.client_references", maxlength: 400 }
+        .form-group
+          %label.col-sm-4.control-label{for: "advantages"} {{'user.edit.advantages' | t}}
+          %div.col-sm-8
+            %textarea.form-control#advantages{rows: "3", "ng-model" => "userCopy.advantages", maxlength: 200 }
+        .form-group
+          %label.col-sm-4.control-label{for: "photos"} {{'user.edit.gallery' | t}}
+          .col-sm-8
+            .photos-to-remove{ layout: "row", "layout-wrap" => "" }
+              %div{ "ng-repeat" => "photo in userCopy.user_photos" }
+                .photo-to-remove{ layout: "row" }
+                  %img.photo-thumb{ "ng-src" => "{{photo.attachment_url}}" }
+                  %a{ "ng-click" => "deletePhoto(photo)", href: "" }
+                    %i.fa.fa-times.fa-2x
+            %span.btn-file.btn.btn-default
+              {{'user.edit.select_photos_label' | t}}
+              %input{ type: "file", "nv-file-select" => "", uploader: "photoUploader", multiple: "", accept: "image/*" }
+            .added-photos{ layout: "row", "layout-wrap" => "" }
+              .added-photo{ "ng-show" => "photoUploader.isHTML5", "ng-repeat" => "item in photoUploader.queue" }
+                %div{ layout: "row" }
+                  %div{"ng-thumb" => "{ file: item._file, height: 100 }" }
+                  %a{ "ng-click" => "removePhoto(item)", href: "" }
+                    %i.fa.fa-times.fa-2x
+        .form-group
+          %label.col-sm-4.control-label{for: "newsletter"} {{'user.edit.newsletter_registration' | t}}
+          %div.col-sm-8
+            %md-checkbox.md-primary#newsletter{ "ng-model" => "userCopy.newsletter", "aria-label" => "{{'user.edit.newsletter_registration' | t}}" }
+        .form-group
+          %label.col-sm-4.control-label{for: "email_notifications"} {{'user.edit.email_notifications' | t}}
+          %div.col-sm-8
+            %md-checkbox.md-primary#email_notifications{ "ng-model" => "userCopy.email_notifications", "aria-label" => "{{'user.edit.email_notifications' | t}}" }
+        .form-group.submit-group
+          .col-sm-4
+            %md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isSavingProfile" }
+            .button-stroke{ "ng-hide" => "isSavingProfile" }
+              %button.button.button_js.grey_border_black_text{ "ui-sref" => "home.users-dashboard", "ng-show" => "session.connected" }
+                %span.button_label {{'general.back' | t}}
+          .col-sm-8.button-stroke
+            %span.help-block{ "ng-show" => "proAvatarHasImage" } {{'user.edit.logo_not_saved' | t}}
+            %button.button.button_js.orange_border_black_text{ type: "submit", "ng-disabled" => "profileForm.$invalid || proAvatarHasImage" }
+              %span.button_label {{ isSavingProfile ? ('user.edit.saving' | t) : ('user.edit.save_label' | t) }}
+  %div{ flex: "0", "flex-gt-md" => "30" }
+    %ui-gmap-google-map

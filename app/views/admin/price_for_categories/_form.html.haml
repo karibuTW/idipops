@@ -1,0 +1,41 @@
+.row
+  .col-sm-12
+    %h2= @price_for_category.pricing.target
+  .col-sm-3
+    %strong Date de début
+  .col-sm-9= @price_for_category.pricing.start_date
+
+  .col-sm-12
+    %hr
+  .col-sm-12
+    %h2 Prix existants
+  - @price_for_category.pricing.price_for_categories.each do |pfc|
+    .col-sm-12
+      %h3= pfc.pricing_category.name
+    .col-sm-3
+      %strong Flèches
+    .col-sm-9= pfc.credit_amount
+    .col-sm-3
+      %strong Montant
+    .col-sm-9= pfc.amount_cents
+  .col-sm-12
+    %hr
+
+  .col-sm-12
+    = form_for [:admin, @price_for_category] do |f|
+
+      = f.hidden_field :pricing_id, value: @price_for_category.pricing.id
+
+      .form-group
+        %label Catégorie
+        = f.collection_select(:pricing_category_id, @available_categories_for_pricing, :id, :name, include_blank: true)
+
+      .form-group
+        %label Flèches
+        = f.number_field :credit_amount, in: 0.0..100000, step: 1.0, required: true, class: "form-control"
+
+      .form-group
+        %label Montant
+        = f.number_field :amount_cents, in: 0.0..10000, step: 1.0, class: "form-control"
+
+      = f.submit "Enregistrer", class: "btn btn-primary"

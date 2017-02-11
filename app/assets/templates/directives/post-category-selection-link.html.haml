@@ -1,0 +1,3 @@
+%a.post-filter-type{ "ng-click" => "showCategorySelectModal()", "ng-class" => "buttonClasses", href: "", layout: "row", "layout-align" => "center center" }
+	= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/categories-grey.svg"))).to_html.html_safe
+	.filter-label {{category ? category.name : defaultLabel}}

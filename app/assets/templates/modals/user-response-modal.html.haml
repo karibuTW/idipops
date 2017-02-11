@@ -1,0 +1,11 @@
+%form{ role: "form" }
+	.modal-header
+		%h3.modal-title {{title}}
+	.modal-body
+		%p {{introText}}
+		%textarea.form-control{rows: "5", "ng-model" => "userResponse.reason", maxlength: 255, required: "" }
+	.modal-footer.button-stroke
+		%button.button.button_js.orange_border_black_text{ type: "submit", "ng-click" => "confirm()"}
+			%span.button_label {{confirmLabel}}
+		%button.button.button_js.orange_border_black_text{ "ng-click" => "cancel()"}
+			%span.button_label {{cancelLabel}}

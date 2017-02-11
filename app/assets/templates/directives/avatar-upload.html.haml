@@ -1,0 +1,23 @@
+%div
+	.profile-avatar{ "ng-show" => "user.hasAvatar" }
+		%img{ "ng-src" => "{{user.avatar_url}}" }
+		%a.black{ "ng-click" => "deleteAvatar()", href: "" }
+			%i.fa.fa-times.fa-2x
+	%div{ "ng-hide" => "user.hasAvatar" }
+		%span.btn-file.btn.btn-default{ "ng-hide" => "imageEdit.input" }
+			{{"image.select_image" | t}}
+			%input#avatar{ type: "file", "nv-file-select" => "", uploader: "uploader", "ng-show" => "uploader.queue == 0", accept: "image/*" }
+		.cropArea{ "ng-show" => "imageEdit.input" }
+			%img-crop{ image: "imageEdit.input", "result-image" => "imageEdit.cropped", "area-type" => "square", "result-image-format" => "image/jpeg", "result-image-size" => "512" }
+		%div{ layout: "row", "ng-show" => "imageEdit.input" }
+			.button-stroke.avatar-upload-btn
+				%a.button.button_js.orange_border_orange_text{ "ng-click" => "uploadCroppedImage()" }
+					%span.button_label {{"image.send_image" | t}}
+			.button-stroke
+				%a.button.button_js.black_border_black_text{ "ng-click" => "cancel()" }
+					%span.button_label {{"image.cancel" | t}}
+		-# %div{ "ng-show" => "imageEdit.input" }
+		-# 	%button.btn.btn-default{ "ng-click" => "uploadCroppedImage()" } Upload image
+		-# %div{ "ng-repeat" => "item in uploader.queue" }
+		-# 	%div{ "ng-thumb" => "{ file: item._file, height: 100 }" }
+		%md-progress-linear{ "md-mode" => "determinate", "ng-value" => "uploader.queue[0].progress", "ng-show" => "uploader.isUploading" }

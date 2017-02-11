@@ -1,0 +1,21 @@
+.table-responsive  
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Type
+        %th Date de début
+        %th Actif
+        %th Action
+    %tbody
+      - @pricings.each do |p|
+        %tr
+          %td= p.id
+          %td= p.target
+          %td= p.start_date
+          %td
+            - if p.active?
+              %span.glyphicon.glyphicon-ok
+          %td
+            = link_to "Modifier", edit_admin_pricing_path(p), class: "btn btn-default btn-xs"
+            = link_to "Ajouter un prix", new_admin_price_for_category_path(pricing_id: p.id), class: "btn btn-default btn-xs"

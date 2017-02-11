@@ -1,0 +1,1480 @@
+'use strict';
+
+/* Services */
+
+var DEFAULT_AVATAR = '/uneon-face.svg';
+
+var parseErrorMessages = function(errors) {
+	var messages = [];
+	for (var fieldName in errors) {
+		var currentArray = errors[fieldName];
+		for (var i=0; i<currentArray.length; i++) {
+			messages.push( fieldName + ' ' + currentArray[i] );
+		}
+	}
+	return messages;
+};
+
+var postErrorFunction = function(dataReturned, status, deferred) {
+	switch (status) {
+		case 0:
+			deferred.reject([I18n.t("services.general.service_not_available")]);
+			break;
+		case 422:
+			if (dataReturned)
+				deferred.reject(parseErrorMessages(dataReturned.errors));
+			else
+				deferred.reject();
+			break;
+		case 401:
+			deferred.reject([I18n.t("services.general.not_authorized")]);
+			break;
+		case 402:
+			deferred.reject([I18n.t("services.general.insufficient_credits")]);
+			break;
+		case 404:
+			deferred.reject([I18n.t("services.general.not_found")]);
+			break;
+		default:
+			deferred.reject([I18n.t("services.general.unknown_error")]);
+			break;
+	}
+};
+
+var getErrorFunction = function(message, status, deferred){
+	switch (status) {
+		case 0:
+			deferred.reject(message + ' ' + I18n.t("services.general.service_not_available"));
+			break;
+		case 401:
+			deferred.reject(message + ' ' + I18n.t("services.general.not_authorized"));
+			break;
+		case 404:
+			deferred.reject(message + ' ' + I18n.t("services.general.not_found"));
+			break;
+		default:
+			deferred.reject(message + ' ' + I18n.t("services.general.unknown_error"));
+			break;
+	}	
+};
+
+var mentions;
+
+var replaceMention = function(match, p1, p2, offset, string) {
+	if (mentions.indexOf(p2) != -1) {
+		return "<a class='orange' href='/pro/" + p2 + "'>" + match + "</a>";
+	} else {
+		return match;
+	}
+};
+
+angular.module('uneo.services', [])
+	.service('Alerts', ['$rootScope', function($rootScope){
+		var theService = this;
+		this.add = function(type, msg) {
+			$rootScope.$broadcast('new-alert', { type: type, msg: msg });
+		};
+	}])
+
+	.service('Authentication', ['$rootScope', '$http', '$q', '$location', function($rootScope, $http, $q, $location){
+		var theService = this;
+
+		// this.checkEmailIsFree = function(email) {
+		// 	var deferred = $q.defer();
+		// 	$http.get( '/api/v1/users/is_email_free?email=' + email)
+		// 		.success(function(dataReturned, status) {
+  //   			deferred.resolve(status == 200);
+		// 		})
+		// 		.error(function(dataReturned, status) {
+		// 			deferred.reject(I18n.t("services.general.unknown_error"));
+		// 		});
+		// 	return deferred.promise;
+		// };
+
+		this.changeEmail = function(oldEmail, newEmail) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/users/change_email', {old_email: oldEmail, email: newEmail})
+				.success(function(dataReturned, status) {
+    			deferred.resolve(status == 200);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.general.unknown_error"));
+				});
+			return deferred.promise;
+		};
+
+		var dispatchConnexionChange = function( state ) {
+			$rootScope.$broadcast('connexion-change', { signedIn: state });
+		};
+		
+		this.state = { signedIn: false};
+		this.signIn = function(email, password) {
+			var deferred = $q.defer();
+			$http.post('/api/v1/sessions', { email: email, password: password } )
+				.success(function(dataReturned, status) {
+					theService.state.signedIn = true;
+					dispatchConnexionChange(true);
+    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.authentication.failed"));
+					// postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.signOut = function() {
+			var deferred = $q.defer();
+			$http.delete('/api/v1/sessions/idipops' )
+				.success(function(dataReturned, status) {
+					theService.state.signedIn = false;
+					dispatchConnexionChange(false);
+    			deferred.resolve(dataReturned);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.authentication.disconnect_failed"));
+				});
+			return deferred.promise;
+		};
+
+	}])
+	
+	.service('User', ['$http', '$q', '$rootScope', function($http, $q, $rootScope){
+		var theService = this;
+		this.create = function(email, password, password_confirmation, token) {
+			var deferred = $q.defer();
+			$http.post('/api/v1/users', { email: email, password: password, password_confirmation: password_confirmation, token: token } )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(status == 201);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.user.creation_failed"));
+					// postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.deleteAvatar = function() {
+			var deferred = $q.defer();
+			$http.patch( '/api/v1/users/' + theService.data.id, {avatar: null})
+				.success(function(dataReturned, status) {
+					theService.data.avatar_url = DEFAULT_AVATAR;
+					theService.data.hasAvatar = false;
+    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.saveSingleField = function(userId, field) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/users/' + userId, field)
+				.success(function(dataReturned, status) {
+					theService.data = dataReturned.user;
+					theService.data.hourly_rate = Number(dataReturned.user.hourly_rate);
+    			deferred.resolve(theService.data);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.saveData = function(userData) {
+			var deferred = $q.defer();
+			if (userData.addresses) {
+				for (var j=userData.addresses.length-1; j>=0; j--) {
+	      	if (userData.addresses[j].place_id == null) {
+	      		userData.addresses.splice(j, 1);
+	      	} else {
+	      		userData.addresses[j].user_id = userData.id;
+	      	}
+	      }
+			}
+			var params = {birthdate: userData.birthdate, company_name: userData.company_name, first_name: userData.first_name, last_name: userData.last_name, name_is_public: userData.name_is_public, short_description: userData.short_description, long_description: userData.long_description, website: userData.website, user_type: userData.user_type, client_references: userData.client_references, addresses: userData.addresses, land_phone: userData.land_phone, mobile_phone: userData.mobile_phone, siret: userData.siret, advantages: userData.advantages, primary_activity_id: userData.primary_activity_id, secondary_activity_id: userData.secondary_activity_id, tertiary_activity_id: userData.tertiary_activity_id, quaternary_activity_id: userData.quaternary_activity_id, avatar: userData.avatar, photo_ids_to_remove: userData.photo_ids_to_remove, quotation: userData.quotation, prestation: userData.prestation, newsletter: userData.newsletter, email_notifications: userData.email_notifications, tag_list: userData.tag_list, pretty_name: userData.pretty_name, premium_posts: userData.premium_posts, logo_image: userData.logo_image };
+			if (userData.place) {
+				params.place_id = userData.place.id;
+			}
+			if (userData.hourly_rate) {
+				params.hourly_rate = userData.hourly_rate.toString();
+			}
+			$http.put( '/api/v1/users/' + userData.id, params)
+				.success(function(dataReturned, status) {
+					theService.data = dataReturned.user;
+					theService.data.hourly_rate = Number(dataReturned.user.hourly_rate);
+    			deferred.resolve(theService.data);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.changePassword = function(passwords) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/users/change_password', passwords)
+				.success(function(dataReturned, status) {
+    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.getData = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users/me')
+				.success(function(dataReturned, status) {
+					theService.data = dataReturned.user;
+					theService.data.hourly_rate = Number(dataReturned.user.hourly_rate);
+					if (theService.data.avatar_url == null) {
+						//theService.data.avatar_url = DEFAULT_AVATAR;
+						theService.data.hasAvatar = false;
+					} else {
+						theService.data.hasAvatar = true;
+					}
+        			deferred.resolve(theService.data);
+        			//$rootScope.$broadcast('user-loaded');
+				})
+				.error(function(dataReturned, status) {
+					theService.resetData();
+					deferred.reject(I18n.t("services.user.profile_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.requestPassword = function(email) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users/request_password', { params: { email: email } })
+				.success(function(dataReturned, status) {
+    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.user.request_password_failed"));
+				});
+			return deferred.promise;
+		};
+		this.searchProsByName = function(company_name) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users', { params: { cname: company_name } })
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.users);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.user.companies_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.searchProsById = function(uid) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users/' + uid )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.user);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.user.company_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getNotifications = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/user_notifications/' )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.user.notifications_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getPossibleNickanme = function(original_name) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/user_possible_nickname/', { params: { original_name: original_name } })
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.pretty_name);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject();
+				});
+			return deferred.promise;
+		};
+		this.resetData = function() {
+			theService.data = { id: null, name: '', short_description: '', long_description: '', user_type: '', website: '', client_references: '', address: '', land_phone: '', mobile_phone: '', siret: '', advantages: '', avatar_url: DEFAULT_AVATAR, hasAvatar: false};
+		};
+		this.resetData();
+	}])
+	
+	.service('Profession', ['$http', '$q', '$rootScope', function($http, $q, $rootScope){
+		var theService = this;
+		var isLoaded = false;
+		var setProfessionsForSelect = function() {
+			var group;
+			for (var i=0; i<theService.data.professions.length; i++) {
+				group = theService.data.professions[i].name;
+				for (var j=0; j<theService.data.professions[i].children.length; j++) {
+					theService.data.professionsForSelect.push(theService.data.professions[i].children[j]);
+					theService.data.professionsForSelect[theService.data.professionsForSelect.length-1].parent = group;
+				}
+			}
+		};
+		this.getData = function() {
+			var deferred = $q.defer();
+			if (!isLoaded) {
+				$http.get( '/api/v1/professions', { cache: true } )
+					.success(function(dataReturned, status) {
+						theService.data.professions = dataReturned.professions;
+						setProfessionsForSelect();
+	        			deferred.resolve(theService.data.professions);
+						isLoaded = true;
+					})
+					.error(function(dataReturned, status) {
+						theService.resetData();
+						deferred.reject(I18n.t("services.profession.professions_loading_failed"));
+					});
+			} else {
+				deferred.resolve(theService.data.professions);
+			}
+			return deferred.promise;
+		};
+		this.getById = function(pid) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/professions/' + pid )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.profession);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.profession.profession_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.resetData = function() {
+			theService.data = { professions: [], professionsForSelect: [] };
+		};
+		this.resetData();
+	}])
+	
+	.service('PostAuthorSubscription', ['$http', '$q', '$rootScope', function($http, $q, $rootScope) {
+		var theService = this;
+		this.subscribe = function(author_pretty_name) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/post_author_subscriptions/', { author_pretty_name: author_pretty_name } )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.post_author_subscription);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.unsubscribe = function(author_subscription_id) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/post_author_subscriptions/' + author_subscription_id)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+	
+	.service('PostCategorySubscription', ['$http', '$q', '$rootScope', function($http, $q, $rootScope) {
+		var theService = this;
+		this.subscribe = function(category_id) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/post_category_subscriptions/', { category_id: category_id } )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.post_category_subscription);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.unsubscribe = function(category_subscription_id) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/post_category_subscriptions/' + category_subscription_id)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+	
+	.service('PostCategory', ['$http', '$q', '$rootScope', function($http, $q, $rootScope){
+		var theService = this;
+		var isLoaded = false;
+		// var setProfessionsForSelect = function() {
+		// 	var group;
+		// 	for (var i=0; i<theService.data.professions.length; i++) {
+		// 		group = theService.data.professions[i].name;
+		// 		for (var j=0; j<theService.data.professions[i].children.length; j++) {
+		// 			theService.data.professionsForSelect.push(theService.data.professions[i].children[j]);
+		// 			theService.data.professionsForSelect[theService.data.professionsForSelect.length-1].parent = group;
+		// 		}
+		// 	}
+		// };
+		this.getData = function() {
+			var deferred = $q.defer();
+			if (!isLoaded) {
+				$http.get( '/api/v1/post_categories', { cache: true } )
+					.success(function(dataReturned, status) {
+						theService.data.post_categories = dataReturned.post_categories;
+						// setProfessionsForSelect();
+      			deferred.resolve(theService.data.post_categories);
+						isLoaded = true;
+					})
+					.error(function(dataReturned, status) {
+						theService.resetData();
+						deferred.reject(I18n.t("services.post_category.post_categories_loading_failed"));
+					});
+			} else {
+				deferred.resolve(theService.data.post_categories);
+			}
+			return deferred.promise;
+		};
+		this.getById = function(pid) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/post_categories/' + pid )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.post_category);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.post_category.post_category_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.resetData = function() {
+			theService.data = { post_categories: [], categoriesForSelect: [] };
+		};
+		this.resetData();
+	}])
+	
+	.service('Place', ['$http', '$q', function($http, $q){
+		var theService = this;
+
+		this.getById = function(placeId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/places/' + placeId )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.place);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.place.city_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getPlacesByCode = function(code) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/places?code_starts_with=' + code, { cache: true } )
+				.success(function(dataReturned, status) {
+        			deferred.resolve(dataReturned.places);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.place.city_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.searchDepartements = function(query) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/departements?departement_code_starts_with=' + query, { cache: true })
+				.success(function(dataReturned, status) {
+	        	deferred.resolve(dataReturned.places);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.place.departement_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.searchCities = function(query) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/places?starts_with=' + query, { cache: true })
+				.success(function(dataReturned, status) {
+        	deferred.resolve(dataReturned.places);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.place.city_loading_failed"));
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Post', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.postPost = function(dealData) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/posts/', dealData)
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.post);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.updatePost = function(postId, postData) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/posts/' + postId, postData)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.post);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.getMentions = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/posts/', { params: { mentions: true } })
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.posts);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.post.posts_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getMine = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/posts/', { params: { mine: true } })
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.posts);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.post.posts_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getAll = function(filter) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/posts/', { params: filter })
+				.success(function(dataReturned, status) {
+					var posts = new Array();
+					if (dataReturned.sponsored) {
+						for (var i=0; i<dataReturned.sponsored.length; i++) {
+							dataReturned.sponsored[i].sponsored = true;
+							posts.push(dataReturned.sponsored[i]);
+						}
+					}
+					if (dataReturned.regular) {
+						posts = posts.concat(dataReturned.regular);
+					} else {
+						posts = dataReturned.posts;
+					}
+    			deferred.resolve(posts);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.post.posts_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getPost = function(postId, location) {
+			var deferred = $q.defer();
+			var replaceTag = function(match, p1, p2, offset, string) {
+				return "<a class='orange' href='/?tag=" + p2 + "'>" + match + "</a>";
+			};
+			$http.get( '/api/v1/posts/' + postId, { params: location })
+				.success(function(dataReturned, status) {
+					dataReturned.post.description = dataReturned.post.description.replace(/(#)([a-zA-Z0-9\u00C0-\u017F]+)/g, replaceTag);
+					mentions = dataReturned.post.user_mentions;
+					dataReturned.post.description = dataReturned.post.description.replace(/(@)([a-zA-Z0-9\u00C0-\u017F\-]+)/g, replaceMention);
+    			deferred.resolve(dataReturned.post);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.post.post_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.report = function(postId, reason) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/posts/' + postId, { reject_reason: reason, report: true} )
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('PostComment', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getComments = function(postId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/post_comments/?id=' + postId)
+				.success(function(dataReturned, status) {
+	    		deferred.resolve(dataReturned.post_comments);
+	    		for (var i=0; i<dataReturned.post_comments.length; i++) {
+	    			mentions = dataReturned.post_comments[i].user_mentions;
+						dataReturned.post_comments[i].content = dataReturned.post_comments[i].content.replace(/(@)([a-zA-Z0-9\u00C0-\u017F\-]+)/g, replaceMention);
+	    		}
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.comments.loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.addComment = function(postId, content) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/post_comments/', { post_id: postId, content: content })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('UserFavorites', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getMine = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users_favorites/')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.users_favorites);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.favorites.loading_failed"));
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('FavoriteDeals', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getMine = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users_favorite_deals/')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.users_favorite_deals);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.favorites.loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.addToFavorites = function(dealId) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/users_favorite_deals/', { id: dealId })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.deal.favorite_deal_id);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.removeFromFavorites = function(id) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/users_favorite_deals/' + id )
+				.success(function(dataReturned, status) {
+        	deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Deal', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.postDeal = function(dealData) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/deals/', dealData)
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.deal);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.updateDeal = function(dealId, dealData) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/deals/' + dealId, dealData)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.deal);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.deleteDeal = function(dealId) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/deals/' + dealId)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.getById = function(dealId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/deals/' + dealId)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.deal);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.deal.deal_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getMine = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/deals/?mine')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.deals);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.deal.deals_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getFromPro = function(proId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/deals/?user_id=' + proId)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.deals);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.deal.deals_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getAll = function(filter) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/deals/', { params: filter })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.deals);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.deal.deals_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		var getPromotions = function(filter) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/deals/', { params: filter })
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.deals);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.deal.deals_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getHomepagePromotions = function(latitude, longitude, max) {
+			return getPromotions({ prom_type: 'homepage', limit: max, lat: latitude, lng: longitude });
+		};
+		this.getDealspagePromotions = function(latitude, longitude, pid, uid, tags, max) {
+			return getPromotions({ prom_type: 'deals', limit: max, lat: latitude, lng: longitude, pid: pid, uid: uid, "tags[]": tags });
+		};
+		this.getSimilarPromotions = function(latitude, longitude, dealId) {
+			return getPromotions({ prom_type: 'similar', limit: 5, lat: latitude, lng: longitude, did: dealId });
+		};
+		this.getMapPromotions = function(latitude, longitude, pids, cnames, tags) {
+			return getPromotions({ prom_type: 'map', limit: 3, lat: latitude, lng: longitude, "pids[]": pids, "cnames[]": cnames, "tags[]": tags });
+		};
+	}])
+
+	.service('ClassifiedAd', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getMine = function(typeOfStatus) {
+			var deferred = $q.defer();
+			var url = typeOfStatus ? '/api/v1/classified_ads/?status_type=' + typeOfStatus : '/api/v1/classified_ads/';
+			$http.get( url )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.classified_ads);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.classified_ad.classified_ads_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getAroundMe = function(addressId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/classified_ads/?around=' + addressId)
+				.success(function(dataReturned, status) {
+					deferred.resolve(dataReturned.classified_ads);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.classified_ad.classified_ads_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getById = function(adId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/classified_ads/' + adId)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.classified_ad);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.classified_ad.classified_ad_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.getPublicById = function(adId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/classified_ads/' + adId, { params: { public: true }})
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.public_classified_ad);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.classified_ad.classified_ad_loading_failed"), status, deferred);
+					// deferred.reject('Le chargement de l\'annonce a échoué.');
+				});
+			return deferred.promise;
+		};
+		this.postAd = function(classifiedData) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/classified_ads/', classifiedData)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.classified_ad.id);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.update = function(classifiedData) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/classified_ads/' + classifiedData.id, classifiedData)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.classified_ad);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('QuotationRequest', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getMine = function(filter) {
+			var deferred = $q.defer();
+			var postfix = '';
+			if (filter == 'sent') {
+				postfix = "?filter=sent";
+			} else if (filter == 'replied') {
+				postfix = "?filter=replied";
+			}
+			$http.get( '/api/v1/quotation_requests/' + postfix)
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.quotation_requests);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.quotation_request.quotation_requests_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getById = function(qrId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/quotation_requests/' + qrId)
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.outgoing_quotation_request ? dataReturned.outgoing_quotation_request : dataReturned.incoming_quotation_request);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.quotation_request.quotation_request_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.postQuotationRequest = function(quotationRequestData) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/quotation_requests/', quotationRequestData)
+				.success(function(dataReturned, status) {
+    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.sendQuotation = function(quotationRequestId, quotation) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/quotation_requests/' + quotationRequestId, {quotation: quotation})
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.quotation_request);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.markRead = function(quotationRequestId) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/quotation_requests/' + quotationRequestId, {mark_read: true})
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.addPros = function(quotationRequestId, proIdsList) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/quotation_requests/' + quotationRequestId, {pro_ids: proIdsList})
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Professionals', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getById = function(professionId, location) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/professionals/' + professionId, { params: location })
+				.success(function(dataReturned, status) {
+	    		deferred.resolve(dataReturned.user);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pros.pros_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.freeSearch = function(search, onlyWithQuotation, quotationRequestTemplateId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/professionals/', { params: {search: search, with_quotation: onlyWithQuotation ? 1 : 0, qrt_id: quotationRequestTemplateId} })
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.professionals);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pros.pros_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.search = function(professionIds, companyNames, tags, center, sort, rating) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/professionals/', { params: {"profession_ids[]": professionIds, "cname[]": companyNames, "tags[]": tags, lat: center.lat, lng: center.lng, sort: sort, rating: rating} })
+				.success(function(dataReturned, status) {
+					var professionals = [];
+					for (var i=0; i<dataReturned.sponsored.length; i++) {
+						dataReturned.sponsored[i].sponsored = true;
+						professionals.push(dataReturned.sponsored[i]);
+					}
+					professionals = professionals.concat(dataReturned.regular);
+    			deferred.resolve(professionals);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pros.pros_loading_failed"));
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Conversations', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getByOrphan = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/conversations/')
+				.success(function(dataReturned, status) {
+					theService.data.conversations = dataReturned.conversations;
+    			deferred.resolve(dataReturned.conversations);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.conversations.conversations_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getByClassifiedId = function(classifiedId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/conversations/?cl_ad_id=' + classifiedId)
+				.success(function(dataReturned, status) {
+					theService.data.conversations = dataReturned.conversations;
+    			deferred.resolve(dataReturned.conversations);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.conversations.conversations_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getById = function(conversationId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/conversations/' + conversationId )
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.conversation);
+				})
+				.error(function(dataReturned, status) {
+					getErrorFunction(I18n.t("services.conversations.conversation_loading_failed", { conversationId: conversationId}), status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.updateStatus = function(conversationId, updateData) {
+			var deferred = $q.defer();
+			$http.put( '/api/v1/conversations/' + conversationId, updateData)
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.conversation);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.resetData = function() {
+			theService.data = {conversations: [], selectedConversation: null};
+		};
+		this.resetData();
+	}])
+
+	.service('Tags', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.search = function(query) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/tags/?q=' + encodeURIComponent(query))
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.tags);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.tags.tags_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.extendedSearch = function(query) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/tags/?ex=' + encodeURIComponent(query))
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.tags.search_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getFromActivities = function(pids) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/tags', { params: { "pids[]": pids, limit: 5} })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.tags);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.tags.tags_loading_failed"));
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Transactions', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getTransactions = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/transactions')
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.transactions);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.transactions.transactions_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getInvoice = function(transactionId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/transactions/generate_invoice?transaction_id=' + transactionId)
+				.success(function(dataReturned, status) {
+    			deferred.resolve(dataReturned.credit_transaction);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.transactions.transactions_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.addCredits = function(credits, euros, target) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/transactions/', { credit_amount: credits, amount_cents: euros, target: target, description: "credit_adding" })
+				.success(function(dataReturned, status) {
+					deferred.resolve(dataReturned);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		}
+	}])
+
+	.service('Pricings', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getPricingForClassifiedAdUnlock = function() {
+			return theService.getPricing('classified_ad_unlock');
+		};
+		this.getPricing = function(target) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pricings/' + target)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pricing);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pricings.pricing_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getAllPricings = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pricings/')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pricings);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pricings.pricings_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getProfilePricings = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pricings/?profile=')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pricings);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pricings.pricings_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getDealPricings = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pricings/?deals=')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pricings);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pricings.pricings_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getPostPricings = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pricings/?posts=')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pricings);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pricings.pricings_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.getFlechesPricings = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pricings/?fleches=')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pricings);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.pricings.rate_loading_failed"));
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('ProfessionalRatings', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.rate = function(proId, rating) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/pro_ratings/', { pro_id: proId, rating: rating })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('ProfessionalReviews', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getReviews = function(proId) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/pro_reviews/?id=' + proId)
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.pro_reviews);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.comments.loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.addReview = function(proId, content) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/pro_reviews/', { pro_id: proId, content: content })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('FavoritePostComments', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.addToFavorites = function(postCommentId) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/users_favorite_post_comments/', { id: postCommentId })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.post_comment.favorite_post_comment_id);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.removeFromFavorites = function(id) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/users_favorite_post_comments/' + id )
+				.success(function(dataReturned, status) {
+        	deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('FavoritePosts', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getMine = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users_favorite_posts/')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.users_favorite_posts);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.favorites.loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.addToFavorites = function(postId) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/users_favorite_posts/', { id: postId })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.post.favorite_post_id);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.removeFromFavorites = function(id) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/users_favorite_posts/' + id )
+				.success(function(dataReturned, status) {
+        	deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('FavoriteProfessionals', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getMine = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/users_favorite_professionals/')
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.users_favorite_professionals);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.favorites.loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.addToFavorites = function(proId) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/users_favorite_professionals/', { id: proId })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.removeFromFavorites = function(id) {
+			var deferred = $q.defer();
+			$http.delete( '/api/v1/users_favorite_professionals/' + id )
+				.success(function(dataReturned, status) {
+        	deferred.resolve();
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Authorizations', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.payForUnlockingClassified = function(adId) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/authorizations/', { ad_id: adId, target: 'classified_ad_unlock' })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.authorization);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('ProfileSponsoring', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.sponsorProfile = function(target) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/profile_sponsorings/', { target: target })
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.profile_sponsoring);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.getMapSponsoredProfiles = function(candidateIds) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/profile_sponsorings/', { params: { "ids[]": candidateIds } } )
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.profile_sponsorings);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.getSponsoredProfiles = function(professionIds, companyNames, tags, center) {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/profile_sponsorings/', { params: { "profession_ids[]": professionIds, "cname[]": companyNames, "tags[]": tags, lat: center.lat, lng: center.lng } } )
+				.success(function(dataReturned, status) {
+	    			deferred.resolve(dataReturned.profile_sponsorings);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('GeoLocation', ['$http', '$q', '$location', function($http, $q, $location){
+		var theService = this;
+		theService.data = { latitude: undefined, longitude: undefined};
+		this.getLocation = function() {
+			var deferred = $q.defer();
+			$http.get( 'https://api.ipify.org?format=json')
+				.success(function(clientInfo, status) {
+					$http.get( 'https://idipops.com/geoip/json/' + clientInfo.ip)
+						.success(function(dataReturned, status) {
+							if (dataReturned.country_code != "FR") {
+								dataReturned.latitude = 48.852968;
+								dataReturned.longitude = 2.349902;
+							}
+		    			deferred.resolve(dataReturned);
+						})
+						.error(function(dataReturned, status) {
+							// deferred.reject('La localisation a échoué.');
+							deferred.resolve( { latitude: 48.852968, longitude: 2.349902 });
+						});
+				})
+				.error(function(dataReturned, status) {
+					// deferred.reject('La localisation a échoué.');
+					deferred.resolve( { latitude: 48.852968, longitude: 2.349902 });
+				});
+			return deferred.promise;
+			
+		};
+	}])
+
+	.service('GoogleServices', ['$http', '$q', function($http, $q){
+		var theService = this;
+		var paris;
+	  var map;
+	  var service;
+
+		this.searchPlaces = function(input) {
+			var deferred = $q.defer();
+		  if (paris == null)
+		  	paris = new google.maps.LatLng(48.8588589,2.3470599);
+			var request = {
+		    location: paris,
+		    radius: '1500',
+		    query: input
+		  };
+		  if (map == null)
+		  	map = new google.maps.Map(document.getElementById('main').appendChild(document.createElement('div')));
+		  if (service == null)
+		  	service = new google.maps.places.PlacesService(map);
+			  service.textSearch(request, function(results, status) {
+				  if (status == google.maps.places.PlacesServiceStatus.OK) {
+				  	var formattedResults = [];
+				  	for (var i = 0; i < results.length; i++) {
+				      formattedResults.push( { formatted_address: results[i].formatted_address, place_id: results[i].place_id, latitude: results[i].geometry.location.lat(), longitude: results[i].geometry.location.lng(), action_range: 10 } );
+				    }
+				    deferred.resolve(formattedResults);
+				    // return results;
+				  } else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+				  	deferred.resolve([]);
+				  	// return [];
+				  } else {
+				  	deferred.reject('Erreur');
+				  }
+				});
+			return deferred.promise;
+		};
+	}])
+
+	.service('Referral', ['$http', '$q', function($http, $q){
+		var theService = this;
+		this.getData = function() {
+			var deferred = $q.defer();
+			$http.get( '/api/v1/referrals/list')
+				.success(function(dataReturned, status) {
+					theService.data = dataReturned;
+					deferred.resolve(theService.data);
+				})
+				.error(function(dataReturned, status) {
+					deferred.reject(I18n.t("services.referral.self_loading_failed"));
+				});
+			return deferred.promise;
+		};
+		this.resetData = function() {
+			theService.data = { referrals: []};
+		};
+		this.saveData = function(emails,subject,message) {
+			var deferred = $q.defer();
+			$http.post( '/api/v1/referrals', {emails: emails,subject: subject,message: message})
+				.success(function(dataReturned, status) {
+					theService.data.referrals = dataReturned.referrals;
+    			deferred.resolve(theService.data);
+				})
+				.error(function(dataReturned, status) {
+					postErrorFunction(dataReturned, status, deferred);
+				});
+			return deferred.promise;
+		};
+		this.resetData();
+	}])
+;

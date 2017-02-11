@@ -1,0 +1,19 @@
+%div
+	.image-uploaded{ "ng-show" => "image_url", layout: "row" }
+		%img{ "ng-src" => "{{image_url}}" }
+		%a.black{ "ng-click" => "deleteImage()", href: "" }
+			%i.fa.fa-times.fa-2x
+	%div{ "ng-hide" => "image_url" }
+		%span.btn-file.btn.btn-default{ "ng-hide" => "imageBlob" }
+			{{"image.select_image" | t}}
+			%input#image{ type: "file", "nv-file-select" => "", uploader: "uploader", "ng-show" => "uploader.queue == 0", accept: "image/*" }
+		%p.text-danger{ "ng-show" => "hasWrongSize" }
+			{{"image.wrong_size" | t}}
+			%span{ "ng-if" => "minWidth && minHeight" } {{"image.minimum_size" | t:{minWidth: minWidth, minHeight: minHeight} }}
+			%span{ "ng-if" => "maxWidth && maxHeight" } {{"image.maximum_size" | t:{maxWidth: maxWidth, maxHeight: maxHeight} }}
+		%div{ layout: "column", "ng-show" => "uploader.queue[0]" }
+			.image-upload{ "ng-repeat" => "item in uploader.queue" }
+				%div{ layout: "row" }
+					%span{ "ng-thumb" => "{ file: item._file, height: imageHeight, width: imageWidth }" }
+					%a.black{ "ng-click" => "cancel()", href: "" }
+						%i.fa.fa-times.fa-2x

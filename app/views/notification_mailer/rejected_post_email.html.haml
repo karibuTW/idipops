@@ -1,0 +1,27 @@
+%table{:align => "center", :cellpadding => "0", :cellspacing => "0", :style => "padding:10px 0 60px 0;", :width => "100%"}
+  %tbody
+    %tr{:style => ""}
+      %td{:align => "left", :style => "padding:20px 0;"}
+        %p{:style => "font-size:1.5em;color:#f57c00;padding:0 0 20px 0;margin:0"}
+          = "Bonjour #{@post.user.display_name}"
+        %p{:style => "padding:0 0 10px 0;margin:0"}
+          Votre post ne peut pas être publié pour la raison suivante :
+        %p{ style: "color:#f57c00;margin: 0 0 2em 0;"}= @reject_reason
+        %p{ style: "margin-bottom: 0;"} Voici le post concerné :
+    %tr
+      %td{:align => "left", :bgcolor => "#fafafa", :style => "padding:20px 40px;border-radius:3px;"}
+
+        - if @post.title.present?
+          %p{ style: "font-size:1.5em;margin:0" }= @post.title
+
+        %p{ style: "font-size:0.8em;color:#a5a7a9;margin:0 0 2em 0" }= l @post.created_at, format: :short
+
+        %p{:style => "padding:0;margin:0"}
+          = @content
+
+    %tr
+      %td{:align => "left"}
+
+        %p{ :style => "padding-top:20px" }
+          %a{:href => @post_path, :style => "color: #ffffff;font-size:18px;font-weight:400;padding: 10px 15px; border-radius: 5px; background-color: #ffa726; display: inline-block; width: auto; text-decoration: none;"}
+            VOIR LE POST

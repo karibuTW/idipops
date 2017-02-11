@@ -1,0 +1,37 @@
+.page-header
+  %h1
+    = "Pro review ##{@review.id}"
+  = link_to admin_review_path(@review), class: 'btn btn-danger btn-xs', method: :delete, title: "Supprimer bon plan #{@review.id}", data: {confirm: "Vous allez supprimer le bon plan #{@review.id}. Etes-vous sûr ?"} do
+    %i.fa.fa-times
+.row
+  .col-sm-12
+    .row
+      .col-sm-3
+        %strong Content
+      .col-sm-9= @review.content
+    .row
+      .col-sm-3
+        %strong Rating
+      .col-sm-9
+        %span= review_rating(@review.rating)
+    .row
+      .col-sm-3
+        %strong Date
+      .col-sm-9= @review.created_at
+    .row
+      .col-sm-3
+        %strong User
+      .col-sm-9
+        = link_to admin_user_path(@review.user), class: "btn btn-default btn-xs" do
+          = image_tag @review.user.avatar.thumb('20x20').url, style: "width: 20px; height:20px;" if @review.user.avatar_stored?
+          = @review.user.display_name
+    .row
+      .col-sm-3
+        %strong Professional
+      .col-sm-9
+        = link_to admin_user_path(@review.professional), class: "btn btn-default btn-xs" do
+          = image_tag @review.professional.avatar.thumb('20x20').url, style: "width: 20px; height:20px;" if @review.professional.avatar_stored?
+          = @review.professional.display_name
+    .row
+      .col-sm-6
+        = link_to "Back",:back,class: "btn btn-primary btn-xs"

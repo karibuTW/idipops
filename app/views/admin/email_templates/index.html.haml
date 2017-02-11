@@ -1,0 +1,24 @@
+.page-header
+  %h1= t('admin.email_templates')
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th name
+        %th subject
+        %th body
+        %th created at
+    %tbody
+      - @templates.each do |template|
+        %tr
+          %td= template.id
+          %td= template.name
+          %td= template.subject[0..50]
+          %td= raw template.body
+          %td= template.created_at
+          %td
+            = link_to "Modifier", edit_admin_email_template_path(template), class: "btn btn-default btn-xs"
+          %td
+            = link_to admin_email_template_path(template), class: 'btn btn-danger btn-xs', method: :delete, title: "Supprimer template #{template.id}", data: {confirm: "Vous allez supprimer le template #{template.id}. Etes-vous sûr ?"} do
+              %i.fa.fa-times

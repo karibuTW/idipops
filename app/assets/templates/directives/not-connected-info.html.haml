@@ -1,0 +1,12 @@
+.not-connected
+	.headings-wrapper{ layout: "column", "layout-align" => "center center"}
+		%h3 {{"not_connected.header" | t}}
+		%h4{ "ng-bind-html" => "'not_connected.subheader' | t" }
+	.content-wrapper
+		.not-connected-buttons{ layout: "row", "layout-align" => "center center" }
+			.button-stroke.signed-out-button
+				%button.button.button_js.orange_border_black_text{ "ui-sref" => "sign_in" }
+					%span.button_label {{"not_connected.signin" | t}}
+			-# .button-stroke.signed-out-button
+			-# 	%button.button.button_js.grey_border_black_text{ href: "", "ng-click" => "signIn()" }
+			-# 		%span.button_label {{"not_connected.signup" | t}}

@@ -1,0 +1,9 @@
+.not-connected
+	.headings-wrapper{ layout: "column", "layout-align" => "center center"}
+		%h3 {{"incomplete_profile.header" | t}}
+		%h4 {{"incomplete_profile.subheader" | t}}
+	.content-wrapper
+		.not-connected-buttons{ layout: "row", "layout-align" => "center center" }
+			.button-stroke.signed-out-button
+				%button.button.button_js.orange_border_black_text{ "ui-sref" => "home.users-edit" }
+					%span.button_label {{"incomplete_profile.complete_profile_label" | t}}

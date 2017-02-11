@@ -1,0 +1,13 @@
+.deal-box.company{ style: "background-image: url('{{deal.featured_image_url ? deal.featured_image_url : 'uneon256x144_bg.svg'}}')", "ui-sref" => "deal-details({dealid: deal.id})" }
+	.deal-info{ layout: "column", "layout-align" => "end center"}
+		.list-tagline{ layout: "column", "layout-align" => "center center"}
+			%div {{deal.tagline}}
+	.deal-company-hover{ layout: "column", "layout-align" => "center center"}
+		.company-text
+			{{"deals.offered_by" | t}}
+			%br
+			{{deal.company_name}}
+			%br
+			%br
+			%i.fa.fa-search
+	%avatar.face{ "avatar-url" => "deal.logo_url"}

@@ -1,0 +1,44 @@
+.page-header
+  %h1 Annonces
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Titre
+        %th Description
+        %th De
+        %th Début
+        %th Ville
+        %th Code postal
+        %th Statut
+        %th Action
+    %tbody
+      - @classified_ads.each do |ad|
+        %tr
+          %td= ad.id
+          %td
+            = link_to admin_classified_ad_path(ad), class: "btn btn-default btn-xs" do
+              = ad.title
+          %td= ad.description
+          %td
+            = link_to admin_user_path(ad.user), class: "btn btn-default btn-xs" do
+              = ad.user.display_name
+          %td= ad.start_date.present? ? ad.start_date : '-'
+          %td= ad.place.place_name
+          %td= ad.place.postal_code
+          %td
+            - if ad.pending?
+              %span.glyphicon.glyphicon-hourglass.text-muted
+            - elsif ad.rejected?
+              %span.glyphicon.glyphicon-alert.text-danger
+            - elsif ad.reported?
+              %span.glyphicon.glyphicon-exclamation-sign.text-danger
+            - elsif ad.published?
+              %span.glyphicon.glyphicon-ok.text-success
+            - elsif ad.inactive?
+              %span.glyphicon.glyphicon-pause.text-warning
+            - else
+              %span.glyphicon.glyphicon-stop.text-info
+          %td
+            = link_to "Voir", admin_classified_ad_path(ad), class: "btn btn-default btn-xs"

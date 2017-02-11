@@ -1,0 +1,176 @@
+!!!
+%html{"ng-app" => "uneo", lang: "fr", "xml:lang" => "fr", xmlns: "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{:charset => 'utf-8'}
+    %title{ "ng-bind" => "title"}= @title
+    %meta{'http-equiv' => 'X-UA-Compatible', content: 'IE=Edge,chrome=1'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1'}
+    %meta{name: 'description', content: @description}
+    %link{ rel: 'shortcut icon', type:"image/png", href: '/favicon.png'}
+    %link{ rel: 'apple-touch-icon', type:"image/png", href: '/favicon.png'}
+    %link{ href: 'https://plus.google.com/+idipops', rel: 'publisher' }
+
+    %meta{property: 'og:site_name', content: "Idipops"}
+    %meta{property: 'og:url', content: request.original_url}
+    %meta{property: 'og:title', content: @title}
+    %meta{property: 'og:description', content: @description}
+    %meta{property: 'og:image', content: "#{ENV['ROOT_URL']}icon.png"}
+
+    %meta{itemprop: 'name', content: @title}
+    %meta{itemprop: 'description', content: @description}
+    %meta{itemprop: 'image', content: "#{ENV['ROOT_URL']}icon.png"}
+
+    = stylesheet_link_tag :application, media: :all
+    -# = stylesheet_link_tag '//fonts.googleapis.com/css?family=Hind:400,500,600', media: :all
+    :javascript
+      document.write('<base href="' + document.location.protocol + '//' + document.location.host + '/" />');
+      
+    
+
+    = csrf_meta_tags
+  %body{"ng-controller" => "SessionController"}
+    %noscript
+      %h1 My Unéo nécessite Javascript
+      %p Veuillez activer Javascript pour pouvoir utiliser ce site
+    %md-sidenav.profession-sidebar.ng-cloak{ "md-component-id" => "professionSidenav", "md-swipe-left" => "allProfessionSelectHandler()" }
+      %profession-search-box{ "append-type-ahead-to-body" => "false", direction: "'vertical'", "show-modal" => "false", "selected-category" => "selectedProfession", "ng-hide" => "selectedProfession" }
+      %profession-vertical-list{ "selected-category" => "selectedProfession", "ng-show" => "selectedProfession" }
+    %md-sidenav.resp-menu-sidebar.ng-cloak{ "hide-gt-md" => "", "md-component-id" => "menuSidenav", layout: "column", "md-swipe-left" => "toggleMenuSidenav()" }
+      .resp-menu-item{ layout: "row", "layout-align" => "start center", "ng-if" => "!isRetrievingProfile && session.connected" }
+        %avatar.small.face{"avatar-url" => "session.user.avatar_url"}
+        .resp-menu-name{ "ng-switch" => "session.user.user_type" }
+          %a{ "ui-sref" => "home.users-dashboard", "ng-switch-when" => "particulier", "ng-click" => "toggleMenuSidenav()" }
+            {{session.user.display_name}}
+            %span.badge{"ng-show" => "session.user.unread_conversations_count > 0"}
+              {{session.user.unread_conversations_count}}
+          %a{ "ui-sref" => "home.pros-dashboard", "ng-switch-when" => "pro", "ng-click" => "toggleMenuSidenav()" }
+            {{session.user.display_name}}
+            %span.badge{"ng-show" => "session.user.unread_conversations_count > 0"}
+              {{session.user.unread_conversations_count}}
+      -# %a.resp-menu-item{ href: "/", "ng-click" => "toggleMenuSidenav()" } Accueil
+      %a.resp-menu-item{ "ui-sref" => "post-ad", "ng-click" => "toggleMenuSidenav()", "ng-show" => "session.user.user_type == 'particulier'" } {{'toolbar.post_classified_ad' | t}}
+      %a.resp-menu-item{ "ui-sref" => "home.post-deal", "ng-click" => "toggleMenuSidenav()", "ng-show" => "session.user.user_type == 'pro'" } {{'toolbar.post_deal' | t}}
+      %a.resp-menu-item{ "ui-sref" => "deal-list", "ng-click" => "toggleMenuSidenav()" } {{'toolbar.good_deals' | t}}
+      %a.resp-menu-item{ "ui-sref" => "how-it-works-pros.profile", "ng-click" => "toggleMenuSidenav()", "ng-show" => "!isRetrievingProfile && (!session.connected || session.user.user_type == 'pro')" } {{'toolbar.discover_uneo_pros' | t}}
+      %a.resp-menu-item{ "ui-sref" => "how-it-works-users.search", "ng-click" => "toggleMenuSidenav()", "ng-show" => "!isRetrievingProfile && (!session.connected || session.user.user_type == 'particulier')" } {{'toolbar.discover_uneo_users' | t}}
+      %a.resp-menu-item{ "ui-sref" => "uneon", "ng-click" => "toggleMenuSidenav()" } {{'footer.who' | t}}
+      %a.resp-menu-item{ href: "mailto:contact@idipops.com", target: "_blank" } {{'footer.contact' | t}}
+      .resp-menu-item.button-stroke{ flex: "", "layout-align" => "center end"}
+        %a.button.button_js.white_border_white_text.btn-block{ "ui-sref" => "sign_in", "ng-if" => "!isRetrievingProfile && !session.connected" }
+          %span.button_label.fullwidth {{'toolbar.connect' | t}}
+        %a.button.button_js.white_border_white_text.btn-block{ href: "", "ng-click" => "signOut()", "ng-if" => "!isRetrievingProfile && session.connected"}
+          %span.button_label.fullwidth {{'toolbar.disconnect' | t}}
+    %div#main{ "ng-controller" => "AlertsController" }
+      .mobile-menu.ng-cloak{ layout: "row", "hide-gt-xs" => "" }
+        %div{ "layout-align" => "center center", flex: "20" }
+          %a{ href: "", "ng-click" => "toggleMobileMenu()" }
+            = image_tag "menu/burger-menu-w.svg"
+        %div{ flex: "", "layout-align" => "end center", layout: "row" }
+          = image_tag "myuneo-logo-white-158x42.svg", class: "mobile-logo"
+      .uneo-menu.ng-cloak{ layout: "row", "ng-class" => "menuClass", "md-swipe-left" => "closeMenu()" }
+        .menu-buttons{ layout: "column" }
+          .uneo-logo{ href: "", "ng-click" => "postsCollapsed = false", "ui-sref" => "posts.index" }
+            = image_tag "logo-v-w.svg"
+          -# %div
+          -#   .uneo-menu-item{ layout: "column", "layout-align" => "center center", "ui-sref" => "posts.index", "ui-sref-active" => "active" }
+          -#     = image_tag "menu/posts-w.svg"
+          -#     {{'toolbar.posts' | t}}
+          .uneo-menu-border{ "ui-sref-active" => "active" }
+            .uneo-menu-item.no-border{ layout: "column", "layout-xs" => "row", "layout-align" => "center center", "layout-align-xs" => "start center", href: "", "ng-click" => "postsCollapsed = false", "ui-sref" => "posts.index" }
+              = image_tag "menu/posts-w.svg"
+              {{'toolbar.posts' | t}}
+            .uneo-menu-subitems{ layout: "column", "uib-collapse" => "postsCollapsed" }
+              .uneo-menu-dropdown
+                .uneo-menu-subitem-uniq
+                  %a.resp-menu-item{ "ui-sref" => "posts.edit", "ng-click" => "postsCollapsed = true" } {{'toolbar.create_post' | t}}
+                -# .uneo-menu-subitem
+                -#   %a.resp-menu-item{ "ui-sref" => "how-it-works-users", "ng-click" => "postsCollapsed = !postsCollapsed" } {{'toolbar.discover_uneo_users' | t}}
+          %div
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ui-sref" => "deal-list", "ui-sref-active" => "active", "ng-click" => "postsCollapsed = true" }
+              = image_tag "menu/bons-plans-w.svg"
+              {{'toolbar.good_deals' | t}}
+          %div
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ng-click" => "allProfessionSelectHandler()", "ng-class" => "proMenuClass" }
+              = image_tag "menu/champions-w.svg"
+              {{'toolbar.look_for_pros' | t}}
+          %div{ "ng-switch" => "session.user.user_type", "ng-show" => "!isRetrievingProfile && session.connected", "ng-click" => "postsCollapsed = true" }
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ui-sref" => "home.users-dashboard", "ui-sref-active" => "active", "ng-switch-when" => "particulier" }
+              = image_tag "menu/mon-espace-w.svg"
+              {{'toolbar.dashboard' | t}}
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ui-sref" => "home.pros-dashboard", "ui-sref-active" => "active", "ng-switch-when" => "pro" }
+              = image_tag "menu/mon-espace-w.svg"
+              {{'toolbar.dashboard' | t}}
+          %div{ "ng-click" => "postsCollapsed = true" }
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ui-sref" => "how-it-works", "ui-sref-active" => "active" }
+              = image_tag "menu/decouvrez-myuneo-w.svg"
+              {{'toolbar.discover_uneo' | t}}
+          -# %div{ "ng-switch" => "session.user.user_type", "ng-show" => "!isRetrievingProfile && session.connected", "ng-click" => "postsCollapsed = true" }
+          -#   .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ui-sref" => "how-it-works-pros", "ui-sref-active" => "active", "ng-switch-when" => "pro" }
+          -#     = image_tag "menu/decouvrez-myuneo-w.svg"
+          -#     {{'toolbar.discover_uneo' | t}}
+          -#   .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", "ui-sref" => "how-it-works-users", "ui-sref-active" => "active", "ng-switch-when" => "particulier" }
+          -#     = image_tag "menu/decouvrez-myuneo-w.svg"
+          -#     {{'toolbar.discover_uneo' | t}}
+          -# .uneo-menu-border{ "ng-if" => "!session.connected", "ui-sref-active" => "active", "ng-click" => "postsCollapsed = true" }
+          -#   .uneo-menu-item.no-border{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row", href: "", "ng-click" => "discoverCollapsed = !discoverCollapsed" }
+          -#     = image_tag "menu/decouvrez-myuneo-w.svg"
+          -#     {{'toolbar.discover_uneo' | t}}
+          -#   .uneo-menu-subitems{ layout: "column", "uib-collapse" => "discoverCollapsed" }
+          -#     .uneo-menu-dropdown
+          -#       .uneo-menu-subitem
+          -#         %a.resp-menu-item{ "ui-sref" => "how-it-works-pros", "ng-click" => "discoverCollapsed = !discoverCollapsed" } {{'toolbar.discover_uneo_pros' | t}}
+          -#       .uneo-menu-subitem
+          -#         %a.resp-menu-item{ "ui-sref" => "how-it-works-users", "ng-click" => "discoverCollapsed = !discoverCollapsed" } {{'toolbar.discover_uneo_users' | t}}
+          %div{ href: "", "ng-click" => "signIn('home.users-dashboard')", "ng-show" => "!isRetrievingProfile && !session.connected" }
+          %div{ "ui-sref" => "sign_in", "ng-show" => "!isRetrievingProfile && !session.connected" }
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-xs" => "row" }
+              = image_tag "menu/login-w.svg"
+              %span {{'toolbar.connect' | t}}
+          %div{ href: "", "ng-click" => "signOut()", "ng-show" => "session.connected" }
+            .uneo-menu-item{ layout: "column", "layout-align" => "center center", "layout-align-xs" => "start center", "layout-xs" => "row" }
+              = image_tag "menu/logout-w.svg"
+              {{'toolbar.disconnect' | t}}
+        .transparent-background{ "ng-click" => "closeMenu()" }
+     
+      .main-view-container.ng-cloak{ "ng-show" => "!isRetrievingProfile", "ui-view" => "", "ng-class" => "mainViewClass" }
+        %noscript
+          .headings-wrapper
+            %div
+              %h1= @title
+            .content-wrapper
+              .container= yield
+              
+      .footer-wrapper.ng-cloak{ "ng-class" => "footerClass", layout: "column", "layout-gt-sm" => "row", "layout-align" => "space-between center" }
+        %div{ layout: "column", "layout-gt-xs" => "row", flex: "" }
+          %div{ layout: "row" }
+            .join-us {{'footer.join' | t}}
+            .footer-social-icons{ layout: "row", "layout-align" => "center center" }
+              %a{href: "https://twitter.com/idipops",  target: "_blank"}
+                = image_tag "icons/twitter-icon-footer.svg"
+              %a{href: "https://plus.google.com/+idipops",  target: "_blank"}
+                = image_tag "icons/google-plus-icon-footer.svg"
+              %a{href: "https://www.facebook.com/idipops/",  target: "_blank"}
+                = image_tag "icons/facebook-icon-footer.svg"
+
+          %div.links-wrapper{ layout: "row", "layout-align" => "start center" }
+            %a.black{ "ui-sref" => "idipops" } {{'footer.who' | t}}
+            %a.black{ "href" => "https://idipops.com/blog", target: "_blank" } {{'footer.blog' | t}}
+            %a.black{ "ui-sref" => "cgv" } {{'footer.cgv' | t}}
+            %a.black{ href: "mailto:contact@idipops.com", target: "_blank" } {{'footer.contact' | t}}
+        .credits-copy{ layout: "row", "layout-align" => "space-between center", flex: "" }
+          .copyright
+            &copy;
+            = Date.today.strftime("%Y")
+            Idipops
+          .credits{ layout: "row", "layout-align" => "center center", "ng-bind-html" => "'footer.credits' | t" }
+        %div{ "scroll-to-top-button" => "" }
+
+    = javascript_include_tag :application, async: Rails.env.production?
+    %script{type: 'text/javascript'}
+      WebFontConfig = {google: { families: [ 'Hind:400,500,600:latin' ] }};(function() {var wf = document.createElement('script');wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';wf.type = 'text/javascript';wf.async = 'true';var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(wf, s);})();
+      window.sendinblue=window.sendinblue||[];window.sendinblue.methods=["identify","init","group","track","page","trackLink"];window.sendinblue.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);window.sendinblue.push(t);return window.sendinblue}};for(var i=0;i<window.sendinblue.methods.length;i++){var key=window.sendinblue.methods[i];window.sendinblue[key]=window.sendinblue.factory(key)}window.sendinblue.load=function(){if(document.getElementById("sendinblue-js"))return;var e=document.createElement("script");e.type="text/javascript";e.id="sendinblue-js";e.async=true;e.src=("https:"===document.location.protocol?"https://":"http://")+"s.sib.im/automation.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)};window.sendinblue.SNIPPET_VERSION="1.0";window.sendinblue.load();window.sendinblue.client_key="f3uga7zezoqklkfa1npea";window.sendinblue.page();
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','//connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '461936397338155');
+      fbq('track', "PageView");
+    %noscript
+      %img{ height: "1", width: "1", style: "display:none", src: "https://www.facebook.com/tr?id=461936397338155&ev=PageView&noscript=1" }

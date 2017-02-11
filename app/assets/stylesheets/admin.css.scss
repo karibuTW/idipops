@@ -1,0 +1,24 @@
+$green: #3ab54a;
+$red: #d43f3a;
+$dark_gray: #303030;
+$medium_gray: #7d7c7c;
+$light_gray: #9f9d9d;
+$border_gray: #ebecee;
+
+.content-wrapper {
+  padding: 40px 0 40px 0;
+  h1 {
+    color: $green;
+    // text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 400;
+    margin: 0;
+  }
+  h2 {
+    color: $medium_gray;
+    font-size: 26px;
+    font-weight: 400;
+    font-family: 'Bitter', serif;
+    margin: 10px 0 30px 0;
+  }
+}

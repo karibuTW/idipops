@@ -1,0 +1,400 @@
+profession_id;profession_name;parent_id;category_name
+76;Primeur;1;Fruits & légumes
+12;Aéroport - Aérodrome;1;Aéroport - Aérodrome
+611;Vins et spiritueux;1;Vins et spiritueux
+14;Alimentation;1;Alimentation
+15;Ameublement;1;Ameublement
+16;Animalerie;1;Animalerie
+17;Auberge de jeunesse;1;Auberge de jeunesse
+18;Bar - Pub;1;Bar - Pub
+19;Bijouterie - Horlogerie;1;Bijouterie - Horlogerie
+20;Boucherie - Charcuterie;1;Boucherie - Charcuterie
+21;Boulangerie - Pâtisserie;1;Boulangerie - Pâtisserie
+22;Bricolage (magasin);1;Bricolage (magasin)
+23;Camping;1;Camping
+24;Centre Commercial;1;Centre Commercial
+25;Chambre d'hôtes;1;Chambre d'hôtes
+26;Charcuterie;1;Charcuterie
+27;Chasse et pêche;1;Chasse et pêche
+28;Chaussures;1;Chaussures
+29;Chocolaterie;1;Chocolaterie
+30;Bien-être;1;Bien-être
+31;Concession (autres);1;Concession (autres)
+32;Concession automobile;1;Concession automobile
+33;Concession deux roues;1;Concession deux roues
+34;Confiserie - Chocolaterie;1;Confiserie - Chocolaterie
+610;Supérettes;1;Supérettes
+36;Cosmétique - Parfum;1;Cosmétique - Parfum
+37;Cuisine;1;Cuisine
+38;Décoration (magasin);1;Décoration (magasin)
+39;Discothèque;1;Discothèque
+40;Ecole de conduite;1;Ecole de conduite
+41;Electroménager;1;Electroménager
+42;Epicerie;1;Epicerie
+43;Fast-food;1;Fast-food
+44;Fleuriste;1;Fleurs
+45;Fruits et légumes;1;Fruits &légumes
+600;Art - Antiquités;1;Art - Antiquités
+47;Horlogerie;1;Horlogerie
+48;Hôtel - Hébergement;1;Hôtel - Hébergement
+49;Jardinerie;1;Jardinerie
+50;Jeux et jouets;1;Jeux et jouets
+51;Papeterie;1;Papeterie
+52;Lavage auto;1;Lavage auto
+588;Auberge;1;Auberge
+54;Librairie;1;Librairie
+55;Location (autres);1;Location (autres)
+56;Location de DVD, livres, musique;1;Location de DVD, livres, musique
+57;Location d'hiver;1;Location d'hiver
+58;Location de véhicules;1;Location de véhicules
+59;Location d'équipement;1;Location d'équipement
+60;Location immobilière;1;Location immobilière
+61;Location informatique;1;Location informatique
+62;Informatique - Multimédia (magasin);1;Informatique - Multimédia (magasin)
+609;Pièces automobile;1;Pièces automobile
+64;Maroquinerie;1;Maroquinerie
+65;Mobilier;1;Mobilier
+66;Moquetterie;1;Moquetterie
+67;Multimédia;1;Multimédia
+68;Musique (magasin);1;Musique (magasin)
+69;Occasion (autres);1;Occasion (autres)
+70;Opticien;1;Optique
+71;Parfumerie;1;Parfumerie
+72;Parking;1;Parking
+73;Pâtisserie;1;Pâtisserie
+74;Pizzeria;1;Pizzeria
+75;Poissonnerie;1;Poissonnerie
+11;Aérodrome;1;Aérodrome
+77;Quincaillerie;1;Quincaillerie
+78;Restaurant;1;Restauration
+589;Alimentation animale;1;Alimentation animale
+80;Salle de bain;1;Salle de bain
+81;Salles de spectacles;1;Salles de spectacles
+608;Mode;1;Mode
+606;Droguerie;1;Droguerie
+84;Sex shop;1;Sex shop
+85;Sport et loisirs (magasin);1;Sport et loisirs (magasin)
+86;Station Service;1;Station Service
+87;Super & Hypermarchés;1;Super & Hypermarchés
+88;Supérette;1;Supérette
+89;Surgelé;1;Surgelé
+90;Tabac - Journaux;1;Tabac - Journaux
+605;Casino;1;Casino
+92;Téléphonie;1;Téléphonie
+93;Textile - Mercerie;1;Textile - Mercerie
+94;Traiteur;1;Service traiteur
+604;Café - Brasserie;1;Café - Brasserie
+96;Autres Commerces & Restauration;1;Autres Commerces & Restauration
+603;Cadeaux;1;Cadeaux
+602;Bureautique;1;Bureautique
+601;Bio;1;Bio
+46;Habillement - Chaussure;1;Habillement - Chaussure
+101;Carrossier;2;Carrosserie
+102;Casse automobile;2;Casse automobile
+103;Charpentier;2;Charpente
+104;Chauffagiste;2;Chauffage
+105;Cordonnier;2;Cordonnerie
+106;Couvreur - Zingueur;2;Couverture - Zinguerie
+107;Cuisiniste;2;Cuisine (installation)
+108;Dépanneur véhicule;2;Dépannage véhicule
+109;Designeur d'intérieur;2;Design d'intérieur
+110;Diamantaire;2;Diamant
+111;Doreur;2;Or
+112;Ebéniste;2;Ebénisterie
+113;Electricien;2;Electricité
+114;Etanchéité;2;Etanchéité
+115;Forgeron - Ferronnier;2;Ferronerie
+116;Garagiste;2;Garage
+117;Géomètre;2;Géomètrie
+118;Isolation;2;Isolation
+119;Jardinier - Paysagiste;2;Jardinage - Paysagisme
+120;Luthier;2;Lutherie
+121;Maçon;2;Maçonnerie
+122;Maison individuelle;2;Maison individuelle
+123;Menuisier - Ebéniste;2;Menuiserie - Ebénisterie
+124;Soudeur - Chaudronnier - Métallier;2;Travail du métal
+125;Orfèvre;2;Orfèvrerie
+126;Parqueteur;2;Parquet
+127;Peintre;2;Peinture
+128;Plaquiste;2;Plaquisterie
+129;Plâtrier - Plaquiste;2;Plaquisterie
+130;Plombier;2;plomberie
+131;Pyrotechnicien;2;feux d'artifices
+132;Ramoneur - Bois de chauffage;2;Cheminée
+133;Serrurier;2;Serrure
+134;Solier - Moquettiste;2;Sol et moquette
+627;Terrassier;2;Terasse
+136;Tapissier - Sellier;2;Papier peint
+137;Terrassement;2;Terrassement
+138;Tourneur;2;Tourneur
+139;Traitement (bois, humidité, eau, …);2;Traitement (bois, humidité, eau, …)
+140;Vitrier - Miroitier;2;Vitre et miroir
+141;Autres Artisanat & Bâtiment;2;Autres Artisanat & Bâtiment
+100;Carreleur;2;Carrelage
+99;Architecte d'intérieur;2;Architecture d'intérieur
+98;Architecte;2;Architecture
+97;Anti-nuisibles;2;Anti-nuisibles
+594;Multi-service;2;Multi-service
+593;Designer - Ingénieur (industriel & bâtiment);2;design industriel et bâtiment
+592;Zingueur;2;Zinguerie
+591;Climatisation - Froid;2;Climatisation - Froid
+63;Maraicher;2;Maraicher
+35;Contrôle technique;2;Contrôle technique
+696;Bijoutier (artisan);2;Bijoux (confection)
+612;Agencement - Aménagement;2;Agencement - Aménagement
+613;Agriculture;2;Agriculture
+614;Alarme - Sécurité;2;Alarme - Sécurité
+615;Apiculture;2;Apiculture
+616;Assainissement;2;Assainissement
+617;Clôtures;2;Clôtures
+618;Construction;2;Construction
+619;Energie solaire - renouvelable;2;Energie solaire - renouvelable
+620;Environnement;2;Environnement
+621;Fenêtrier - Portes;2;Fenêtre et porte
+622;Maison - Structure en bois;2;Maison - Structure en bois
+623;Pisciniste;2;Piscine
+624;Poterie - Céramique - Verrerie;2;Poterie
+625;Rénovation (bâtiment);2;Rénovation (bâtiment)
+626;Salle de bain (installation);2;Salle de bain (installation)
+135;Structure Métallique;2;Structure Métallique
+169;Enseignement supérieur;3;Enseignement supérieur
+170;Gériâtre;3;gériâtrie
+171;Gynécologue;3;Gynécologie
+172;Homéopathe;3;Homéopathie
+173;Hôpital;3;Hôpital
+174;Jardin botanique;3;Jardin botanique
+175;Massage;3;Massage
+176;Masseur - Kinésithérapeute;3;Kinésithérapie
+177;Médecin généraliste;3;Médecine générale
+178;Médecine appliquée aux sports;3;Médecine du sport
+179;Moniteur de sport;3;Moniteur de sport
+180;Monument historique;3;Monument historique
+181;Musée;3;Musée
+182;Neurologue;3;Neurologie
+643;Médecin (autres);3;Médecine (autres)
+184;Obstétricien;3;Obstétrique
+185;Ophtalmologiste;3;Ophtamologie
+186;Orthopédiste;3;Orthopédie
+187;Orthophoniste;3;orthophonie
+188;Parapharmacie;3;Parapharmacie
+189;Parc à thème;3;Parc à thème
+190;Parcs d'attraction et loisirs;3;Parcs d'attraction et loisirs
+191;Pédiatre;3;Pédiatrie
+192;Pédicure - Podologue;3;Pédicure
+193;Pharmacie;3;Pharmacie
+194;Pneumologue;3;Pneumologie
+195;Cours de musique;3;Cours de musique
+196;Psychanalyste;3;Psychanalyse
+197;Psychiatre;3;Psychiatrie
+198;Psychologue;3;Psychologie
+199;Radiologue;3;radiologie
+200;Radiothérapeute;3;Radiothérapie
+201;Réserve naturelle;3;Réserve naturelle
+202;Rhumatologue;3;Rhumatologie
+203;Salle de sport;3;Salle de sport
+204;Santé - Orthopédie;3;Santé - Orthopédie
+205;Soin visage et corps;3;Soin visage et corps
+206;Soutien scolaire;3;Soutien scolaire
+207;Spa - Balnéo - Thermes;3;Spa - Balnéo - Thermes
+296;Cours de chant;3;Cours de chant
+209;Théâtre et spectacle;3;Théâtre et spectacle
+210;Véhicule Sanitaire Léger;3;Véhicule Sanitaire Léger
+211;Vétérinaire;3;Vétérinaire
+212;Zoo - Aquarium;3;Zoo - Aquarium
+213;Autres Bien-être & Education;3;Autres Bien-être & Education
+642;Maison de retraite;3;Maison de retraite
+640;Loisirs (autres);3;Loisirs (autres)
+639;Infirmier à domicile;3;Infirmier à domicile
+638;Gym - Yoga;3;Gym - Yoga
+637;Galerie d'art;3;Galerie d'art
+636;Cours de dance;3;Cours de dance
+635;Cours (autres);3;Cours (autres)
+634;Cirque;3;Cirque
+633;Chorale;3;Chorale
+632;Centre médical;3;Centre médical
+631;Centre équestre;3;Centre équestre
+630;Centre de rééducation;3;Centre de rééducation
+629;Bowling;3;Bowling
+628;Bibliothèque - Ludothèque;3;Bibliothèque - Ludothèque
+168;Enseignement secondaire;3;Enseignement secondaire
+167;Enseignement primaire;3;Enseignement primaire
+166;Enseignement maternelle;3;Enseignement maternelle
+165;Diabétologue;3;Diabétologie
+164;Dermatologue et vénérologue;3;Dermatologie et vénérologie
+163;Dentiste;3;Soin des dents
+162;Crèche - Garderie;3;Crèche - Garderie
+161;Centre de vacances et loisirs;3;Centre de vacances et loisirs
+160;Coach sportif;3;Coach sportif
+644;Médecine douce;3;Médecine douce
+158;Club de sport;3;Club de sport
+157;Club de fitness;3;Club de fitness
+156;Clinique;3;Clinique
+155;Cinéma;3;Cinéma
+154;Chirurgien-dentiste;3;Chirurgie dentaire
+153;Chirurgien plastique;3;Chirurgie plastique
+152;Chirurgien;3;Chirurgie générale
+151;Centre de loisirs;3;Centre de loisirs
+150;Culture - Histoire;3;Culture - Histoire
+149;Centre aéré;3;Centre aéré
+148;Cardiologue;3;Cardiologie
+147;Cancérologue;3;Cancérologie
+645;Nutritionniste - Diététicien;3;Nutrition
+145;Angiologue;3;Angiologie
+144;Ambulance;3;Ambulance
+143;Allergologue;3;Allergie
+142;Acupuncteur;3;Acupuncture
+646;Ostéopathe - Chiropracteur;3;Osthéopathie
+647;Piscine;3;Piscine (commerce)
+648;Prothésiste;3;Prothèse
+649;Sophrologue - Relaxation;3;Sophrologie
+590;Matériel médical;3;Matériel médical
+650;Tourisme;3;Tourisme
+651;Voyance - Astrologie;3;Voyance - Astrologie
+298;Autres professeurs & enseignements;3;Autres professeurs & enseignements
+297;Cours de langue;3;Cours de langue
+208;Stomatologiste;3;Stomatologie
+697;Studio d'enregistrement;4;Studio d'enregistrement
+13;Agence de voyage;4;Agence de voyage
+683;Webmaster;4;Webmaster
+682;Urbanisme;4;Urbanisme
+681;Tatoueur - Piercing;4;Tatouage - Piercing
+680;Styliste;4;Stylisme
+679;Services publics;4;Services publics
+678;Services pour animaux;4;Services pour animaux
+677;Services de transport;4;Services de transport
+676;Services commerciaux;4;Services commerciaux
+675;Restauration à domicile;4;Restauration à domicile
+674;Résidence;4;Résidence
+277;Services logistiques;4;Services logistiques
+673;Réparation (autres);4;Réparation (autres)
+672;Producteur (musique, film, spectacle);4;Production (musique, film, spectacle)
+671;Organisation d'événements;4;Organisation d'événements
+670;Manutention;4;Manutention
+669;Mannequinat;4;Mannequinat
+668;Maintenance - Dépannage (autres);4;Maintenance - Dépannage (autres)
+667;Journaliste;4;journalisme
+666;Installateur (informatique, électronique, téléphonie);4;Installation (informatique, électronique, téléphonie)
+665;Imprimerie;4;Imprimerie
+664;Graphiste - Infographe;4;Graphisme - Infographie
+663;Elevage et dressage d'animaux;4;Elevage et dressage d'animaux
+662;Editeur (papier);4;Edition (papier)
+91;Taxi;4;Taxi
+660;Développement de photos;4;Développement de photos
+659;Détective;4;Détective
+658;Dessinateur - Artiste peintre;4;Dessin - Peinture
+657;Designer informatique;4;Design informatique
+656;Décorateur;4;Décoration
+655;Couturier - Tailleur;4;Couture
+654;Coursier;4;Coursier
+653;Coiffeur à domicile;4;Coiffure à domicile
+652;Auto-entrepreneur;4;Auto-entrepreneur
+53;Laverie - Blanchisserie;4;Laverie - Blanchisserie
+79;Restauration collective;4;Restauration collective
+82;Coiffeur;4;Coiffure
+83;Services postaux;4;Services postaux
+257;Autres Services & Indépendants;4;Autres Services & Indépendants
+256;Technicien helpdesk;4;Helpdesk
+255;Syndicat;4;Syndicat
+595;Animateur;4;Animation
+596;Orchestre;4;Orchestre
+597;Ménage - Repassage;4;Ménage - Repassage
+598;Designer;4;Design
+599;Interprète - Traducteur;4;Interprétariat - Traduction
+254;Services funéraires;4;Services funéraires
+253;Services administratifs;4;Services administratifs
+252;Sécurité privée;4;Sécurité privée
+251;Photographe;4;Photographie
+250;Organisation religieuse;4;Organisation religieuse
+249;Organisation politique;4;Organisation politique
+248;Organisation d'évènements;4;Organisation d'évènements
+607;Location de salle;4;Location de salle
+247;Organisation de mariage;4;Organisation de mariage
+246;Organisateur de mariage;4;Organisation de mariage
+245;Service de nettoyage;4;Service de nettoyage
+244;Musicien, groupe et orchestre;4;Musique et groupe
+243;Vidéaste;4;Vidéo
+242;Agent de propreté et d'hygiène;4;Propreté et hygiène
+241;Maquilleur;4;maquillage
+240;Maison d'édition;4;Maison d'édition
+239;Jardinage;4;Jardinage
+238;Sonorisation;4;Sonorisation
+237;Groupe de musique;4;Groupe de musique
+236;Service de sécurité - Gardiennage;4;Service de sécurité - Gardiennage
+235;Garde d'animaux;4;Garde d'animaux
+234;Editeur de logiciels & jeux vidéo;4;Edition de logiciels et jeux vidéo
+233;Disc-Jockey (DJ);4;Disc-Jockey (DJ)
+232;Développeur informatique;4;Développement informatique
+231;Dépannage informatique;4;Dépannage informatique
+230;Déménageur;4;Déménagement
+229;Cuisinier;4;Cuisine (nourriture)
+228;Compositeur;4;Composition de musique
+227;Bricoleur;4;Bricolage
+226;Blanchisserie - Pressing - Teinturerie;4;Blanchisserie - Pressing - Teinturerie
+225;Auxiliaire de vie;4;Auxiliaire de vie
+224;Auteur - Compositeur - Interprète;4;Auteur - Compositeur - Interprète
+223;Association professionnelle;4;Association professionnelle
+222;Association;4;Association
+221;Arrangeur;4;Arrangeur
+220;Service informatique (autres);4;Service informatique (autres)
+219;Agent artistique;4;Agent artistique
+218;Agence immobilière;4;Agence immobilière
+217;Aide à domicile;4;Aide à domicile
+216;Administration à domicile;4;Administration à domicile
+215;Systèmes et réseaux informatiques;4;Systèmes et réseaux informatiques
+641;Mairie;4;Mairie
+214;Accordeur - Réparateur d'instruments;4;Accordeur - Réparateur d'instruments
+183;Nourrice;4;Garde d'enfants
+159;Coaching;4;Coaching
+146;Baby-sitter;4;Baby-sitting
+95;Transport de personne et groupe;4;Transport de personne et groupe
+661;Ecrivain;4;Ecrivain
+258;Agence de presse;5;Agence de presse
+259;Agence de publicité;5;Agence de publicité
+260;Conseil et agence RH;5;Conseil et agence RH
+261;Assurance;5;Assurance
+587;Commissaire aux Comptes;5;Commissaire aux Comptes
+262;Services comptables;5;Services comptables
+263;Services de soutien aux entreprises;5;Services de soutien aux entreprises
+264;Services financiers (autres);5;Services financiers (autres)
+295;Agence de relations publiques;5;Agence de relations publiques
+294;Régie pub;5;Régie pub
+293;Recouvrement;5;Recouvrement
+292;Notaire;5;Notariat
+291;Mutuelle;5;Mutuelle
+290;Juriste;5;Justice
+289;Agence d'intérim;5;Agence d'intérim
+288;Huissier;5;Huissier
+287;Gestion de patrimoine;5;Gestion de patrimoine
+286;Formation;5;Formation
+285;Expert-comptable;5;Expertise comptable
+284;Etude de marché et sondage;5;Etude de marché et sondage
+283;Etablissement de crédit;5;Etablissement de crédit
+282;Courtier;5;Courtage
+281;Conseil informatique;5;Conseil informatique
+280;Conseil e-business;5;Conseil e-business
+279;Conseil en stratégie, organisation et gestion;5;Conseil en stratégie, organisation et gestion
+278;Conseil en propriété industrielle;5;Conseil en propriété industrielle
+276;Conseil en image personnelle;5;Conseil en image personnelle
+275;Conseil en finance;5;Conseil en finance
+274;Conseil en environnement;5;Conseil en environnement
+273;Conseil en écriture;5;Conseil en écriture
+272;Conseil en communication;5;Conseil en communication
+271;Conseil éditorial;5;Conseil éditorial
+270;Conseil (autres);5;Conseil (autres)
+269;Comptable;5;Comptabilité
+268;Centre d'appels;5;Centre d'appels
+267;Banque;5;Banque
+684;Agence matrimoniale;5;Agence matrimoniale
+685;Autres Conseil & Finance;5;Autres Conseil & Finance
+686;Conseil couple et famille;5;Conseil couple et famille
+687;Conseil d'orientation;5;Conseil d'orientation
+688;Conseil en assurance;5;Conseil en assurance
+689;Conseil en bâtiment;5;Conseil en bâtiment
+690;Conseil en création d'entreprise;5;Conseil en création d'entreprise
+691;Conseil en Marketing;5;Conseil en Marketing
+692;Conseil immobilier;5;Conseil immobilier
+693;Média;5;Média
+694;Promoteur immobilier;5;Promotion immobilière
+695;Publicité (création - enseignes);5;Publicité (création - enseignes)
+266;Avocat;5;Avocat
+265;Services juridiques;5;Services juridiques

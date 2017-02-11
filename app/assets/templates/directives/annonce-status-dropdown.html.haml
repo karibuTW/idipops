@@ -1,0 +1,23 @@
+%form{ "ng-switch" => "type" }
+	.dropdown.show-slide-down{ "uib-dropdown" => "", "ng-switch-when" => "particulier", "ng-hide" => "ad.status == 'pending' || ad.status == 'closed' "}
+		%a.dropdown-toggle{ href: "", "uib-dropdown-toggle" => "" }
+			%i.fa.fa-angle-down.classified-ad-toggle
+		%ul.dropdown-menu.annonce-dropdown.dropdown-menu-right
+			%li{ "ng-show" => "ad.status == 'inactive'" }
+				%a{ href: "", "ng-click" => "setClassifiedStatus(ad.id, 'publish')" } {{"classified_ad.publish" | t}}
+			%li{ "ng-show" => "ad.status == 'rejected'" }
+				%a{ href: "", "ng-click" => "setClassifiedStatus(ad.id, 'submit')" } {{"classified_ad.republish" | t}}
+			%li{ "ng-show" => "ad.status == 'published'" }
+				%a{ href: "", "ng-click" => "setClassifiedStatus(ad.id, 'suspend')" } {{"classified_ad.suspend" | t}}
+			%li{ "ng-show" => "ad.status == 'private' " }
+				%a{ href: "", "ng-click" => "setClassifiedStatus(ad.id, 'make_public')" } {{"classified_ad.publish" | t}}
+			%li{ "ng-show" => "ad.status == 'published' || ad.status == 'reported' || ad.status == 'inactive' || ad.status == 'private' " }
+				%a{ href: "", "ng-click" => "setClassifiedStatus(ad.id, 'close')" } {{"classified_ad.close" | t}}
+			%li{ "ng-show" => "ad.status != 'closed'" }
+				%a{ href: "", "ui-sref" => "post-ad({adid:ad.id})" } {{"classified_ad.edit" | t}}
+	.dropdown.show-slide-down{ "uib-dropdown" => "", "ng-switch-when" => "pro", "ng-hide" => "ad.status == 'reported'" }
+		%a.dropdown-toggle{ href: "", "uib-dropdown-toggle" => "" }
+			%i.fa.fa-angle-down.classified-ad-toggle
+		%ul.dropdown-menu.annonce-dropdown.dropdown-menu-right
+			%li
+				%a{ href: "", "ng-click" => "setClassifiedStatus(ad.id, 'report')" } {{"classified_ad.report" | t}}

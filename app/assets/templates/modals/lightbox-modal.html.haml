@@ -1,0 +1,9 @@
+%md-dialog{ "aria-label" => "Gallerie" }
+	%md-dialog-content{ "ng-style" => "containerStyle" }
+		%div{ "ng-repeat" => "image in images", "ng-show" => "image.visible", "ng-style" => "imageStyle" }
+			%img.lightbox{ "ng-src" => "{{image.attachment_url}}", "ng-style" => "imageStyle" }
+		.lightbox-nav{ layout: "row", "ng-show" => "images.length > 1" }
+			%a{ href: "", "ng-click" => "prev()"}
+				%i.fa.fa-chevron-left.fa-2x
+			%a{ href: "", "ng-click" => "next()"}
+				%i.fa.fa-chevron-right.fa-2x

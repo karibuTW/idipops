@@ -1,0 +1,19 @@
+fr:
+  invoices:
+    header:
+      date: "Date :"
+      invoice_num: "Nº Commande :"
+      contact: "Contact Facturation :"
+      tagline: "A votre service !"
+    table:
+      transaction_num: Nº Transaction
+      description: Description
+      unit_price: Prix Unitaire HT
+      quantity: QTE
+      amount: Montant
+      total_excl: TOTAL HT
+      total_incl: TOTAL TTC
+      tax_percent: TVA (20%)
+    footer:
+      address: "41 rue de la Banne, Forges, 58160 SAUVIGNY-LES-BOIS – France - SAS au capital de 3000 Euros – RCS NEVERS 81157359100013"
+      warning: "Tout incident de paiement est passible de pénalités de retard calculées sur la base de trois fois le taux d’intérêt légal en vigueur en France, avec un montant d’indemnité forfaitaire minimum de 40 euros."

@@ -1,0 +1,12 @@
+.pro-box{ layout: "column", "ng-class" => "{selected: selected, sponsored: professional.sponsored}" }
+	.top-half{ layout: "row" }
+		%avatar.pro-logo{ "avatar-url" => "professional.avatar_url" }
+		.more-info{ layout: "column" }
+			%div{ layout: "row", "layout-align" => "start center" }
+				%heart-box{ "is-favorite" => "professional.is_favorite", "pro-id" => "professional.id", "clickable" => "canAddToFavorites", "ng-if" => "isParticulier" }
+				.rate{ "ng-show" => "professional.hourly_rate > 0" } {{professional.hourly_rate}} €/h
+			.rating
+				%uib-rating{ "ng-model" => "professional.rating", "read-only" => "true", "state-on" => "'fa fa-star on'", "state-off" => "'fa fa-star off'" }
+	%a.orange.pro-name{ "ui-sref" => "pro({pid: professional.pretty_name})" } {{professional.company_name}}
+	.primary-activity {{professional.primary_activity_name}}
+	.pro-description {{professional.short_description}}

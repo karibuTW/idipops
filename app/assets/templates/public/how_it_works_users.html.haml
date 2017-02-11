@@ -1,0 +1,22 @@
+.how-it-works{ layout: "column", "ng-controller" => "HowItWorksUsersController" }
+	%div{ layout: "row", "layout-xs" => "column", "layout-align" => "space-between center" }
+		%div{ layout: "column" }
+			%h1.page-title {{'how_it_works.users.title' | t}}
+			.page-subtitle {{'how_it_works.users.subtitle' | t}}
+		.button-stroke.switch-type
+			%button.button.button_js.cyan-fill-white-text.big{ "ui-sref" => "how-it-works-pros" }
+				%span.button_label {{'how_it_works.users.pros_button_label' | t}}
+	%div{ layout: "column" }
+		%md-tabs.ccm-tab{ "md-dynamic-height" => "true", "md-selected" => "selectedIndex" }
+			%md-tab{ "ui-sref" => ".search", label: "{{'how_it_works.users.search_label' | t}}" }
+				.ccm-content{ "ui-view" => "search" }
+			%md-tab{ "ui-sref" => ".pros", label: "{{'how_it_works.users.pros_label' | t}}" }
+				.ccm-content{ "ui-view" => "pros" }
+			%md-tab{ "ui-sref" => ".quotations", label: "{{'how_it_works.users.quotations_label' | t}}" }
+				.ccm-content{ "ui-view" => "quotations" }
+			%md-tab{ "ui-sref" => ".classified_ads", label: "{{'how_it_works.users.classified_ads_label' | t}}" }
+				.ccm-content{ "ui-view" => "classified_ads" }
+			%md-tab{ "ui-sref" => ".deals", label: "{{'how_it_works.users.deals_label' | t}}" }
+				.ccm-content{ "ui-view" => "deals" }
+			%md-tab{ "ui-sref" => ".my-account", label: "{{'how_it_works.users.my_account_label' | t}}" }
+				.ccm-content{ "ui-view" => "my-account" }

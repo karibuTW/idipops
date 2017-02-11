@@ -1,0 +1,14 @@
+Bonjour #{@post.user.display_name}
+
+Votre post ne peut pas être publié pour la raison suivante :
+#{@reject_reason}
+
+Voici le post concerné :
+
+- if @post.title.present?
+  = @post.title
+= l @post.created_at, format: :short
+
+= @content
+
+Voir le post : #{@post_path}

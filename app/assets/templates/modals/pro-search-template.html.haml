@@ -1,0 +1,6 @@
+%a
+	= image_tag "icons/profession.svg", class: "search-pros-icon", "ng-show" => "match.model.type == 'profession'"
+	= image_tag "icons/societe.svg", class: "search-pros-icon", "ng-show" => "match.model.type == 'user'"
+	= image_tag "icons/tag.svg", class: "search-pros-icon", "ng-show" => "match.model.type == 'tag'"
+	&nbsp; 
+	%span{ "ng-bind-html" => "match.label | typeaheadHighlight:query"}

@@ -1,0 +1,94 @@
+.page-header
+  %h1
+    = "Annonce ##{@classified_ad.id}: #{@classified_ad.title}"
+
+.row
+  .col-sm-6
+    .row
+      .col-sm-3
+        %strong Postée par
+      .col-sm-9
+        = link_to admin_user_path(@classified_ad.user), class: "btn btn-default btn-xs" do
+          = image_tag @classified_ad.user.avatar.thumb('20x20').url, style: "width: 20px; height:20px;" if @classified_ad.user.avatar_stored?
+          = @classified_ad.user.display_name
+    .row
+      .col-sm-3
+        %strong Début
+      .col-sm-9= @classified_ad.start_date
+    .row
+      .col-sm-3
+        %strong Ville
+      .col-sm-9= @classified_ad.place.place_name
+    .row
+      .col-sm-3
+        %strong Code postal
+      .col-sm-9= @classified_ad.place.postal_code
+    .row
+      .col-sm-3
+        %strong Statut
+      .col-sm-9
+        %span.label.label-default= @classified_ad.current_state
+        - if @classified_ad.can_accept?
+          = form_for [:admin, @classified_ad], html: {style: "display: inline-block;"} do |f|
+            = hidden_field_tag :workflow_event, "accept"
+            %button.btn.btn-success.btn-xs{ type: "submit"} Publier
+        - else
+          - if @classified_ad.can_publish?
+            = form_for [:admin, @classified_ad], html: {style: "display: inline-block;"} do |f|
+              = hidden_field_tag :workflow_event, "publish"
+              %button.btn.btn-success.btn-xs{ type: "submit"} Publier
+          - if @classified_ad.can_close?
+            = form_for [:admin, @classified_ad], html: {style: "display: inline-block;"} do |f|
+              = hidden_field_tag :workflow_event, "close"
+              %button.btn.btn-success.btn-xs{ type: "submit"} Fermer
+          - if @classified_ad.can_suspend?
+            = form_for [:admin, @classified_ad], html: {style: "display: inline-block;"} do |f|
+              = hidden_field_tag :workflow_event, "suspend"
+              %button.btn.btn-success.btn-xs{ type: "submit"} Suspendre
+    .row
+      .col-sm-3
+      .col-sm-9
+        - if @classified_ad.can_reject?
+          = form_for [:admin, @classified_ad], html: {style: "display: inline-block;"} do |f|
+            = f.text_area :reject_reason, size: "60x5", class: "form-control", placeholder: "Raison du refus"
+            = hidden_field_tag :workflow_event, "reject"
+            %button.btn.btn-danger.btn-xs{ type: "submit"} Refuser
+  .col-sm-6
+    .row
+      .col-sm-3
+        %strong Description
+      .col-sm-9= @classified_ad.description
+-# .row
+-#   .col-sm-3
+-#     %strong Conversations
+-#   .col-sm-9
+-#     - @request.users.each do |u|
+-#       = link_to admin_user_path(u), class: "btn btn-default btn-xs" do
+-#         = image_tag "//www.gravatar.com/avatar/#{u.gravatar}?d=mm&s=20", style: "width: 20px; height:20px;"
+-#         = u.name
+-# .row
+-#   .col-sm-3
+-#     %strong Email forwards
+-#   .col-sm-9
+-#     - @request.email_forwards.each do |r|
+-#       = r.email
+-#       by
+-#       = link_to admin_user_path(r.user), class: "btn btn-default btn-xs" do
+-#         = image_tag "//www.gravatar.com/avatar/#{r.user.gravatar}?d=mm&s=20", style: "width: 20px; height:20px;"
+-#         = r.user.name
+-#       %br
+
+-# .row
+-#   .col-sm-3
+-#     %strong State
+-#   .col-sm-9
+-#     %span.label.label-default= @request.workflow_state
+-#     - if @request.can_disable?
+-#       = form_for [:admin, @request], html: {style: "display: inline-block;"} do |f|
+-#         = hidden_field_tag :workflow_event, "disable"
+-#         %button.btn.btn-danger.btn-xs{ type: "submit"} Delete
+-#     - if @request.can_enable?
+-#       = form_for [:admin, @request], html: {style: "display: inline-block;"} do |f|
+-#         = hidden_field_tag :workflow_event, "enable"
+-#         %button.btn.btn-primary.btn-xs{ type: "submit"} Undelete
+

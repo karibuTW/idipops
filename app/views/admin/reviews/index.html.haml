@@ -1,0 +1,31 @@
+.page-header
+  %h1= t('admin.reviews')
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Content
+        %th Rating
+        %th Pro
+        %th Date
+        %th User
+        %th Action
+    %tbody
+      - @reviews.each do |review|
+        %tr
+          %td= review.id
+          %td= review.content[0..50]
+          %td= review_rating(review.rating)
+          %td
+            = link_to admin_user_path(review.professional), class: "btn btn-default btn-xs" do
+              = review.professional.display_name
+          %td= review.created_at
+          %td
+            = link_to admin_user_path(review.user), class: "btn btn-default btn-xs" do
+              = review.user.display_name
+          %td
+            = link_to "Voir", admin_review_path(review), class: "btn btn-default btn-xs"
+          %td
+            = link_to admin_review_path(review), class: 'btn btn-danger btn-xs', method: :delete, title: "Supprimer review #{review.id}", data: {confirm: "Vous allez supprimer le review #{review.id}. Etes-vous sûr ?"} do
+              %i.fa.fa-times

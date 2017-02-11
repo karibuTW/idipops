@@ -1,0 +1,6 @@
+.page-header
+	%h1 Catégories
+
+	%p.pull-right= link_to "Ajouter", new_admin_post_category_path, class: "btn btn-primary btn-xs"
+
+= render partial:'admin/post_categories/post_categories_table', locals: {post_categories: @post_categories}

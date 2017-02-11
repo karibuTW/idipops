@@ -1,0 +1,63 @@
+.home{ layout: "row", "ng-controller" => "SingleQuotationRequestController" }
+	%div{ layout: "column", flex: "100", "ng-show" => "isLoading", "layout-align" => "center center" }
+		%md-progress-circular{ "md-mode" => "indeterminate" }
+	%not-connected-info{ "ng-hide" => "session.connected" }
+	%div{ layout: "column", flex: "100", "ng-hide" => "!session.connected || isLoading" }
+		%div{ layout: "row", "layout-wrap" => true }
+			.resp-left-column{ flex: "100", "flex-gt-sm" => "70" }
+				.grey-bg.center-column{ layout: "column" }
+					%div{ layout: "row", "layout-align" => "space-between center" }
+						%div{ layout: "row" }
+							.button-stroke.profession{ "ng-repeat" => "profession in singleQR.professions" }
+								%button.button.button_js.grey_border_black_text.btn-block{ "ui-sref" => "pros-list({pids: profession.id})" }
+									%span.button_label {{profession.name}}
+						.quotation_type{ "hide-sm" => "" } {{'quotation_request.title' | t}}
+					%h1.title-cut {{singleQR.title}}
+					%p.timestamp
+						Envoyée
+						%span{"am-time-ago" => "singleQR.created_at"}
+					%p{ "ng-bind-html" => "replaceNewLinesInText(singleQR.description)" }
+					.table-responsive.qr-table
+						%table.table.table-condensed
+							%tbody
+								%tr{ "ng-repeat" => "field in specificFields" }
+									%td.col-sm-3.active {{field.label}}
+									%td.col-sm-9 {{field.data}}
+					%form.qr-send-form{role: "form", "ng-submit" => "addProsToQuotationRequest()", "ng-hide" => "session.user.user_type == 'pro'"}
+						.form-group
+							%label.col-sm-3.control-label.qr-send{ for: "more-pros" } {{'quotation_request.send_to_more_pros_label' | t}}
+							.input-group.col-sm-9
+								%tags-input#more-pros{"ng-model" => "addedPros", "placeholder" => "{{'quotation_request.added_pros_placeholder' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true" }
+									%auto-complete{ source: "searchPros($query)", "min-length" => 2, "template" => "modals/company-search-template.html" }
+								%span.input-group-btn
+									%button.btn.btn-default{ type: "submit" }
+										%i.fa.fa-paper-plane-o
+			%div{ flex: "100", "flex-gt-sm" => "30", layout: "column" }
+				.bordered.profile.side.resp-profile-box{ layout: "column" }
+					.out20{ layout: "row" }
+						%avatar.face.user-info{ "avatar-url" => "singleQR.customer_avatar_url"}
+						.user{ layout: "column", "layout-align" => "end start" }
+							.name {{singleQR.customer_display_name}}
+							.date {{"user.registered_on" | t:{date: (singleQR.customer_first_login*1000 | amDateFormat:'D MMM YYYY')} }}
+					.line{ "ng-class" => "singleQR.start_date ? 'line-separator' : 'with-margin-bottom'" }
+						.user-info
+							%i.fa.fa-map-marker.fa-fw
+							&nbsp; {{singleQR.place.place_name}}
+					%div{ layout: "row", "layout-align" => "center center", "ng-if" => "singleQR.start_date" }
+						.text-centered.ad-bordered-date{ flex: "40" }
+							%i.fa.fa-calendar-o.fa-fw
+							&nbsp; {{'classified_ad.start' | t}}
+						.text-centered.border-left.ad-bordered-date.orange{ flex: "60" }
+							{{singleQR.start_date | amDateFormat:'D MMM YYYY'}}
+				.button-stroke{ "ng-hide" => "!session.user.quotation || singleQR.has_quotation || uploader.isUploading" }
+					%span.btn-file.btn.btn-default.btn-block.button.button_js.orange_fill_white_text
+						&nbsp; Envoyer un devis
+						%input#quotation{ type: "file", "nv-file-select" => "", uploader: "uploader", "ng-show" => "uploader.queue == 0", accept: ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.bmp,.png,.odt,.ods" }
+				%md-progress-linear{ "md-mode" => "determinate", "ng-value" => "uploader.queue[0].progress", "ng-show" => "uploader.isUploading" }
+		.conversations
+			%div{ layout: "row" }
+				%h2
+					%i.fa.fa-comments-o
+					&nbsp; {{'classified_ad.messages' | t}}
+				%div
+			%conversation-list{ conversations: "conversations", "session-user" => "session.user", "classified-ad-id" => "singleQR.classified_ad_id", "show-user-card" => "true" }

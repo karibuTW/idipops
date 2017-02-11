@@ -1,0 +1,6 @@
+.page-header
+	%h1 Professions
+
+	%p.pull-right= link_to "Ajouter", new_admin_profession_path, class: "btn btn-primary btn-xs"
+
+= render partial:'admin/professions/professions_table', locals: {professions: @professions}

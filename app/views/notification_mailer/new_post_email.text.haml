@@ -1,0 +1,12 @@
+Bonjour #{@user_to.display_name}
+
+#{@user_from.pretty_name} a écrit un nouveau post dans la catégorie #{@category_name}
+
+- if @title.present?
+  = @title
+
+= l @date, format: :short
+
+= @content
+
+Voir le post : #{@post_path}

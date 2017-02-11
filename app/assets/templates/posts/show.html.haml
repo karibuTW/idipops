@@ -1,0 +1,114 @@
+.post-page{ layout: "column", "ng-controller" => "SinglePostController" }
+	.toolbar{ layout: "row", "layout-xs" => "column", "layout-align" => "space-between center", "layout-align-xs" => "center start" }
+		%div{ layout: "row" }
+			%a.black.line-height-initial{ "ui-sref" => "posts.index" }
+				%i.fa.fa-angle-left
+				&nbsp; {{'post.back_label' | t}}
+			.category-name{ layout: "row", "layout-align" => "start center" }
+				= image_tag "icons/categories-orange.svg"
+				%a.orange{ "ui-sref" => "posts.index({category: post.category_id})" } {{post.category_name}}
+				.subscribe-button{ "ng-click" => "post.category_subscribed ? unsubscribe() : subscribe()", "ng-class" => "subscribing? 'pending' : post.category_subscribed ? 'active' : ''" }
+					= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/abonnement-grey.svg"))).to_html.html_safe
+		.post-best-pro.show-slide-down{ "ng-bind-html" => "'post.find_best_pros' | t:{ profession_id: post.profession_id, profession_name: post.profession_name}", "ng-show" => "post.profession_id && post.profession_name" } 
+	.grey-bg{ "ng-show" => "!isLoading" }
+		.form-box.relative{ layout: "row", "layout-align" => "space-between center" }
+			%div{ layout: "row", "layout-align" => "start center" }
+				.single-post-type{ "ng-show" => "post.post_type == 'question'" }
+					= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/questions-blue.svg"))).to_html.html_safe
+				.single-post-type{ "ng-show" => "post.post_type == 'sharing'" }
+					= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/share-green.svg"))).to_html.html_safe
+				.post-type-text-head{ "ng-class" => "post.post_type == 'question' ? 'question-color' : 'sharing-color'" } {{ post.post_type == 'question' ? ('post.type_prompts.question' | t) : ('post.type_prompts.sharing' | t) }}
+			.social-icons{ layout: "row", "hide-xs" => "" }
+				%a{ href: "https://twitter.com/intent/tweet?url={{safeUrl}}&text={{safeTitle}}", target: "_blank" }
+					= image_tag "icons/twitter_darkgrey.svg"
+				%a{ href: "https://plus.google.com/share?url={{safeUrl}}", target: "_blank" }
+					= image_tag "icons/googleplus_darkgrey.svg"
+				%a{ href: "https://www.facebook.com/sharer/sharer.php?u={{safeUrl}}", target: "_blank" }
+					= image_tag "icons/fb_darkgrey.svg"
+				.signal{ "ng-click" => "report()", href: "", "ng-if" => "post.user_nickname != session.user.pretty_name && post.status == 'published'" }
+					= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/signaler-grey.svg"))).to_html.html_safe
+			%md-fab-speed-dial.md-fling.md-scale.post-md-fab-speed-dial{ "hide-gt-xs" => "", "md-open" => "demo.isOpen", "ng-mouseenter" => "demo.isOpen=true", "ng-mouseleave" => "demo.isOpen=false" }
+				%md-fab-trigger
+					%md-button.md-fab.md-mini{ "aria-label" => "Menu",  }
+						%md-icon{ "md-svg-src" => asset_path('menu/burger-menu-w.svg') }
+				%md-fab-actions
+					%md-button.md-fab.md-mini{ "aria-label" => "Twitter", href: "https://twitter.com/intent/tweet?url={{safeUrl}}&text={{safeTitle}}", target: "_blank" }
+						%md-icon{ "md-svg-src" => asset_path('icons/twitter_darkgrey.svg'), "aria-label" => "Twitter" }
+					%md-button.md-fab.md-mini{ "aria-label" => "Google Plus", href: "https://plus.google.com/share?url={{safeUrl}}", target: "_blank" }
+						%md-icon{ "md-svg-src" => asset_path('icons/googleplus_darkgrey.svg'), "aria-label" => "Google Plus" }
+					%md-button.md-fab.md-mini{ "aria-label" => "Facebook", href: "https://www.facebook.com/sharer/sharer.php?u={{safeUrl}}", target: "_blank" }
+						%md-icon{ "md-svg-src" => asset_path('icons/fb_darkgrey.svg'), "aria-label" => "Facebook" }
+					%md-button.md-fab.md-mini{ "aria-label" => "Report", "ng-click" => "report()", "ng-if" => "post.user_nickname != session.user.pretty_name && post.status == 'published'" }
+						%md-icon{ "md-svg-src" => asset_path('icons/signaler-grey.svg'), "aria-label" => "Report" }
+		.form-box{ "ng-if" => "post.featured_image_url", "layout-align" => "center center", layout: "row" }
+			%img.post-featured-image{ "ng-src" => "{{post.featured_image_url}}" }
+		.form-box.main-part
+			%h1.post-title {{post.title}}
+			%p.timestamp
+				{{'post.posted' | t}}
+				%span{"am-time-ago" => "post.created_at"}
+			%p.description{ "ng-bind-html" => "post.description" }
+			%ng-gallery{ images: "post.post_photos" }
+		.post-info{ layout: "row", "layout-align" => "space-between end", "ng-class" => "post.user_type == 'pro' ? 'pro' : ''" }
+			%div{ layout: "row", "layout-align" => "start center" }
+				%avatar.post-face{ "avatar-url" => "post.user_avatar_url"}
+				.author-info{ layout: "column", "layout-align" => "end start" }
+					.post-user-name{ flex: "", "ng-switch" => "post.user_type" }
+						%div{ "ng-switch-when" => "particulier" }
+							%span {{post.user_nickname}}
+						%div{ "ng-switch-when" => "pro" }
+							%a.orange{ "ui-sref" => "pro({pid: post.user_nickname})" } {{post.user_nickname}}
+					.post-numbers{ layout: "row" }
+						.subscribe-button{ "ng-click" => "post.author_subscribed ? unsubscribeAuthor() : subscribeAuthor()", "ng-class" => "author_subscribing? 'pending' : post.author_subscribed ? 'active' : ''", "uib-tooltip" => "{{'post.no_self_subscribe' | t}}", "tooltip-is-open" => "tooltip.showSelfSubscribeTooltip", "tooltip-placement" => "top", "tooltip-trigger" => "none" }
+							= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/follow-grey.svg"))).to_html.html_safe
+						.post-num {{post.num_of_subscriptions}}
+			%div{ layout: "row" }
+				.post-numbers{ layout: "row" }
+					%img{ "ng-src" => asset_path('icons/views-grey.svg') }
+					.post-num {{post.num_of_views}}
+				.post-numbers{ layout: "row" }
+					.subscribe-button{ "ng-click" => "post.favorited ? removeFromFavorites() : addToFavorites()", "ng-class" => "adding_to_favorites? 'pending' : post.favorited ? 'active-red' : ''" }
+						= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/heart-grey.svg"))).to_html.html_safe
+					.post-num {{post.num_of_favorited}}
+	.loading-centered{ "ng-show" => "isLoading || isLoadingComments" }
+		%md-progress-circular{ "md-mode" => "indeterminate" }
+	.no-reviews{ "ng-show" => "!isLoadingComments && comments.length == 0" }
+		{{'post.comments.no_comments' | t}}
+	.comments{ "ng-show" => "comments.length > 0", layout: "row", "layout-xs" => "column" }
+		.comment-header{ "flex-gt-xs" => "15" } {{'post.comments.comments' | t}}
+		%div{ flex: "" }
+			%div{ "dir-paginate" => "comment in comments | itemsPerPage: 10: 'postCommentsPagination'", "pagination-id" => "postCommentsPagination" }
+				.comment{ layout: "row", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell' ]" }
+					.user{ layout: "row", "layout-align" => "space-between start" }
+						%div{ layout: "row", "layout-align" => "start center" }
+							%avatar.face{ "avatar-url" => "comment.user_avatar_url"}
+					.comment-content{ layout: "column", flex: "" }
+						.headline{ layout: "row", "layout-align" => "space-between start" }
+							.name {{comment.user_nickname}}
+							%span.timestamp{"am-time-ago" => "comment.updated_at"}>
+						%formatted-message.text{ "text" => "comment.content"}
+						.comment-numbers{ layout: "row" }
+							.subscribe-button{ "ng-click" => "comment.liked ? unlikeComment(comment) : likeComment(comment)", "ng-class" => "comment.liking_comment? 'pending' : comment.liked ? 'active' : ''" }
+								= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/like-grey.svg"))).to_html.html_safe
+							.post-num {{comment.num_of_likes}}
+			%div{ layout: "column", "layout-align" => "start center" }
+				%dir-pagination-controls{ "pagination-id" => "postCommentsPagination" }
+		%div{ flex: "15", "hide-xs" => "" }
+	.post-not-connected{ "ng-show" => "!session.connected" }
+		.not-connected-buttons{ layout: "column", "layout-align" => "center start" }
+			.button-stroke
+				%button.button.button_js.orange_border_black_text{ "ui-sref" => "sign_in" }
+					%span.button_label {{"not_connected.signin" | t}}
+			-# .button-stroke
+			-# 	%button.button.button_js.grey_border_black_text{ href: "", "ng-click" => "signIn()" }
+			-# 		%span.button_label {{"not_connected.signup" | t}}
+		%p {{'post.free_register' | t}}
+	.my-comment{ "ng-show" => "session.connected && !isLoading", layout: "row", "layout-xs" => "column" }
+		.comment-header{ "flex-gt-xs" => "15" } {{'post.comments.comment' | t}}
+		%div{ layout: "column", flex: "" }
+			.post-input-comment
+				%textarea.form-control{rows: "3", "ng-model" => "myComment.newComment", placeholder: "Mon commentaire...", required: "", "ng-disabled" => "isPostingComment", maxlength: 400 }
+			.button-stroke{ "ng-show" => "session.connected" }
+				%button.button.button_js.orange_border_black_text{ "ng-click" => "postComment()", "ng-disabled" => "isPostingComment" }
+					%span.button_label {{'post.comments.send_comment' | t}}
+		%div{ flex: "15", "hide-xs" => "" }

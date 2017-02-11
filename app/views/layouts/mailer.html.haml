@@ -1,0 +1,23 @@
+!!!
+%html
+  %head
+    %meta{ content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+  %body{:bgcolor => "#FFFFFF", :style => "padding:0 2em; margin:0; color: #272829;font-family:Helvetica Neue, Helvetica, Arial; font-weight:normal;-webkit-text-size-adjust: none!important;font-weight: 400;"}
+    %table{:align => "center", :bgcolor => "#FFFFFF", :cellpadding => "0", :cellspacing => "0", :style => "border-bottom:1px solid #d6dbdc;", :width => "100%"}
+      %tbody
+        %tr
+          %td{:style => "padding:25px 0 20px 0;margin:0", align: "left"}
+            %a{ href: "#{root_url}" }
+              %img{:alt => "Idipops", :title => "Idipops", :src => "#{root_url}images/email/email-uneo-logo.svg", :width => "211"}
+          %td{ width: "50%", align: "right" } A votre service !
+
+    = yield
+
+    %table{:align => "center", :bgcolor => "#FFFFFF", :cellpadding => "0", :cellspacing => "0", :style => "border-top:1px solid #d6dbdc;margin-top:0px", :width => "100%"}
+      %tr
+        %td{:style => "padding:25px 0 20px 0;margin:0"}
+          %p
+            Vous avez reçu cet email parce que vous vous êtes inscrit sur le site
+            %a{ href: "#{root_url}" } idipops.com
+          %a{ href: "#{root_url}", style: "color: #f57c00" }
+            %img{:alt => "Idipops", :title => "Idipops", :src => "#{root_url}images/email/email-uneo-logo-footer.svg", :width => "103"}

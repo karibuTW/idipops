@@ -1,0 +1,18 @@
+%form{ role: "form" }
+	.modal-header
+		%h3.modal-title {{'home.change_email_modal.title' | t}}
+	.modal-body
+		%div{ "ng-hide" => "isUpdating" }
+			%p {{'home.change_email_modal.content' | t}}
+			.form-group
+				%label.control-label{ for: "email" }
+					%span{ "ng-show" => "emailIsFree" } {{'home.change_email_modal.input_label' | t}}
+					%span.text-danger{ "ng-show" => "!emailIsFree" } {{'home.change_email_modal.email_used' | t}}
+				%input.form-control#email{type: "text", "ng-model" => "newEmail", maxlength: 100 }
+		%div{ "ng-show" => "isUpdating" }
+			%md-progress-linear{ "md-mode" => "indeterminate" }
+	.modal-footer.button-stroke{ "ng-hide" => "isUpdating" }
+		%button.button.button_js.orange_border_black_text{ type: "submit", "ng-click" => "confirm()" }
+			%span.button_label {{'home.change_email_modal.confirm_label' | t}}
+		%button.button.button_js.orange_border_black_text{ "ng-click" => "cancel()"}
+			%span.button_label {{'home.change_email_modal.cancel_label' | t}}

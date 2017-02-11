@@ -1,0 +1,19 @@
+.modal-header.container-fluid
+	.row
+		%h3.modal-title.col-sm-11 {{ title }}
+		.col-sm-1
+			%a.modal-close.col-sm-1{ "ng-click" => "cancel()", href: "" }
+				%i.fa.fa-times
+.modal-body.container-fluid
+	%dl.dl-horizontal
+		%div{"ng-if" => "address.land_phone"}
+			%dt {{'user.edit.land_line' | t}}
+			%dd	{{address.land_phone}}
+		%div{"ng-if" => "address.mobile_phone"}
+			%dt {{'user.edit.mobile_line' | t}}
+			%dd	{{address.land_phone}}
+		%div{"ng-repeat" => "opening_hour in address.opening_hours", "ng-if" => "address.opening_hours"}
+			%dt{"ng-if" => "opening_hour.periods.length > 0"}
+				{{'weekdays.' + opening_hour.day | t}}:
+			%dd{"ng-repeat" => "period in opening_hour.periods"}
+				{{period.open.raw}} - {{period.close.raw}}

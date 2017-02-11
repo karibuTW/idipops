@@ -1,0 +1,9 @@
+.profession-vertical-list{ layout: "column" }
+	%a.back{ "ng-click" => "returnToRoot()", href: "" }
+		%i.fa.fa-long-arrow-left
+	%h3.title-padded-horiz {{selectedCategory.name}}
+	%div{ "dir-paginate" => "profession in selectedCategory.children | itemsPerPage: 10: 'sidebarProfessionsPagination'", "pagination-id" => "sidebarProfessionsPagination", "current-page" => "professionPage" }
+		.profession-item
+			%a{ "ng-click" => "professionSelectHandler(profession)", href: "" } {{profession.name}}
+	.padded-horiz{ layout: "column", "layout-align" => "center center" }
+		%dir-pagination-controls{ "pagination-id" => "sidebarProfessionsPagination" }

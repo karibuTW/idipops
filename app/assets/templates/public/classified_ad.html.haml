@@ -1,0 +1,53 @@
+.home{ layout: "row", "ng-controller" => "PublicClassifiedController" }
+	%div{ flex: "10" }
+	%div{ layout: "column", flex: "80", "ng-show" => "isLoading", "layout-align" => "center center" }
+		%md-progress-circular{ "md-mode" => "indeterminate" }
+	%div{ layout: "column", flex: "80", "ng-hide" => "isLoading" }
+		%div{ layout: "row", "layout-sm" => "column", "layout-wrap" => true }
+			.resp-left-column{ flex: "70", "flex-sm" => "100" }
+				.grey-bg.center-column{ layout: "column" }
+					%div{ layout: "row", "layout-align" => "space-between start" }
+						%div{ layout: "row", "layout-wrap" => true }
+							.button-stroke.profession{ "ng-repeat" => "profession in singleAd.professions" }
+								%button.button.button_js.grey_border_black_text.btn-block{ "ui-sref" => "pros-list({pids: profession.id})" }
+									%span.button_label {{profession.name}}
+					%h1.title-cut.public {{singleAd.title}}
+					%p.timestamp
+						{{'classified_ad.published' | t}}
+						%span{"am-time-ago" => "singleAd.created_at"}
+					%p.description{ "ng-bind-html" => "replaceNewLinesInText(singleAd.description)" }
+					%div{ layout: "row", "layout-wrap" => "" }
+						.photo-list{ "ng-repeat" => "photo in singleAd.classified_ad_photos" }
+							%a{ href: "", "ng-click" => "showLightBox($event, $index, singleAd.classified_ad_photos)"}
+								%img{ "ng-src" => "{{photo.attachment_url}}" }
+			%div{ flex: "30", "flex-sm" => "100", layout: "column" }
+				.bordered.profile.side.resp-profile-box{ layout: "column" }
+					.blank_space
+					.line{ "ng-class" => "singleAd.start_date ? 'line-separator' : 'with-margin-bottom'" }
+						.user-info
+							%i.fa.fa-map-marker.fa-fw
+							&nbsp; {{singleAd.place_name}}
+					%div{ layout: "row", "layout-align" => "center center", "ng-if" => "singleAd.start_date" }
+						.text-centered.ad-bordered-date{ flex: "40" }
+							%i.fa.fa-calendar-o.fa-fw
+							&nbsp; {{'classified_ad.start' | t}}
+						.text-centered.border-left.ad-bordered-date.orange{ flex: "60" }
+							{{singleAd.start_date | amDateFormat:'D MMM YYYY'}}
+				.padded2x
+					%p{ "ng-show" => "!session.connected" } {{'classified_ad.public.tagline' | t}}
+					.button-stroke{ "ng-show" => "!session.connected" }
+						%button.button.button_js.orange_fill_white_text.btn-block.profile-right-button{ "ng-click" => "signIn('home.users-dashboard')" }
+							%span.button_label
+								&nbsp; {{'not_connected.signup' | t}}
+		.public-intro
+			.dark-grey-bg{ layout: "column", "layout-align" => "start start"}
+				%h2 {{'classified_ad.public.title' | t}}
+				%div{ "ng-bind-html" => "'classified_ad.public.intro' | t" }
+				%div{ layout: "row" }
+					.button-stroke
+						%a.button.button_js.white_border_white_text.transparent_button{ "ng-click" => "signIn('home.users-dashboard')", href: "" }
+							%span.button_label {{'classified_ad.public.signup' | t}}
+					.button-stroke
+						%a.button.button_js.white_border_white_text.transparent_button{ "ui-sref" => "how-it-works-pros.profile" }
+							%span.button_label {{'classified_ad.public.how_it_works' | t}}
+	%div{ flex: "10" }

@@ -1,0 +1,12 @@
+Bonjour #{@user_to.display_name}
+
+Vous avez reçu une demande de devis de la part de #{@user_from.display_name}
+
+- if @title.present?
+  = @title
+
+= l @date, format: :short
+
+= @content
+
+Voir la demande : #{@quotation_request_path}

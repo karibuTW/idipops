@@ -1,0 +1,7 @@
+%form
+	.dropdown.show-slide-down{ "uib-dropdown" => "", "ng-hide" => "adStatus == 'pending' || adStatus == 'closed' "}
+		%a.dropdown-toggle{ href: "", "uib-dropdown-toggle" => "" }
+			%i.fa.fa-angle-down.classified-ad-toggle
+		%ul.dropdown-menu.annonce-dropdown.dropdown-menu-right
+			%li{ "ng-show" => "adStatus == 'published' || adStatus == 'reported' || adStatus == 'inactive' || adStatus == 'private' " }
+				%a{ href: "", "ng-click" => "setClassifiedStatus('close')" } {{"classified_ad.close" | t}}

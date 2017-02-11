@@ -1,0 +1,476 @@
+angular
+    .module('uneo', [
+      'ui.bootstrap',
+      'ngMaterial',
+      'ngAnimate',
+      'ngCookies',
+      'ngTouch',
+      'ui.router',
+      'ngTagsInput',
+      'angularMoment',
+      'dibari.angular-ellipsis',
+      'ngSanitize',
+      'xeditable',
+      'infinite-scroll',
+      'ngImgCrop',
+      'templates',
+      'toastr',
+      'angularFileUpload',
+      'uiGmapgoogle-maps',
+      'formly',
+      'formlyBootstrap',
+      'angularUtils.directives.dirPagination',
+      'ngFx',
+      'angular-google-analytics',
+      'textAngular',
+      'angular-carousel',
+      'akoenig.deckgrid',
+      'ngWYSIWYG',
+      'uneo.filters',
+      'uneo.services',
+      'uneo.controllers',
+      'uneo.directives',
+    ])
+    .run(
+      [          '$rootScope', '$state', '$stateParams', '$window', 'editableOptions', 'amMoment', 'Authentication', 'Analytics',
+        function ($rootScope,   $state,   $stateParams, $window, editableOptions, amMoment, Authentication, Analytics) {
+          $rootScope.$state = $state;
+          $rootScope.$stateParams = $stateParams;
+          I18n.locale = 'fr';
+          $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+            $window.scrollTo(0,0);
+          });
+          $rootScope.$on('$stateChangeSuccess', function(event, toState, toStateParams) {
+            $rootScope.currentURLWithParams = $state.href($state.current.name, toStateParams, {absolute: true});
+            $rootScope.currentURL = $rootScope.currentURLWithParams.split('?')[0];
+            $rootScope.rootURL = $rootScope.currentURL.replace(/^(.*\/\/[^\/?#]*).*$/,"$1");
+            if (toState.name == 'index') {
+              $rootScope.mustShowProfessionSelector = false;
+              $rootScope.mainViewClass = 'main-wrapper';
+              $rootScope.toolbarClass = 'transparent';
+              $rootScope.footerClass = '';
+              $rootScope.menuClass = '';
+              $rootScope.proMenuClass = '';
+            } else if (toState.name == 'pros-list') {
+              $rootScope.mustShowProfessionSelector = true;
+              $rootScope.mainViewClass = 'wrapper-for-map';
+              $rootScope.toolbarClass = '';
+              $rootScope.footerClass = 'footer-for-map';
+              $rootScope.menuClass = 'menu-for-map';
+              $rootScope.proMenuClass = 'active';
+            } else {
+              $rootScope.mustShowProfessionSelector = true;
+              $rootScope.mainViewClass = 'main-wrapper';
+              $rootScope.toolbarClass = '';
+              $rootScope.footerClass = '';
+              $rootScope.menuClass = '';
+              $rootScope.proMenuClass = '';
+            }
+            if (!($state.includes('posts.*') || $state.is('')) || $state.is('posts.edit')) {
+              $rootScope.postsCollapsed = true;
+            }
+          });
+          
+          amMoment.changeLocale('fr');
+          editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+        }
+      ]
+    )
+    .config( 
+        [        '$stateProvider', '$urlRouterProvider', '$locationProvider', '$mdThemingProvider', '$mdDateLocaleProvider', 'uiGmapGoogleMapApiProvider', 'formlyConfigProvider', 'toastrConfig', 'AnalyticsProvider',
+        function ($stateProvider,   $urlRouterProvider,   $locationProvider, $mdThemingProvider, $mdDateLocaleProvider, uiGmapGoogleMapApiProvider, formlyConfigProvider, toastrConfig, AnalyticsProvider) {
+            // googleKey = 'AIzaSyAUhCQUVycgL2EK-Va6b5G8Rq7IdXc7lZk';
+          uiGmapGoogleMapApiProvider.configure({
+            key: "<%= ENV['GOOGLE_KEY'] %>",
+            // v: '3.17',
+            libraries: 'places,geometry'
+          });
+
+          AnalyticsProvider.setAccount("<%= ENV['GOOGLE_ANALYTICS_KEY'] %>");
+          AnalyticsProvider.setDomainName("idipops.com");
+          AnalyticsProvider.setPageEvent('$stateChangeSuccess');
+          AnalyticsProvider.trackPages(false);
+          AnalyticsProvider.trackUrlParams(true);
+          AnalyticsProvider.ignoreFirstPageLoad(true);
+          AnalyticsProvider.useAnalytics(true);
+          AnalyticsProvider.setCookieConfig({
+            cookieDomain: "idipops.com",
+            cookieName: 'uneoga',
+            cookieExpires: 20000
+          });
+
+          var uneoOrangeMap = $mdThemingProvider.extendPalette('orange', {
+            'contrastDefaultColor': 'light'
+          });
+          $mdThemingProvider.definePalette('uneoOrange', uneoOrangeMap);
+          $mdThemingProvider.theme('default')
+            .primaryPalette('uneoOrange')
+            .accentPalette('orange')
+            .warnPalette('deep-orange');
+          // $mdThemingProvider
+          //   .theme('default')
+          //   .primaryPalette('orange')
+            // .primaryPalette('orange', {
+            //   'default': '800'
+            // })
+            // .accentPalette('orange')
+            // .warnPalette('deep-orange');
+
+          $mdDateLocaleProvider.formatDate = function(date) {
+            return moment(date).format('L');
+          };
+          $mdDateLocaleProvider.firstDayOfWeek = 1;
+
+          $urlRouterProvider.otherwise("/");
+
+          $stateProvider
+            .state('public-ad-details',{
+              url: "/annonce-publique/:adid",
+              templateUrl: "public/classified_ad.html"
+            })
+            .state('idipops',{
+              url: "/idipops",
+              templateUrl: "public/uneon.html"
+            })
+            .state('cgv',{
+              url: "/cgv",
+              templateUrl: "public/cgv.html"
+            });
+            
+          $stateProvider
+            .state('how-it-works',{
+              url: "/comment-ca-marche",
+              templateUrl: "public/how_it_works.html"
+            })
+            
+          $stateProvider
+            .state('how-it-works-users',{
+              url: "/comment-ca-marche-particuliers",
+              templateUrl: "public/how_it_works_users.html"
+            })
+            .state('how-it-works-users.search',{
+              url: "/recherche",
+              views: {
+                "search@how-it-works-users": {
+                  templateUrl: "public/how_it_works_users/search.html"
+                }
+              }
+            })
+            .state('how-it-works-users.pros',{
+              url: "/champions",
+              views: {
+                "pros@how-it-works-users": {
+                  templateUrl: "public/how_it_works_users/pros.html"
+                }
+              }
+            })
+            .state('how-it-works-users.classified_ads',{
+              url: "/annonces",
+              views: {
+                "classified_ads@how-it-works-users": {
+                  templateUrl: "public/how_it_works_users/classified_ads.html"
+                }
+              }
+            })
+            .state('how-it-works-users.quotations',{
+              url: "/devis",
+              views: {
+                "quotations@how-it-works-users": {
+                  templateUrl: "public/how_it_works_users/quotations.html"
+                }
+              }
+            })
+            .state('how-it-works-users.deals',{
+              url: "/bons-plans",
+              views: {
+                "deals@how-it-works-users": {
+                  templateUrl: "public/how_it_works_users/deals.html"
+                }
+              }
+            })
+            .state('how-it-works-users.my-account',{
+              url: "/mon-compte",
+              views: {
+                "my-account@how-it-works-users": {
+                  templateUrl: "public/how_it_works_users/my_account.html"
+                }
+              }
+            });
+
+          $stateProvider
+            .state('how-it-works-pros',{
+              url: "/comment-ca-marche-champions",
+              templateUrl: "public/how_it_works_pros.html"
+            })
+            .state('how-it-works-pros.profile',{
+              url: "/profil",
+              views: {
+                "profile@how-it-works-pros": {
+                  templateUrl: "public/how_it_works_pros/profile.html"
+                }
+              }
+            })
+            .state('how-it-works-pros.space',{
+              url: "/espace-champion",
+              views: {
+                "space@how-it-works-pros": {
+                  templateUrl: "public/how_it_works_pros/space.html"
+                }
+              }
+            })
+            .state('how-it-works-pros.classified_ads',{
+              url: "/annonces",
+              views: {
+                "classified_ads@how-it-works-pros": {
+                  templateUrl: "public/how_it_works_pros/classified_ads.html"
+                }
+              }
+            })
+            .state('how-it-works-pros.quotations',{
+              url: "/devis",
+              views: {
+                "quotations@how-it-works-pros": {
+                  templateUrl: "public/how_it_works_pros/quotations.html"
+                }
+              }
+            })
+            .state('how-it-works-pros.deals',{
+              url: "/bons-plans",
+              views: {
+                "deals@how-it-works-pros": {
+                  templateUrl: "public/how_it_works_pros/deals.html"
+                }
+              }
+            })
+            .state('how-it-works-pros.visibility',{
+              url: "/visibilite",
+              views: {
+                "visibility@how-it-works-pros": {
+                  templateUrl: "public/how_it_works_pros/visibility.html"
+                }
+              }
+            });
+
+          $stateProvider
+            .state('posts',{
+              abstract: true,
+              url: "/",
+              templateUrl: "index.html"
+            })
+              .state('posts.index',{
+                url: "?sort&search&time&category&premium&zone",
+                templateUrl: "posts/index.html",
+                reloadOnSearch: false
+              })
+              .state('posts.show',{
+                url: "^/post/:poid",
+                templateUrl: "posts/show.html"
+              })
+              .state('posts.edit',{
+                url: "^/poster-post?poid",
+                templateUrl: "posts/edit.html"
+              })
+            .state('pros-list', {
+              url: "/pros?pids&ts&ps",
+              templateUrl: "pros/index.html",
+              reloadOnSearch: false
+            })
+            .state('sign_in', {
+              url: "/connexion",
+              templateUrl: "users/sign_in.html"
+            })
+            .state('pro', {
+              url: "/pro/:pid",
+              templateUrl: "pros/profile.html"
+            })
+            .state('post-ad',{
+              url: "/post-annonce?adid",
+              templateUrl: "post_ad.html"
+            })
+            .state('send-quotation-request',{
+              url: "/poster-demande-de-devis/:pid",
+              templateUrl: "post_quotation_request.html"
+            })
+            .state('ad-details',{
+              url: "/annonce/:adid",
+              templateUrl: "restricted/ad_details.html"
+            })
+            .state('qr-details',{
+              url: "/demande-de-devis/:qrid",
+              templateUrl: "restricted/qr_details.html"
+            })
+            .state('deal-details',{
+              url: "/bon-plan/:dealid",
+              templateUrl: "deals/deal_single.html"
+            })
+            .state('deal-list',{
+              url: "/bons-plans?pid&ts&uid&lid",
+              templateUrl: "deals/deal_list.html",
+              reloadOnSearch: false
+            })
+            .state('referral-accept',{
+              url: "^/invitations/accepte/:token",
+              templateUrl: "users/sign_in.html"
+            });
+            // .state('referral-accept',{
+            //   url: "^/invitations/accepte/:token",
+            //   templateUrl: "users/referrals/accept.html"
+            // });
+          $stateProvider
+            .state('home',{
+              abstract: true,
+              url: "/home",
+              templateUrl: "home.html"
+            })
+              // .state('home.dashboard', {
+              //   url: "^/users/dashboard",
+              //   templateUrl: "users/dashboard.html"
+              // })
+              .state('home.users-edit',{
+                url: "^/u/modifier",
+                templateUrl: "users/edit.html"
+              })
+              .state('home.password',{
+                url: "^/u/mdp",
+                templateUrl: "users/password.html"
+              })
+              .state('home.users-dashboard', {
+                url: "^/tableau-de-bord",
+                templateUrl: "users/user_dashboard.html"
+              })
+              .state('home.pros-dashboard', {
+                url: "^/tableau-de-bord-pro",
+                templateUrl: "users/pro_dashboard.html"
+              })
+              .state('home.post',{
+                url: "^/poster-annonce",
+                templateUrl: "users/post_ad.html"
+              })
+              .state('home.pro-credits', {
+                url: "^/credits?EXECCODE",
+                templateUrl: "users/credits.html"
+              })
+              .state('home.pro-visibility', {
+                url: "^/booster",
+                templateUrl: "users/visibility.html"
+              })
+              .state('home.post-deal', {
+                url: "^/poster-bon-plan?did",
+                templateUrl: "users/post_deal.html"
+              })
+              .state('home.fav-pros', {
+                url: "^/favoris",
+                templateUrl: "users/fav_pros.html"
+              })
+              .state('home.deal-mgt', {
+                url: "^/mes-bons-plans",
+                templateUrl: "users/deals/deal_manager.html"
+              })
+              .state('home.referrals',{
+                url: "^/invitations",
+                templateUrl: "users/referrals/index.html"
+              });
+
+          // enable HTML5 Mode for SEO
+          $locationProvider.html5Mode(true);
+
+          angular.extend(toastrConfig, {
+            allowHtml: false,
+            closeButton: true,
+            positionClass: 'toast-top-right'
+          });
+
+          // Formly Bootstrap
+          formlyConfigProvider.setWrapper({
+            name: 'horizontalBootstrapLabel',
+            template: [
+              '<label for="{{::id}}" class="col-sm-3 control-label">',
+                '{{to.label}}',
+              '</label>',
+              '<div class="col-sm-9">',
+                '<formly-transclude></formly-transclude>',
+              '</div>'
+            ].join(' ')
+          });
+
+          formlyConfigProvider.setWrapper({
+            name: 'horizontalBootstrapLabelWithLoading',
+            template: [
+              '<label for="{{::id}}" class="col-sm-3 control-label">',
+                '{{to.label}}',
+              '</label>',
+              '<div class="col-sm-9">',
+                '<formly-transclude></formly-transclude>',
+              '</div>',
+              '<div class="col-sm-3"/>',
+              '<div class="col-sm-9">',
+                '<md-progress-linear md-mode="indeterminate" ng-show="loadingParLocation"/>',
+              '</div>'
+            ].join(' ')
+          });
+          
+          formlyConfigProvider.setWrapper({
+            name: 'horizontalBootstrapCheckbox',
+            template: [
+              '<div class="col-sm-offset-3 col-sm-9">',
+                '<formly-transclude></formly-transclude>',
+              '</div>'
+            ].join(' ')
+          });
+
+          formlyConfigProvider.setWrapper({
+            name: 'horizontalBootstrapRadio',
+            template: [
+              '<label for="{{::id}}" class="col-sm-3 control-label">',
+                '{{to.label}}',
+              '</label>',
+              '<div class="col-sm-9">',
+                '<formly-transclude></formly-transclude>',
+              '</div>'
+            ].join(' ')
+          });
+          
+          formlyConfigProvider.setType({
+            name: 'horizontalInput',
+            extends: 'input',
+            wrapper: ['horizontalBootstrapLabel', 'bootstrapHasError']
+          });
+          
+          formlyConfigProvider.setType({
+            name: 'horizontalTextArea',
+            extends: 'textarea',
+            wrapper: ['horizontalBootstrapLabel', 'bootstrapHasError']
+          });
+          
+          formlyConfigProvider.setType({
+            name: 'horizontalCheckbox',
+            extends: 'checkbox',
+            wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
+          });
+          
+          formlyConfigProvider.setType({
+            name: 'horizontalRadio',
+            extends: 'radio',
+            wrapper: ['horizontalBootstrapRadio', 'bootstrapHasError']
+          });
+
+          formlyConfigProvider.setType({
+            name: 'locationTypeahead',
+            template: '<input type="text" ng-model="model[options.key]" uib-typeahead="parloc as (parloc.place_name + \' \' + parloc.postal_code) for parloc in to.searchCities($viewValue)" class="form-control" typeahead-wait-ms="200" typeahead-editable="false" required="" typeahead-loading="loadingParLocation" autocomplete="off"hkjhkhjkh>',
+            wrapper: ['horizontalBootstrapLabelWithLoading', 'bootstrapHasError'],
+          });
+
+          formlyConfigProvider.setType({
+            name: 'datepicker',
+            template: ['<div class="input-group">',
+                '<input class="form-control" type="text" ng-model="model[options.key]" min-date="to.minDate" datepicker-popup="dd/MM/yyyy" is-open="to.isCalendarOpened" show-button-bar="false" datepicker-options="to.dateOptions">',
+                  '<span class="input-group-btn">',
+                    '<button class="btn btn-default" ng-click="to.openCalendar($event)">',
+                      '<i class="glyphicon glyphicon-calendar"></i>',
+                    '</button>',
+                  '</span>',
+              '</div>'
+            ].join(' '),
+            wrapper: ['horizontalBootstrapLabel', 'bootstrapHasError'],
+          });
+    }]);

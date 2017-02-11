@@ -1,0 +1,12 @@
+.map-window{ layout: "column", style: "overflow: hidden;" }
+	%div{ layout: "row", "layout-align" => "start center" }
+		%img.face{ "ng-src" => "{{parameter.avatar_url ? parameter.avatar_url : '/uneon-face.svg'}}" }
+		.rating.spaced{ layout: "row" }
+			%i.fa.fa-star{ "ng-class" => "parameter.stars[0]" }
+			%i.fa.fa-star{ "ng-class" => "parameter.stars[1]" }
+			%i.fa.fa-star{ "ng-class" => "parameter.stars[2]" }
+			%i.fa.fa-star{ "ng-class" => "parameter.stars[3]" }
+			%i.fa.fa-star{ "ng-class" => "parameter.stars[4]" }
+	%a.orange.pro-name{ "ui-sref" => "pro({pid: parameter.pretty_name})" } {{parameter.company_name}}
+	.map-primary-activity {{parameter.activities.primaryActivity}}
+	%div {{parameter.activities.secondaryActivity}}

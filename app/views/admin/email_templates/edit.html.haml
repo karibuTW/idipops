@@ -1,0 +1,27 @@
+.page-header
+  %h1
+    Modifier la template 
+    = @template.name
+.row
+  .col-sm-12
+
+    = form_for [:admin, @template] do |f|
+
+      .form-group
+        %label Nom
+        = f.text_field :name, class: "form-control"
+
+      .form-group
+        %label Subject
+        = f.text_field :subject, class: "form-control"
+
+      .form-group
+        %label Body
+        = f.text_area :body, size: "60x10", class: "form-control"
+
+      .checkbox
+        %label
+          = f.check_box :active
+          Actif
+
+      = f.submit "Enregistrer", class: "btn btn-primary"

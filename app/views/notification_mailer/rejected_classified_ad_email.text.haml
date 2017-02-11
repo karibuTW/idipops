@@ -1,0 +1,14 @@
+Bonjour #{@classified_ad.user.display_name}
+
+Votre annonce ne peut pas être publiée pour la raison suivante :
+#{@reject_reason}
+
+Voici l'annonce concernée :
+
+- if @classified_ad.title.present?
+  = @classified_ad.title
+= l @classified_ad.created_at, format: :short
+
+= @content
+
+Voir l'annonce : #{@classified_ad_path}

@@ -1,0 +1,13 @@
+Bonjour
+
+Votre post a été signalé pour la raison suivante :
+#{@reject_reason}
+Voici le post concerné :
+
+- if @post.title.present?
+  = @post.title
+= l @post.created_at, format: :short
+
+= @content
+
+Voir le post : #{admin_post_url(@post)}

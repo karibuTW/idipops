@@ -1,0 +1,12 @@
+Bonjour #{@user_to.display_name}
+
+Vous avez reçu un nouveau commentaire de la part de #{@user_from.pretty_name}
+
+- if @title.present?
+  = @title
+
+= l @date, format: :short
+
+= @comment
+
+Voir le post : #{@post_path}

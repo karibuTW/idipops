@@ -1,0 +1,190 @@
+.home{ layout: "column", "ng-controller" => "ProProfileController" }
+	%md-progress-circular.top-centered{ "md-mode" => "indeterminate", "ng-show" => "isLoading"}
+	%div{ "layout-gt-sm" => "row", layout: "column", "ng-hide" => "isLoading" }
+		.profile.side{ "flex-xs" => "100", "flex-gt-sm" => "25", "flex-sm" => "33", layout: "column" }
+			.bordered.profile.side.left{ layout: "column" }
+				.out20{ layout: "row" }
+					%avatar.face.pro{"avatar-url" => "pro.avatar_url"}
+					%heart-box{ "is-favorite" => "pro.is_favorite", "pro-id" => "pro.id", "clickable" => "session.connected && session.user.user_type != 'pro' && pro != null", "ng-if" => "session.user.user_type == 'particulier'" }
+				.line.main
+					%h1.user-info {{pro.company_name}}
+				.line.secondary.pro{ layout: "row", "layout-align" => "start center" }
+					%uib-rating.rating{ "ng-model" => "pro.rating", "read-only" => "true", "state-on" => "'fa fa-star on'", "state-off" => "'fa fa-star off'" }
+					{{'pro_profile.num_of_ratings' | t:{count: pro.num_of_ratings} }}
+				.line.secondary.pro{ "ng-show" => "pro.siret" }
+					.user-info {{'pro_profile.siret' | t}} {{pro.siret}}
+				.line.line-separator-top{ "ng-show" => "pro.name_is_public" }
+					.user-info
+						%i.fa.fa-user.fa-fw
+						&nbsp; {{pro.first_name}} {{pro.last_name}}
+				.line.line-separator-top{ "ng-repeat" => "address in pro.addresses" }
+					.user-info{ "ng-repeat" => "line in address.lines" }
+						%i.fa.fa-fw{ "ng-class" => "$first ? 'fa-map-marker' : ''" }
+						&nbsp; {{line}}
+					.user-info{ "ng-show" => "address.land_phone" }
+						%i.fa.fa-phone.fa-fw
+						&nbsp; {{address.land_phone | formatPhoneNumber}}
+					.user-info{ "ng-show" => "address.mobile_phone" }
+						%i.fa.fa-mobile.fa-fw
+						&nbsp; {{address.mobile_phone | formatPhoneNumber}}
+					.user-info{ "ng-show" => "address.fax" }
+						%i.fa.fa-fax.fa-fw
+						&nbsp; {{address.fax | formatPhoneNumber}}
+					.user-info.pro-opening-hours{ "ng-if" => "address.current_day_opening_hours.length > 0", "ng-repeat" => "opening_hour in address.current_day_opening_hours" }
+						%i.fa.fa-clock-o.fa-fw{ "ng-show" => "$first" }
+						%i.fa.fa-fw{ "ng-hide" => "$first" }
+						&nbsp;
+						%span {{opening_hour.period.open_raw}} - {{opening_hour.period.close_raw}}
+						%span{ "uib-tooltip-template" => "'weekOpeningHoursTemplate'", "tooltip-placement" => "right", "ng-show" => "$first" }
+							&nbsp;
+							%i.fa.fa-info-circle
+					.user-info.pro-opening-hours{ "ng-if" => "address.current_day_opening_hours.length == 0 && address.opening_hours.length > 0"}
+						%i.fa.fa-clock-o.fa-fw
+						&nbsp;
+						%span {{ 'pro_profile.opening_hour.close' | t }}
+						%span{ "uib-tooltip-template" => "'weekOpeningHoursTemplate'", "tooltip-placement" => "right", "ng-show" => "$first" }
+							&nbsp;
+							%i.fa.fa-info-circle
+					%script{"type"=> "text/ng-template","id" => "weekOpeningHoursTemplate"}
+						.opening-hours-tooltip{"ng-repeat" =>  "period in address.weekOpeningHours","ng-class" => "{orange: address.currWeekday==$index}", layout: "column"}
+							%strong{"ng-show" => "period[1].length > 0" }
+								{{ period[0] | capitalize }}
+							%div{"ng-show" => "period[1].length > 0", layout: "row" }
+								%div{ "ng-repeat" => "time in period[1] track by $index" }
+									{{ time }}
+									%span{ "ng-hide" => "$last" } &nbsp;/&nbsp;
+				.line.website.line-separator-top{ "ng-show" => "pro.website" }
+					.user-info
+						%i.fa.fa-link.fa-fw
+						%a{href: "{{pro.website}}", target: "_blank", title: "{{pro.website}}"} &nbsp; {{pro.website}}
+			%div{ "ng-show" => "!session.connected" }
+				.not-connected-buttons{ layout: "column", "layout-align" => "center center" }
+					.button-stroke.signed-out-button
+						%button.button.button_js.orange_border_black_text{ "ui-sref" => "sign_in" }
+							%span.button_label {{"not_connected.signin" | t}}
+					-# .button-stroke.signed-out-button
+					-# 	%button.button.button_js.grey_border_black_text{ href: "", "ng-click" => "signIn()" }
+					-# 		%span.button_label {{"not_connected.signup" | t}}
+				%p {{'pro_profile.free_register' | t}}
+		.pro-middle{ flex: "45", "flex-xs" => "100", "flex-sm" => "100", layout: "column" }
+			%md-tabs{ "md-dynamic-height" => "true", "md-center-tabs" => "false", "md-selected" => "selectedTab" }
+				%md-tab{ label: "Information" }
+					
+				%md-tab{ label: "{{'pro_profile.comments' | t}}" }
+					
+				%md-tab{ label: "Posts"  }
+					
+			.grey-bg.center-column{ "ng-show" => "selectedTab == 0" }
+				%h4
+					%i.fa.fa-file-text-o.fa-fw
+					{{'pro_profile.introduction' | t}}
+				%p{ "ng-bind-html" => "replaceNewLinesInText(pro.long_description)" }
+				.pro-profile-section{ "ng-show" => "pro.advantages"}
+					%h4
+						%i.fa.fa-trophy.fa-fw
+						{{'pro_profile.my_assets' | t}}
+					%p{ "ng-bind-html" => "replaceNewLinesInText(pro.advantages)" }
+				.pro-profile-section{ "ng-show" => "pro.client_references"}
+					%h4
+						%i.fa.fa-flag.fa-fw
+						{{'pro_profile.my_references' | t}}
+					%p{ "ng-bind-html" => "replaceNewLinesInText(pro.client_references)" }
+				.pro-rate{ layout: "row" }
+					-# %i.fa.fa-euro.fa-fw
+					%span.rate-symbol €
+					%span.title{ "ng-show" => "pro.quotation" } {{'pro_profile.by_quotation' | t}}
+					%span.rate-separator{ "ng-show" => "pro.quotation && (pro.prestation || pro.hourly_rate > 0)" } &nbsp;|&nbsp;
+					%span.title{ "ng-show" => "pro.prestation"} {{'pro_profile.by_prestation' | t}}
+					%span.rate-separator{ "ng-show" => "pro.hourly_rate > 0 && pro.prestation" } &nbsp;|&nbsp;
+					%span.title{ "ng-show" => "pro.hourly_rate > 0"} {{pro.hourly_rate}} €/h
+				.pro-profile-section.activity-header {{'pro_profile.main_activity' | t}}
+				.activities
+					%a.activity{ "ui-sref" => "pros-list({pids: pro.primary_activity_id})" } {{activities.primaryActivity}}
+				.pro-profile-section.activity-header.second{ "ng-show" => "activities.secondaryActivity" } {{'pro_profile.secondary_activities' | t}}
+				.activities{ "ng-show" => "activities.secondaryActivity" }
+					%a.activity{ "ng-show" => "activities.secondaryActivity", "ui-sref" => "pros-list({pids: pro.secondary_activity_id})" } {{activities.secondaryActivity}}
+					%span.rate-separator{ "ng-show" => "activities.tertiaryActivity" } &nbsp;|&nbsp;
+					%a.activity{ "ng-show" => "activities.tertiaryActivity", "ui-sref" => "pros-list({pids: pro.tertiary_activity_id})" } {{activities.tertiaryActivity}}
+					%span.rate-separator{ "ng-show" => "activities.quaternaryActivity" } &nbsp;|&nbsp;
+					%a.activity{ "ng-show" => "activities.quaternaryActivity", "ui-sref" => "pros-list({pids: pro.quaternary_activity_id})" } {{activities.quaternaryActivity}}
+				.pro-profile-section{ "ng-show" => "pro.tag_list.length > 0", layout: "row", "layout-align" => "start start" }
+					.tag-icon
+						%i.fa.fa-tag.fa-fw
+						&nbsp; 
+					.pro-profile-tags{ layout: "row", "layout-wrap" => "" }
+						%a.btn.btn-default.tag{ "ng-repeat" => "tag in pro.tag_list", "ui-sref" => "pros-list({pids: pro.primary_activity_id, ts: [tag]})" } {{tag}}
+				%ng-gallery{ images: "pro.user_photos" }
+			%div{ "ng-show" => "selectedTab == 1" }
+				%p.nothing{ "ng-show" => "reviews.length == 0" }
+					{{'pro_profile.no_comments' | t}}
+				.reviews{ "ng-show" => "reviews.length > 0" }
+					%div{ "dir-paginate" => "review in reviews | itemsPerPage: showAllReviews ? 5 : minNumReviews: 'profileReviewsPagination'", "pagination-id" => "profileReviewsPagination" }
+						.review{ layout: "column", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell' ]" }
+							.user{ layout: "row", "layout-align" => "space-between start" }
+								%div{ layout: "row", "layout-align" => "start center" }
+									%avatar.face{ "avatar-url" => "review.avatar_url"}
+									.name
+										{{review.name}}
+								%div{ layout: "column" }
+									%uib-rating.rating{ "ng-model" => "review.rating", readonly: "true", "state-on" => "'fa fa-star on'", "state-off" => "'fa fa-star off'" }
+									%span.timestamp{"am-time-ago" => "review.updated_at"}>
+							%formatted-message.text{ "text" => "review.content"}
+					%div{ layout: "column", "layout-align" => "start center" }
+						%dir-pagination-controls{ "pagination-id" => "profileReviewsPagination" }
+				.button-stroke{ "ng-show" => "session.connected && session.user.user_type != 'pro' && pro.user_review" }
+					%button.button.button_js.orange_border_black_text{ "ng-click" => "myCommentIsCollapsed = !myCommentIsCollapsed" }
+						%span.button_label {{myCommentIsCollapsed ? "Editer mon commentaire" : "Annuler l'édition"}}
+				%div{ "uib-collapse" => "myCommentIsCollapsed" }
+					.rating-review{ "ng-show" => "session.connected && session.user.user_type != 'pro'" }
+						.my-rating{ layout: "row", "layout-align" => "start center" }
+							.title {{'pro_profile.my_rating' | t}}
+							%uib-rating.rating{ "ng-model" => "pro.user_rating", "ng-change" => "rate()", readonly: "isRating", "state-on" => "'fa fa-star on'", "state-off" => "'fa fa-star off'" }
+						%textarea.form-control{rows: "3", "ng-model" => "pro.user_review", placeholder: "Mon commentaire...", required: "", "ng-disabled" => "isPostingReview", maxlength: 400 }
+					.button-stroke{ "ng-show" => "session.connected && session.user.user_type != 'pro'" }
+						%button.button.button_js.orange_border_black_text{ "ng-click" => "postReview()", "ng-disabled" => "isPostingReview" }
+							%span.button_label {{'pro_profile.send_comment' | t}}
+			%div{ "ng-show" => "selectedTab == 2" }
+				%div{ "dir-paginate" => "post in posts | itemsPerPage: 5: 'postPagination'", "pagination-id" => "postPagination" }
+					.post-deck-card
+						.image-block{ "ng-show" => "card.featured_image_url", "layout-align" => "center center", layout: "row" }
+							%img{ "ng-src" => "{{card.featured_image_url}}" }
+						.upper-block
+							.category-name{ layout: "row", "layout-align" => "start center" }
+								= image_tag "icons/categories-orange.svg"
+								%span {{post.category_name}}
+							.post-title{ layout: "row", "layout-align" => "space-between center", "ui-sref" => "posts.show({poid: post.slug})" }
+								%span {{post.title}}
+								.category-icon
+									.question-icon{ "ng-show" => "post.post_type == 'question'" }
+										= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/questions-blue.svg"))).to_html.html_safe
+									.sharing-icon{ "ng-show" => "post.post_type == 'sharing'" }
+										= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/share-green.svg"))).to_html.html_safe
+							%p.timestamp
+								{{'post.posted' | t}}
+								%span{"am-time-ago" => "post.created_at"}
+							.post-description{ "ui-sref" => "posts.show({poid: post.slug})", "ng-bind-html" => "convertDescription(post.description)" }
+				%div{ layout: "column", "layout-align" => "start center" }
+					%dir-pagination-controls{ "pagination-id" => "postPagination" }
+					%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "postsAreLoading"}
+		.pro-right{ flex: "30", "flex-xs" => "100", "flex-sm" => "100" }
+			.pro-map-container{ "ng-repeat" => "address in pro.addresses" }
+				%ui-gmap-google-map#map-pro{ center: "address", zoom: "13", pan: "true", options: "mapOptions", control: "address.mapControl" }
+					%ui-gmap-circle{ center: "address", radius: "address.action_range*1000", stroke: "circleStroke", fill: "circleFill" }
+					%ui-gmap-marker{ idkey: "address.id", coords: "address" }
+			%ul.ccm-carousel{ "rn-carousel" => "", "rn-carousel-auto-slide" => "5", "rn-carousel-pause-on-hover" => "", "rn-carousel-controls-allow-loop" => "" }
+				%li{ "ng-repeat" => "deal in deals"}
+					%deal-pro-box{ deal: "deal" }
+			-# %uib-carousel.show-slide-down{ interval: "5000", "ng-show" => "deals.length > 0", active: "activeSlide" }
+			-# 	%uib-slide{ "ng-repeat" => "deal in deals"}
+			-# 		%deal-pro-box{ deal: "deal" }
+			.button-stroke{ "ng-show" => "pro.quotation && session.user.user_type != 'pro'" }
+				%button.button.button_js.orange_fill_white_text.width300.btn-block.profile-right-button{ "ui-sref" => "send-quotation-request({pid: pro.id})", "ng-show" => "session.connected" }
+					%span.button_label
+						&nbsp; {{'pro_profile.request_quotation' | t}}
+			.form-group.profile-new-message{ "ng-show" => "session.connected && session.user.user_type != 'pro'" }
+				%textarea.form-control#messageReply{rows: "3", "ng-model" => "messageReply.newConversation", placeholder: "Mon message...", required: "", "ng-disabled" => "isPosting || !isMessagingAvailable" }
+				.button-stroke
+					%button.button.button_js.orange_border_black_text{ "ng-click" => "sendMessage()", "ng-disabled" => "isPosting || !isMessagingAvailable" }
+						%span.button_label
+							{{'pro_profile.send_message' | t}}
+	-# %div{"ui-view" => "", "ng-show" => "session.connected"}

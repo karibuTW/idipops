@@ -1,0 +1,60 @@
+fr:
+  services:
+    general:
+      service_not_available: Service non disponible. Veuillez réessayer plus tard.
+      not_authorized: Vous n'êtes pas autorisé à faire cette action. Veuillez vous identifier.
+      insufficient_credits: Vous n'avez pas assez de flèches. Veuillez recharger votre compte.
+      not_found: Non trouvé.
+      unknown_error: Erreur inconnue. Veuillez réessayer plus tard.
+    authentication:
+      failed: "L'authentification a échoué."
+      disconnect_failed: Echec de la déconnexion.
+    user:
+      creation_failed: Erreur lors de l'inscription
+      profile_loading_failed: Le chargement du profil a échoué.
+      companies_loading_failed: Le chargement des champions a échoué.
+      company_loading_failed: Le chargement du champion a échoué.
+      notifications_loading_failed: Le chargement des notifications a échoué.
+      request_password_failed: L'envoi d'un nouveau mot de passe a échoué.
+    referral:
+      self_loading_failed: Le chargement des invitations a échoué.
+    profession:
+      professions_loading_failed: Le chargement des professions a échoué.
+      profession_loading_failed: Le chargement de la profession a échoué.
+    post_category:
+      post_categories_loading_failed: Le chargement des catégories a échoué.
+      post_category_loading_failed: Le chargement de la catégorie a échoué.
+    place:
+      city_loading_failed: Le chargement des villes a échoué.
+      departement_loading_failed: Le chargement des departements a échoué.
+    deal:
+      deal_loading_failed: Le chargement du bon plan a échoué.
+      deals_loading_failed: Le chargement des bons plans a échoué.
+    post:
+      post_loading_failed: Le chargement du post a échoué.
+      posts_loading_failed: Le chargement des posts a échoué.
+    classified_ad:
+      classified_ads_loading_failed: Le chargement des annonces a échoué.
+      classified_ad_loading_failed: "Le chargement de l'annonce a échoué."
+    quotation_request:
+      quotation_requests_loading_failed: Le chargement des demandes de devis a échoué.
+      quotation_request_loading_failed: Le chargement de la demande de devis a échoué.
+    pros:
+      pros_loading_failed: Le chargement des champions a échoué.
+    conversations: 
+      conversations_loading_failed: Le chargement des messages a échoué.
+      conversation_loading_failed: "Impossible de charger la conversation %{conversationId}."
+    tags:
+      tags_loading_failed: Le chargement des tags a échoué.
+      search_failed: La recherche a échoué.
+    transactions:
+      transactions_loading_failed: Le chargement des transactions a échoué.
+      credit_adding: Ajout de flèches
+    pricings:
+      pricing_loading_failed: Le chargement du prix a échoué.
+      pricings_loading_failed: Le chargement des prix a échoué.
+      rate_loading_failed: Le chargement des taux de change a échoué.
+    comments:
+      loading_failed: Le chargement des commentaires a échoué.
+    favorites:
+      loading_failed: Le chargement des favoris a échoué.

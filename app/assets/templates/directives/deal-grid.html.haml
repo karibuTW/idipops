@@ -1,0 +1,5 @@
+%div{ layout: "column", "layout-align" => "center center", flex: "" }
+	.deal-list{ layout: "row", "layout-wrap" => "true", "layout-align" => "center center" }
+		%div{ "dir-paginate" => "deal in deals | itemsPerPage: 15: 'dealGridPagination'", "pagination-id" => "dealGridPagination" }
+			%deal-wide-flat-box{ deal: "deal", wide: "false" }
+	%dir-pagination-controls{ "on-page-change" => "resizeBoxes()", "pagination-id" => "dealGridPagination" }

@@ -1,0 +1,24 @@
+%form{ role: "form", name: "referralForm" }
+	.modal-header
+		%h3.modal-title {{'referrals.send_referral_email' | t}}
+	.modal-body
+		%div
+			%p {{intro}}
+			.form-group.required
+				%label.control-label{ for: "email" }
+					%span {{'referrals.emails_label' | t}}
+				%tags-input#email-tags{"ng-model" => "emails", "placeholder" => "{{'referrals.emails_placeholder' | t}}", "replace-spaces-with-dashes" => "true", type: "email", "on-tag-added" => "checkExitReferral($tag)", required: "true" }
+			.form-group.required
+				%label.control-label{ for: "subject" }
+					%span {{'referrals.subject_label' | t}}
+				%input.form-control{"ng-model" => "subject", maxlength: 500, required: "true"}
+			.form-group.required
+				%label.control-label{for: "description"} {{'referrals.message_label' | t}}
+				%textarea.form-control{"ng-model" => "message", required: "true", rows: "4"}
+		%div{ "ng-show" => "isUpdating" }
+			%md-progress-linear{ "md-mode" => "indeterminate" }
+	.modal-footer.button-stroke{ "ng-hide" => "isUpdating" }
+		%button.button.button_js.orange_border_black_text{ type: "submit", "ng-click" => "confirm()", "ng-if"=> "!referralForm.$invalid" }
+			%span.button_label {{'home.change_email_modal.confirm_label' | t}}
+		%button.button.button_js.orange_border_black_text{ "ng-click" => "cancel()"}
+			%span.button_label {{'home.change_email_modal.cancel_label' | t}}

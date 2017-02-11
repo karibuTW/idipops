@@ -1,0 +1,113 @@
+
+.main-view-container{
+    // Animations for the separate UI Views
+    &.ng-enter,
+    &.ng-leave{
+    }
+
+    &.ng-enter{
+       // @include transition(.2s ease-out all .2s);
+    }
+
+    &.ng-leave{
+       // @include transition(.2s ease-out all);
+    }
+
+    &.ng-enter,
+    &.ng-leave.ng-leave-active{
+        // @include opacity(0);
+    }
+
+    &.ng-leave,
+    &.ng-enter.ng-enter-active{
+        // @include opacity(1);
+    }
+}
+
+.fade-hide.ng-hide-remove {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  opacity:1;
+}
+
+.fade-hide.ng-hide-add {
+  opacity:0;
+}
+
+.slide-left.ng-enter
+{ 
+    -webkit-animation: fadeInLeft 0.25s;
+    -moz-animation: fadeInLeft 0.25s;
+    -ms-animation: fadeInLeft 0.25s;
+    animation: fadeInLeft 0.25s;
+}
+
+.slide-right.ng-leave
+{ 
+    -webkit-animation: fadeOutRight 0.15s;
+    -moz-animation: fadeOutRight 0.15s;
+    -ms-animation: fadeOutRight 0.15s;
+    animation: fadeOutRight 0.15s;
+}
+
+.slide-right.ng-enter
+{
+  -webkit-animation: fadeInRight 0.25s;
+    -moz-animation: fadeInRight 0.25s;
+    -ms-animation: fadeInRight 0.25s;
+    animation: fadeInRight 0.25s;
+}
+
+.slide-left.ng-leave
+{ 
+    -webkit-animation: fadeOutLeft 0.15s;
+    -moz-animation: fadeOutLeft 0.15s;
+    -ms-animation: fadeOutLeft 0.15s;
+    animation: fadeOutLeft 0.15s;
+}
+
+.show-slide-down.ng-hide-remove {
+    -webkit-animation: fadeInDown 0.45s;
+    -moz-animation: fadeInDown 0.45s;
+    -ms-animation: fadeInDown 0.45s;
+    animation: fadeInDown 0.45s;
+}
+
+.show-slide-down.ng-hide-add {
+    -webkit-animation: fadeOutDown 0.15s;
+    -moz-animation: fadeOutDown 0.15s;
+    -ms-animation: fadeOutDown 0.15s;
+    animation: fadeOutDown 0.15s;
+}
+
+.slide-up.ng-show
+{ 
+    -webkit-animation: fadeInUp 0.25s;
+    -moz-animation: fadeInUp 0.25s;
+    -ms-animation: fadeInUp 0.25s;
+    animation: fadeInUp 0.25s;
+}
+
+.slide-down.ng-hide
+{ 
+    -webkit-animation: fadeOutDown 0.15s;
+    -moz-animation: fadeOutDown 0.15s;
+    -ms-animation: fadeOutDown 0.15s;
+    animation: fadeOutDown 0.15s;
+}
+
+.slide-down.ng-show
+{
+  -webkit-animation: fadeInDown 0.25s;
+    -moz-animation: fadeInDown 0.25s;
+    -ms-animation: fadeInDown 0.25s;
+    animation: fadeInDown 0.25s;
+}
+
+.slide-up.ng-hide
+{ 
+    -webkit-animation: fadeOutUp 0.15s;
+    -moz-animation: fadeOutUp 0.15s;
+    -ms-animation: fadeOutUp 0.15s;
+    animation: fadeOutUp 0.15s;
+}

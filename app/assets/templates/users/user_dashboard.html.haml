@@ -1,0 +1,267 @@
+.my-classified{ layout: "column", "ng-controller" => "UserDashboardController"}
+	%md-tabs{ "md-dynamic-height" => "true", "md-selected" => "tabs.selected", "md-center-tabs" => "false" }
+		%md-tab{ "md-on-select" => "getCommunications()" }
+			%md-tab-label
+				%span
+					{{'user_dashboard.communications' | t}}
+					-# {{'user_dashboard.classified_ads' | t}}
+					-# %md-tooltip{ "md-direction" => "top", "md-autohide" => "true" } {{'user_dashboard.classified_ads_tip' | t}}
+				%span.badge{"ng-show" => "session.user.notifications.conversations + session.user.notifications.classified_ads + session.user.notifications.quotation_requests > 0"}
+					{{session.user.notifications.conversations + session.user.notifications.classified_ads + session.user.notifications.quotation_requests}}
+			%md-tab-body
+				.tab-content{ layout: "column"}
+					%div{ layout: "column" }
+						.options-select{ layout: "column", "layout-gt-sm" => "row" }
+							%md-radio-group.dashboard-radio{ "flex-gt-sm" => "60", flex: "100", "ng-model" => "filter.selectedFilter", layout: "row", "ng-change" => "getCommunications()", "layout-wrap" => true }
+								%md-radio-button.md-primary{ value: "messages", "aria-label" => "{{'user_dashboard.messages' | t}}"}
+									{{'user_dashboard.messages' | t}}
+									%span.badge{"ng-show" => "session.user.notifications.conversations > 0"}
+										{{session.user.notifications.conversations}}
+								%md-radio-button.md-primary{ value: "classified_ads", "aria-label" => "{{'user_dashboard.my_classified_ads' | t}}"}
+									{{'user_dashboard.my_classified_ads' | t}}
+									%span.badge{"ng-show" => "session.user.notifications.classified_ads > 0"}
+										{{session.user.notifications.classified_ads}}
+								%md-radio-button.md-primary{ value: "quotation", "aria-label" => "{{'user_dashboard.quotation' | t}}"}
+									{{'user_dashboard.quotation' | t}}
+									%span.badge{"ng-show" => "session.user.notifications.quotation_requests > 0"}
+										{{session.user.notifications.quotation_requests}}
+							%div{ flex: "100", "flex-gt-sm" => "40" }
+								%search-box{ "ng-model" => "filter.searchTerms" }
+						%conversation-list{ conversations: "conversations", "session-user" => "session.user", "show-user-card" => "false", "ng-show" => "filter.selectedFilter == 'messages' " }
+						%div{ "ng-show" => "filter.selectedFilter == 'classified_ads' " }
+							%div{ layout: "column", "ng-hide" => "isLoading || myAds.length > 0", flex: "100", "flex-gt-sm" => "75" }
+								.no-classified-ad-buttons{ "layout-align" => "start center", layout: "row", "ng-show" => "filter.selectedFilter == 'classified_ads' && filter.searchTerms == ''" }
+									.button-stroke
+										%button.button.button_js.orange_border_black_text.visibility-button{ "ui-sref" => "post-ad" }
+											%span.button_label {{'user_dashboard.post_label' | t}}
+									.button-stroke
+										%button.button.button_js.orange_border_black_text.visibility-button{ "ng-click" => "allProfessionSelectHandler()" }
+											%span.button_label {{'user_dashboard.find_pro_label' | t}}
+								%p.nothing{ "ng-hide" => "filter.selectedFilter == 'active' && filter.searchTerms == ''"} {{'user_dashboard.no_classified_ads' | t}}
+							%div{ "dir-paginate" => "ad in myAds | filter:filter.searchTerms | itemsPerPage: 5: 'adPagination'", "pagination-id" => "adPagination" }
+								.ad.no-padding{ layout: "row", "layout-align" => "start start", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator' ]", "layout-wrap" => true }
+									.box-left.resp-box-left{ flex: "100", layout: "row", "layout-align" => "start center", "flex-gt-sm" => "20" }
+										%img.face{"ng-src" => "{{ad.user_avatar_url}}"}
+										.name {{ad.user_display_name}}
+									.box.sides-bordered.resp-box{ flex: "100", layout: "column", "flex-gt-sm" => "55" }
+										%a.orange.list-header{ "ui-sref" => "ad-details({adid: ad.id})" }
+											{{ad.title}}
+											%span.badge{"ng-show" => "ad.unread_conversations_count > 0"}
+												{{ad.unread_conversations_count}}
+										%p{ "ng-bind-html" => "replaceNewLinesInText(ad.description)" }
+										.footer {{'user_dashboard.times_seen' | t:{views: ad.views} }}
+									.box-right.resp-box-right{ layout: "row", "layout-gt-sm" => "column", "layout-align" => "space-between center", "layout-align-gt-sm" => "start start", flex: "100", "flex-gt-sm" => "25" }
+										%div{ layout: "row" }
+											.classified_type {{'user_dashboard.classified_ad' | t}}
+											%classified-ad-status{ status: "ad.status", "is-updating" => "updatingClassified[ad.id]" }
+											%annonce-status-dropdown{ ad: "ad", "updating-classified" => "updatingClassified", ads: "myAds", type: "'particulier'" }
+										%p.timestamp
+											{{'user_dashboard.updated' | t}}
+											%span{"am-time-ago" => "ad.updated_at"}
+							%div{ layout: "column", "layout-align" => "start center" }
+								%dir-pagination-controls{ "pagination-id" => "adPagination" }
+								%div{ flex: "25", "show-gt-sm" => "" }
+						%div{ "ng-show" => "filter.selectedFilter == 'quotation' " }
+							%div{ layout: "column", "ng-hide" => "isLoading || myQuotationRequests.length > 0" }
+								%p.nothing {{'pro_dashboard.no_quotations' | t}}
+							%div{ "dir-paginate" => "qr in myQuotationRequests | filter:filter.searchTerms | itemsPerPage: 5: 'quotationPagination'", "pagination-id" => "quotationPagination" }
+								.ad.no-padding.resp-ad{ layout: "row", "layout-align" => "start start", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator' ]", "layout-wrap" => true }
+									.box-left.resp-box-left{ flex: "100", layout: "row", "layout-align" => "start center", "flex-gt-sm" => "20" }
+										%img.face{"ng-src" => "{{qr.user_avatar_url}}"}
+										.name {{qr.user_display_name}}
+									.box.sides-bordered.resp-box{ flex: "100", layout: "column", "flex-gt-sm" => "55" }
+										%a.orange.list-header{ "ui-sref" => "qr-details({qrid: qr.id})" }
+											{{qr.title}}
+											%span.badge{"ng-show" => "qr.unread_conversations_count > 0"}
+												{{qr.unread_conversations_count}}
+										%p{ "ng-bind-html" => "replaceNewLinesInText(qr.description)" }
+									.box-right.resp-box-right{ layout: "row", "layout-gt-sm" => "column", "layout-align" => "start start", flex: "100", "flex-gt-sm" => "25", "layout-wrap" => "true" }
+										%div{ layout: "row" }
+											.quotation_type {{'user_dashboard.quotation_request' | t}}
+											%quotation-request-status-dropdown{ "ad-id" => "qr.classified_ad_id", "ad-status" => "qr.classified_ad_status", "updating-classified" => "updatingClassified" }
+										%p.timestamp
+											{{'user_dashboard.sent_on' | t}}
+											%span{"am-time-ago" => "qr.created_at"}
+										.quotation_received{ "ng-if" => "qr.num_of_quotations > 0", "flex-sm" => "100", "flex-xs" => "100" } &#x2714 {{qr.num_of_quotations + '/' + qr.num_of_requests + ' ' + ('user_dashboard.quotation_received' | t)}}
+							%div{ layout: "column", "layout-align" => "start center" }
+								%dir-pagination-controls{ "pagination-id" => "quotationPagination" }
+						%div{ layout: "column", "layout-align" => "start center" }
+							%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isLoading"}
+					
+		%md-tab{ "md-on-select" => "getPreferences()" }
+			%md-tab-label
+				%span
+					{{'user_dashboard.preferences' | t}}
+					%span.badge{"ng-show" => "session.user.notifications.subscriptions > 0"}
+						{{(session.user.notifications.subscriptions)}}
+			%md-tab-body
+				.tab-content{ layout: "column"}
+					%div{ layout: "column" }
+						.options-select{ layout: "column", "layout-gt-sm" => "row"  }
+							%md-radio-group.dashboard-radio{ flex: "40", "ng-model" => "preferencesFilter.selectedFilter", layout: "row", "ng-change" => "getPreferences()", "layout-wrap" => true }
+								%md-radio-button.md-primary{ value: "subscriptions", "aria-label" => "{{'user_dashboard.subscriptions' | t}}"}
+									{{'user_dashboard.subscriptions' | t}}
+									%span.badge{"ng-show" => "session.user.notifications.subscriptions > 0"}
+										{{(session.user.notifications.subscriptions)}}
+								%md-radio-button.md-primary{ value: "favorites", "aria-label" => "{{'user_dashboard.favorites' | t}}"} {{'user_dashboard.favorites' | t}}
+							%md-checkbox.md-primary{ flex: "20", "ng-model" => "session.user.premium_posts", "aria-label" => "{{'user_dashboard.premium_posts' | t}}", "ng-change" => "updatePremiumSubscription()", "ng-disabled" => "isSavingProfile", "ng-show" => "preferencesFilter.selectedFilter == 'subscriptions' " } {{'user_dashboard.premium_posts' | t}}
+							%div{ flex: "100", "flex-gt-sm" => "40" }
+								%search-box{ "ng-model" => "preferencesFilter.searchTerms" }
+						%div{ "ng-show" => "preferencesFilter.selectedFilter == 'subscriptions' " }
+							%div{ layout: "column", "ng-hide" => "isPreferencesLoading || subscribedPosts.length > 0" }
+								%p.nothing {{'pro_dashboard.no_subscriptions' | t}}
+							%div{ "dir-paginate" => "post in subscribedPosts | filter:preferencesFilter.searchTerms | itemsPerPage: 5: 'postPagination'", "pagination-id" => "postPagination" }
+								.ad.no-padding{ layout: "row", "layout-align" => "start start", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator' ]", "layout-wrap" => true }
+									.box-left.resp-box-left{ flex: "100", layout: "row", "layout-align" => "start center", "flex-gt-xs" => "20" }
+										%img.face{"ng-src" => "{{post.user_avatar_url}}"}
+										.name {{post.user_nickname}}
+									.box.sides-bordered.resp-box{ flex: "100", layout: "column", "flex-gt-xs" => "55" }
+										%a.orange.list-header{ "ui-sref" => "posts.show({poid: post.slug})" }
+											{{post.title}}
+											%span.badge{"ng-show" => "post.unread_count > 0"}
+												{{post.unread_count}}
+										%p{ "ng-bind-html" => "convertDescription(post.description)" }
+										.category-name{ layout: "row", "layout-align" => "start center" }
+											= image_tag "icons/categories-orange.svg"
+											%span {{post.category_name}}
+											.subscribe-button{ "ng-click" => "post.category_subscribed ? categoryUnsubscribe(post) : categorySubscribe(post)", "ng-class" => "subscribing? 'pending' : post.category_subscribed ? 'active' : ''" }
+												= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/abonnement-grey.svg"))).to_html.html_safe
+									.box-right.resp-box-right{ layout: "column", "layout-align" => "space-between center", "layout-align-gt-xs" => "start start", flex: "100", "flex-gt-xs" => "25" }
+										%div{ layout: "row" }
+											.post-numbers.author-subscribe{ layout: "row", "layout-align" => "start center" }
+												.subscribe-button{ "ng-click" => "post.author_subscribed ? unsubscribeAuthor(post) : subscribeAuthor(post)", "ng-class" => "post.author_subscribing? 'pending' : post.author_subscribed ? 'active' : ''" }
+													= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/follow-grey.svg"))).to_html.html_safe
+												.post-num {{post.num_of_subscriptions}}
+											.post-numbers{ layout: "row", "layout-align" => "start center" }
+												%img{ "ng-src" => asset_path('icons/views-grey.svg') }
+												.post-num {{post.num_of_views}}
+											.post-numbers{ layout: "row", "layout-align" => "start center" }
+												.subscribe-button{ "ng-click" => "post.favorited ? removeFromFavorites(post) : addToFavorites(post)", "ng-class" => "post.adding_to_favorites? 'pending' : post.favorited ? 'active-red' : ''" }
+													= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/heart-grey.svg"))).to_html.html_safe
+												.post-num {{post.num_of_favorited}}
+										-# %div{ layout: "row" }
+										-# 	.classified_type {{'user_dashboard.classified_ad' | t}}
+										-# 	%classified-ad-status{ status: "ad.status", "is-updating" => "updatingClassified[ad.id]" }
+										-# 	%annonce-status-dropdown{ ad: "ad", "updating-classified" => "updatingClassified", ads: "myAds", type: "'particulier'" }
+										%p.timestamp
+											{{'user_dashboard.updated' | t}}
+											%span{"am-time-ago" => "post.updated_at"}
+							%div{ layout: "column", "layout-align" => "start center" }
+								%dir-pagination-controls{ "pagination-id" => "postPagination" }
+						%div{ layout: "column", "ng-hide" => "preferencesFilter.selectedFilter != 'favorites' || isPreferencesLoading || favorites.length > 0" }
+							%p.nothing {{'pro_dashboard.no_favorites' | t}}
+						.fav-pros-list{ layout: "column", "ng-show" => "preferencesFilter.selectedFilter == 'favorites' " }
+							%div{ "dir-paginate" => "pro in favorites | filter:filter.searchTerms | itemsPerPage: 10: 'favoritesPagination'", "pagination-id" => "favoritesPagination" }
+								%div{ "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator no-padding' ]" }
+									.fav-pros.no-padding{ layout: "row", "layout-align" => "start start", "layout-wrap" => true }
+										.box-left.resp-box-left{ flex: "10", layout: "row", "layout-align" => "start center", "flex-sm" => "30" }
+											%avatar.fav-pro-face{"avatar-url" => "pro.user_avatar_url"}
+										.box.resp-box{ flex: "65", layout: "column", "flex-sm" => "70" }
+											%a.orange.list-header{ "ui-sref" => "pro({pid: pro.pro_pretty_name})", "ng-show" => "pro.user_type == 'pro'" } {{pro.user_name}}
+											.orange.list-header{ "ng-hide" => "pro.user_type == 'pro'" } {{pro.user_name}}
+											.fav-pro-activity.primary {{pro.title}}
+											.footer-fav-pros{ layout: "column" }
+												%div{ "ng-repeat" => "address in pro.addresses", "ng-if" => "pro.favorite_type == 'pro'" }
+													%i.fa.fa-map-marker.fa-fw
+													&nbsp;{{address.formatted_address}}
+												%div{ "ng-if" => "pro.favorite_type == 'post'" }
+													{{pro.category_name}}
+												%div{ "ng-if" => "pro.favorite_type == 'deal'" }
+													{{pro.description}}
+										.box-right.resp-box-right{ layout: "column", flex: "25", "flex-sm" => "100", "layout-sm" => "row", "layout-align-sm" => "start center" }
+											%a.heart-box{ href: "", "ng-click" => "toggleFavorite(pro)", "ng-class" => "pro.favorited ? 'favorited' : ''" }
+												%i.fa{ "ng-class" => "pro.isSaving ? 'fa-spinner fa-spin' : 'fa-heart'" }
+											%p {{('user_dashboard.' + pro.favorite_type) | t}}
+							%div{ layout: "column", "layout-align" => "start center" }
+								%dir-pagination-controls{ "pagination-id" => "favoritesPagination" }
+						%div{ layout: "column", "layout-align" => "start center" }
+							%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isPreferencesLoading"}
+						
+		%md-tab{ "md-on-select" => "getPosts()" }
+			%md-tab-label
+				%span
+					{{'user_dashboard.posts' | t}}
+					%span.badge{"ng-show" => "(session.user.notifications.post_mentions_count + session.user.notifications.mentions_count) > 0"}
+						{{session.user.notifications.post_mentions_count + session.user.notifications.mentions_count}}
+			%md-tab-body
+				.tab-content{ layout: "column"}
+					%div{ layout: "column" }
+						.options-select{ layout: "column", "layout-gt-sm" => "row"  }
+							%md-radio-group.dashboard-radio{ flex: "60", "ng-model" => "postsFilter.selectedFilter", layout: "row", "ng-change" => "getPosts()", "layout-wrap" => true }
+								%md-radio-button.md-primary{ value: "myPosts", "aria-label" => "{{'user_dashboard.my_posts' | t}}"} 
+									{{'user_dashboard.my_posts' | t}}
+									%span.badge{"ng-show" => "session.user.notifications.post_mentions_count > 0"}
+										{{session.user.notifications.post_mentions_count}}
+								%md-radio-button.md-primary{ value: "mentions", "aria-label" => "{{'user_dashboard.mentions' | t}}"}
+									{{'user_dashboard.mentions' | t}}
+									%span.badge{"ng-show" => "session.user.notifications.mentions_count > 0"}
+										{{session.user.notifications.mentions_count}}
+							%div{ flex: "100", "flex-gt-sm" => "40" }
+								%search-box{ "ng-model" => "postsFilter.searchTerms" }
+						.button-stroke
+							%button.button.button_js.orange_border_black_text.visibility-button{ "ui-sref" => "posts.edit" }
+								%span.button_label {{'pro_dashboard.add_post' | t}}
+						%div{ "ng-show" => "postsFilter.selectedFilter == 'myPosts' " }
+							%div{ "ng-hide" => "posts.length > 0 || isPostsLoading"}
+								%p.nothing {{'user_dashboard.no_posts' | t}}
+							%div{ "dir-paginate" => "post in posts | filter:postsFilter.searchTerms | itemsPerPage: 5: 'myPostPagination'", "pagination-id" => "myPostPagination" }
+								.ad.no-padding{ layout: "row", "layout-align" => "start start", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator' ]", "layout-wrap" => true }
+									.box.sides-bordered.no-left-border.resp-box{ flex: "100", layout: "column", "flex-gt-xs" => "75" }
+										%a.orange.list-header{ "ui-sref" => "posts.show({poid: post.slug})" }
+											{{post.title}}
+											%span.badge{"ng-show" => "post.unread_count > 0"}
+												{{post.unread_count}}
+										%p{ "ng-bind-html" => "post.description" }
+										.category-name{ layout: "row", "layout-align" => "start center" }
+											= image_tag "icons/categories-orange.svg"
+											%span {{post.category_name}}
+											.subscribe-button{ "ng-click" => "post.category_subscribed ? categoryUnsubscribe(post) : categorySubscribe(post)", "ng-class" => "subscribing? 'pending' : post.category_subscribed ? 'active' : ''" }
+												= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/abonnement-grey.svg"))).to_html.html_safe
+									.box-right.resp-box-right{ layout: "column", "layout-align" => "space-between center", "layout-align-gt-xs" => "start start", flex: "100", "flex-gt-xs" => "25" }
+										%div{ layout: "row" }
+											.post-numbers.author-subscribe{ layout: "row", "layout-align" => "start center" }
+												.subscribe-button.no-links
+													= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/follow-grey.svg"))).to_html.html_safe
+												.post-num {{post.num_of_subscriptions}}
+											.post-numbers{ layout: "row", "layout-align" => "start center" }
+												%img{ "ng-src" => asset_path('icons/views-grey.svg') }
+												.post-num {{post.num_of_views}}
+											.post-numbers{ layout: "row", "layout-align" => "start center" }
+												.subscribe-button.no-links
+													= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/heart-grey.svg"))).to_html.html_safe
+												.post-num {{post.num_of_favorited}}
+										.button-stroke{ layout: "row" }
+											%button.button.button_js.grey_border_black_text.post-mng-button{ "ui-sref" => "posts.edit({poid: post.id})", "ng-show" => "post.editable" }
+												%span.button_label
+													%i.fa.fa-pencil-square-o
+												%md-tooltip{ "md-direction" => "top", "md-autohide" => "true" } {{'user_dashboard.edit_label' | t}}
+										-# %div{ layout: "row" }
+										-# 	.classified_type {{'user_dashboard.classified_ad' | t}}
+										-# 	%classified-ad-status{ status: "ad.status", "is-updating" => "updatingClassified[ad.id]" }
+										-# 	%annonce-status-dropdown{ ad: "ad", "updating-classified" => "updatingClassified", ads: "myAds", type: "'particulier'" }
+										%p.timestamp
+											{{'user_dashboard.updated' | t}}
+											%span{"am-time-ago" => "post.updated_at"}
+							%div{ layout: "column", "layout-align" => "start center" }
+								%dir-pagination-controls{ "pagination-id" => "myPostPagination" }
+						%div{ "ng-show" => "postsFilter.selectedFilter == 'mentions' " }
+							%div{ "ng-hide" => "isPostsLoading || mentions.length > 0"}
+								%p.nothing {{'user_dashboard.no_posts' | t}}
+							%div{ "dir-paginate" => "post in mentions | filter:postsFilter.searchTerms | itemsPerPage: 5: 'mentionsPagination'", "pagination-id" => "mentionsPagination" }
+								.ad.no-padding{ layout: "row", "layout-align" => "start start", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator' ]", "layout-wrap" => true }
+									.box-left.resp-box-left{ flex: "100", layout: "row", "layout-align" => "start center", "flex-gt-xs" => "20" }
+										%img.face{"ng-src" => "{{post.user_avatar_url}}"}
+										.name {{post.user_nickname}}
+									.box.sides-bordered.no-right-border.resp-box{ flex: "100", layout: "column", "flex-gt-xs" => "80" }
+										%a.orange.list-header{ "ui-sref" => "posts.show({poid: post.slug})" }
+											{{post.title}}
+											%span.badge{"ng-show" => "post.unread_count > 0"}
+												{{post.unread_count}}
+										%p{ "ng-bind-html" => "convertDescription(post.content)" }
+										.category-name{ layout: "row", "layout-align" => "start center" }
+											= image_tag "icons/categories-orange.svg"
+											%span {{post.category_name}}
+							%div{ layout: "column", "layout-align" => "start center" }
+								%dir-pagination-controls{ "pagination-id" => "mentionsPagination" }
+						%div{ layout: "column", "layout-align" => "start center" }
+							%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isPostsLoading"}

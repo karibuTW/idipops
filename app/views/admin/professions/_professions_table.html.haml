@@ -1,0 +1,28 @@
+.table-responsive  
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Nom
+        %th Description
+        %th Catégorie de prix
+        %th Actif
+        %th Parent
+        %th Action
+    %tbody
+      - @professions.each do |p|
+        %tr
+          %td= p.id
+          %td= p.name
+          %td= p.description
+          %td= p.pricing_category.name unless !p.pricing_category.present?
+          %td
+            - if p.active?
+              %span.glyphicon.glyphicon-ok
+          %td
+            - begin
+              = Profession.find_by(id: p.parent_id).name
+            - rescue Exception => e
+              = '-'
+          %td
+            = link_to "Modifier", edit_admin_profession_path(p), class: "btn btn-default btn-xs"

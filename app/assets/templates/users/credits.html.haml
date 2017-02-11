@@ -1,0 +1,106 @@
+%div.grey-bg.center-column{ layout: "column", "ng-controller" => "CreditsController"}
+  .button-stroke
+    %button.button.button_js.grey_border_black_text{ "ui-sref" => "home.pros-dashboard", "ng-show" => "session.connected" }
+      %span.button_label
+        {{'general.back' | t}}
+  %h1 {{'credits.my_arrows' | t}}
+  .line-separator.no-padding.no-margin
+  .line.credits{ layout: "row", "layout-align" => "center center", "layout-xs" => "column" }
+    %div{ flex: "5", "hide-sxs" => "" }
+    .credit-intro-sentence{ flex: "30", "flex-xs" => "100" } {{'credits.you_have' | t}}
+    %div{ layout: "row", "layout-align" => "center center", flex: "" }
+      .credit-amount.big {{session.user.balance}}
+      = image_tag "fleche-credits.svg"
+    %div{ flex: "5", "hide-sxs" => "" }
+  .line-separator.no-margin
+  %h2 {{'credits.buying_credits' | t}}
+  .well.well-white.credit-well
+    %div{ layout: "row", "layout-align" => "space-between center", href: "", "ng-click" => "isCollapsed = !isCollapsed" }
+      %h4 {{'credits.buying_tips' | t}}
+      .collapsable-info-dropdown
+        %i.fa.fa-2x{ "ng-class" => "isCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+    %div{ "uib-collapse" => "isCollapsed", "ng-bind-html" => "'credits.tip_content' | t:{changeCredits: changeCredits}" }
+
+  %md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "isLoadingPricings" }
+  %div{ "ng-hide" => "isLoadingPricings" }
+    .credit-intro-sentence {{'credits.select_pack' | t}}
+    .forfaits{ layout: "row", "layout-wrap" => "", "layout-align" => "space-between center", "layout-align-xs" => "center center" }
+      .forfait-circle.forfait1{ layout: "column", "layout-align" => "start center", "ng-click" => "addCredits('forfait_1')" }
+        .forfait-credits {{forfaits.forfait_1.credit_amount}}
+        .forfait-name{ "ng-bind-html" => "'credits.forfait1_name' | t" }
+        .forfait-price {{forfaits.forfait_1.amount_cents}}€
+      .forfait-circle.forfait2{ layout: "column", "layout-align" => "start center", "ng-click" => "addCredits('forfait_2')" }
+        %i.fa.fa-check.forfait-checkbox
+        .forfait-credits {{forfaits.forfait_2.credit_amount}}
+        .forfait-name{ "ng-bind-html" => "'credits.forfait2_name' | t" }
+        .forfait-price {{forfaits.forfait_2.amount_cents}}€
+      .forfait-circle.forfait3{ layout: "column", "layout-align" => "start center", "ng-click" => "addCredits('forfait_3')" }
+        .forfait-credits {{forfaits.forfait_3.credit_amount}}
+        .forfait-name{ "ng-bind-html" => "'credits.forfait3_name' | t" }
+        .forfait-price {{forfaits.forfait_3.amount_cents}}€
+      .forfait-circle.forfait4{ layout: "column", "layout-align" => "start center", "ng-click" => "addCredits('forfait_4')" }
+        .forfait-credits {{forfaits.forfait_4.credit_amount}}
+        .forfait-name{ "ng-bind-html" => "'credits.forfait4_name' | t" }
+        .forfait-price {{forfaits.forfait_4.amount_cents}}€
+    .credit-intro-sentence.with-margins {{'credits.enter_amount' | t}}
+    %form.form-horizontal.resp-add-credit{role: "form", "ng-submit" => "addCredits('change_rate')", layout: "row", "layout-wrap" => true }
+      .add-credit-intro
+        %label.control-label{for: "fleches-amount"}
+          {{'credits.numbers_to_add' | t}}
+          %span.help-block{ "ng-bind-html" => "'credits.changing_rate' | t:{changeCredits: changeCredits}" }
+      %div{ flex: "20", "flex-xs" => "45" }
+        %input.form-control#fleches-amount{type: "number", "ng-model" => "flechesAmount", min: "{{changeCredits}}", step: "{{changeCredits}}", required: "" }
+      .text-centered.resp-cost{ flex: "15", "flex-xs" => "100", "flex-sm" => "20" }
+        %label.control-label{ "ng-bind-html" => "'credits.cost' | t:{amount: flechesAmount/changeCredits * changeEuro}" }
+      .credit-add-button{ flex: "30", "flex-xs" => "100", "flex-sm" => "25" }
+        .button-stroke
+          %button.button.button_js.orange_border_black_text{ type: "submit", "ng-disabled" => "isSaving" }
+            %span.button_label {{ isSaving ? ('credits.adding' | t) : ('credits.add_label' | t) }}
+    .well.well-white.credit-well
+      %div{ layout: "row", "layout-align" => "space-between center", href: "", "ng-click" => "isPricingTableCollapsed = !isPricingTableCollapsed" }
+        %h4{ flex: "" } {{'credits.pricing_header' | t}}
+        .collapsable-info-dropdown
+          %i.fa.fa-2x{ "ng-class" => "isPricingTableCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+      %div{ "uib-collapse" => "isPricingTableCollapsed" }
+        %price-table
+  .line-separator.no-margin.no-padding
+  %h2 {{'credits.transactions_title' | t}}
+  .table-responsive
+    %table.table.table-condensed
+      %thead
+        %tr
+          %th {{'credits.date_header' | t}}
+          %th {{'credits.description_header' | t}}
+          %th {{'credits.cost_header' | t}}
+          %th {{'credits.credits_header' | t}}
+          %th {{'credits.invoice_header' | t}}
+      %tbody
+        %tr{ "dir-paginate" => "transaction in transactions | itemsPerPage: 10: 'transactionsPagination'", "pagination-id" => "transactionsPagination" }
+          %td {{transaction.created_at | amDateFormat:'D MMM YYYY'}}
+          %td {{('credits.transactions.' + transaction.description) | t}}
+          %td {{transaction.amount_cents}} {{transaction.amount_currency}}
+          %td {{transaction.credit_amount >= 0 ? '+' : '-'}} {{transaction.credit_amount*(transaction.credit_amount >= 0 ? 1 : -1)}}
+          %td
+            %span{ "ng-hide" => "transaction.can_have_invoice || transaction.invoice_url" } -
+            %a.orange{ "ng-show" => "transaction.invoice_url", "ng-href" => "{{transaction.invoice_url}}", target: "_blank" }
+              %i.fa.fa-file-pdf-o
+            %a.orange{ "ng-show" => "transaction.can_have_invoice && !transaction.invoice_url && !isGeneratingInvoice[transaction.id]", "ng-click" => "generateInvoice(transaction.id)", href: ""} Créer
+            %span{ "ng-show" => "isGeneratingInvoice[transaction.id]"}
+              %i.fa.fa-spinner.fa-spin
+  %div{ layout: "column", "layout-align" => "center center"}
+    %dir-pagination-controls{ "pagination-id" => "transactionsPagination" }
+  %div{ "ng-show" => "!isLoadingTransactions && transactions && transactions.length == 0"}
+    {{'credits.no_transactions' | t}}
+  %md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "isLoadingTransactions" }
+  %div
+    %form#paymentForm{ action: (Rails.env.production? ? "https://secure-magenta1.be2bill.com/front/form/process.php" : "https://secure-test.be2bill.com/front/form/process.php"), method: "POST" }
+      %input#IDENTIFIER{ name: "IDENTIFIER", type: "hidden", "value" => "{{payment.identifier}}" }
+      %input#HASH{ name: "HASH", type: "hidden", "value" => "{{payment.hash}}" }
+      %input#OPERATIONTYPE{ name: "OPERATIONTYPE", type: "hidden", "value" => "{{payment.operation_type}}" }
+      %input#DESCRIPTION{ name: "DESCRIPTION", type: "hidden", "value" => "{{payment.description}}" }
+      %input#ORDERID{ name: "ORDERID", type: "hidden", "value" => "{{payment.order_id}}" }
+      %input#AMOUNT{ name: "AMOUNT", type: "hidden", "value" => "{{payment.amount}}" }
+      %input#VERSION{ name: "VERSION", type: "hidden", "value" => "{{payment.version}}" }
+      %input#CLIENTIDENT{ name: "CLIENTIDENT", type: "hidden", "value" => "{{payment.client_id}}" }
+      %input#CLIENTEMAIL{ name: "CLIENTEMAIL", type: "hidden", "value" => "{{payment.client_email}}" }
+      %input#LANGUAGE{ name: "LANGUAGE", type: "hidden", "value" => "FR" }

@@ -1,0 +1,30 @@
+en:
+  editor:
+    bold: Bold
+    italic: Italic
+    underline: Underline
+    strikethrough: Strikethrough
+    subscript: Subscript
+    superscript: Superscript
+    justifyleft: Left Align
+    justifycenter: Center Align
+    justifyright: Right Align
+    justifyfull: Block Justify
+    insertorderedlist: Insert Ordered List
+    insertunorderedlist: Insert Unordered List
+    outdent: Outdent
+    indent: Indent
+    removeformat: Remove Formatting
+    undo: Undo
+    redo: Redo
+    fontcolor: Font Color
+    backgroundcolor: Background Color
+    insertimage: Insert Image
+    inserthorizontalrule: Insert Horizontal Rule
+    insertspecialsymbol: Insert Special Symbol
+    insertlink: Insert Hyperlink
+    unlink: Remove Hyperlink
+    print: Print
+    font: Font
+    size: Size
+    style: Style

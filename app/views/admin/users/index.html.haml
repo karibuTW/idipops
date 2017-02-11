@@ -1,0 +1,64 @@
+.page-header
+  %h1 Utilisateurs
+  %form{action: admin_users_path}
+    .row
+      .col-md-6.col-xs-8
+        %input.form-control.input-sm{placeholder: 'Nom, email, compagnie ...', type: :text, name: :keyword, value: params[:keyword]}
+      .col-md-6.col-xs-4
+        %button.btn.btn-sm.btn-primary{type: :submit} Rechercher
+        %a.btn.btn-xs.btn-default{href: admin_users_path} X
+  = will_paginate @users
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Nom
+        %th Type
+        %th Email
+        %th Prem. conn.
+        %th Der. conn.
+        %th{style: 'min-width: 100px'} Crédits
+        %th Actif
+        %th Admin
+        %th Action
+    %tbody
+      - @users.each do |u|
+        %tr
+          %td= u.id
+          %td
+            = link_to admin_user_path(u), class: "btn btn-default btn-xs" do
+              = image_tag u.avatar.thumb('20x20#').url if u.avatar_stored?
+              = u.display_name
+          %td
+            - if u.is_pro?
+              %span.glyphicon.glyphicon-wrench
+            - elsif u.is_particulier?
+              %span.glyphicon.glyphicon-user
+            - else
+              %span.glyphicon.glyphicon-question-sign
+          %td= u.account.account_emails.first.email
+          %td= u.first_login
+          %td= u.last_login
+          %td
+            - if u.is_pro?
+              %span.points= u.balance
+              %a.btn.btn-xs.btn-default.btn-add-points{href: '', data: {url: add_credits_admin_user_path(u)}} +
+              %a.btn.btn-xs.btn-default.btn-subtract-points{href: '', data: {url: subtract_credits_admin_user_path(u)}} -
+            - else
+              \~
+          %td
+            - if u.active?
+              %span.glyphicon.glyphicon-ok.text-success
+            - else
+              %span.glyphicon.glyphicon-remove.text-danger
+          %td
+            - if u.admin?
+              %span.glyphicon.glyphicon-ok.text-success
+            - else
+              %span.glyphicon.glyphicon-remove.text-danger
+          %td
+            = link_to "Voir", admin_user_path(u), class: "btn btn-default btn-xs"
+    - if @users.size.zero?
+      %tr
+        %td{colspan: 11} Aucun utilisateur trouvé

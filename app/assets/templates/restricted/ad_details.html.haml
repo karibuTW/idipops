@@ -1,0 +1,59 @@
+.home{ layout: "row", "ng-controller" => "SingleClassifiedController" }
+	%div{ layout: "column", flex: "100", "ng-show" => "isLoading", "layout-align" => "center center" }
+		%md-progress-circular{ "md-mode" => "indeterminate" }
+	%not-connected-info{ "ng-hide" => "session.connected" }
+	%div{ layout: "column", flex: "100", "ng-hide" => "!session.connected || isLoading" }
+		%div{ layout: "row", "layout-wrap" => true }
+			.resp-left-column{ flex: "100", "flex-gt-sm" => "70" }
+				.grey-bg.center-column{ layout: "column" }
+					%div{ layout: "row", "layout-align" => "space-between start" }
+						%div{ layout: "row", "layout-wrap" => true }
+							.button-stroke.profession{ "ng-repeat" => "profession in singleAd.professions" }
+								%button.button.button_js.grey_border_black_text.btn-block{ "ui-sref" => "pros-list({pids: profession.id})" }
+									%span.button_label {{profession.name}}
+						.ad_detail_status{ layout: "row" }
+							.classified_type {{'classified_ad.title' | t}}
+							%classified-ad-status{ status: "singleAd.status", "is-updating" => "updatingClassified[singleAd.id]", "ng-show" => "session.user.user_type == 'particulier'" }
+							%annonce-status-dropdown{ ad: "singleAd", "updating-classified" => "updatingClassified", ads: "[singleAd]", type: "session.user.user_type" }
+					%h1.title-cut {{singleAd.title}}
+					%p{ "ng-show" => "singleAd.reject_reason" } {{'classified_ad.reject_reason' | t}} {{singleAd.reject_reason}}
+					%p.timestamp
+						{{'classified_ad.published' | t}}
+						%span{"am-time-ago" => "singleAd.created_at"}
+					%p.desciption{ "ng-bind-html" => "replaceNewLinesInText(singleAd.description)" }
+					%ng-gallery{ images: "singleAd.classified_ad_photos" }
+					%p
+						.button-stroke{ "ng-if" => "singleAd.quotation_request_id" }
+							%button.button.button_js.grey_border_black_text{ "ui-sref" => "qr-details({qrid: singleAd.quotation_request_id})" }
+								%span.button_label
+									{{'classified_ad.see_quotation_request' | t}}
+			%div{ flex: "100", "flex-gt-sm" => "30", layout: "column" }
+				.bordered.profile.side.resp-profile-box{ layout: "column" }
+					.out20{ layout: "row", "layout-md" => "column" }
+						%avatar.face.user-info{ "avatar-url" => "singleAd.user_avatar_url"}
+						.user{ layout: "column", "layout-align" => "end start", "flex-md" => "100" }
+							.name {{singleAd.user_display_name}}
+							.date {{"user.registered_on" | t:{date: (singleAd.user_first_login*1000 | amDateFormat:'D MMM YYYY')} }}
+					.line{ "ng-class" => "singleAd.start_date ? 'line-separator' : 'with-margin-bottom'" }
+						.user-info
+							%i.fa.fa-map-marker.fa-fw
+							&nbsp; {{singleAd.place.place_name}}
+					%div{ layout: "row", "layout-align" => "center center", "ng-if" => "singleAd.start_date" }
+						.text-centered.ad-bordered-date{ flex: "40" }
+							%i.fa.fa-calendar-o.fa-fw
+							&nbsp; {{'classified_ad.start' | t}}
+						.text-centered.border-left.ad-bordered-date.orange{ flex: "60" }
+							{{singleAd.start_date | amDateFormat:'D MMM YYYY'}}
+				.button-stroke{ "ng-hide" => "!session.user.quotation || singleAd.has_quotation || uploader.isUploading" }
+					%button.button.button_js.orange_fill_white_text.btn-block.btn-file
+						%span.button_label
+							&nbsp; {{'classified_ad.send_quotation' | t}}
+							%input#quotation{ type: "file", "nv-file-select" => "", uploader: "uploader", "ng-show" => "uploader.queue == 0", accept: ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.bmp,.png,.odt,.ods" }
+				%md-progress-linear{ "md-mode" => "determinate", "ng-value" => "uploader.queue[0].progress", "ng-show" => "uploader.isUploading" }
+		.conversations
+			.messages-header.resp-messages-header{ layout: "row" }
+				%h2
+					%i.fa.fa-comments-o
+					&nbsp; {{'classified_ad.messages' | t}}
+				%div
+			%conversation-list{ conversations: "conversations", "session-user" => "session.user", "classified-ad-id" => "singleAd.id", "show-user-card" => "true" }

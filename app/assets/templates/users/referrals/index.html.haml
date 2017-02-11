@@ -1,0 +1,44 @@
+%div.grey-bg.center-column{ layout: "column", "ng-controller" => "ReferralsController"}
+  .button-stroke
+    %button.button.button_js.grey_border_black_text{ "ui-sref" => "home.pros-dashboard", "ng-show" => "session.connected" }
+      %span.button_label
+        {{'general.back' | t}}
+    
+  %h1.orange {{'referrals.header' | t}}
+  .referral-content
+    %h4 {{(session.user.user_type == 'pro' ? 'referrals.subheader_pro' : 'referrals.subheader') | t:{reward: reward} }}
+    .button-stroke
+      %button.button.button_js.orange_border_black_text{ "ng-click" => "openReferralModal()", "ng-show" => "session.connected" }
+        %span.button_label
+          {{'referrals.send_referral_email' | t}}
+    .referral-link
+      %p.description {{ ('referrals.link_description_' + (session.user.user_type == 'pro' ? 'pro' : 'user')) | t:{reward: reward} }}
+      %p.link {{ invitationLink }}
+  .line-separator.no-padding
+  .credits{ layout: "row", "layout-align" => "center center", "ng-show" => "session.user.user_type == 'pro'" }
+    %div{ flex: "5", "hide-sm" => "" }
+    .credit-intro-sentence{ flex: "30" } {{'referrals.my_rewards' | t}}
+    .credit-amount.big{ flex: "" } {{totalReferralRewards}}
+    = image_tag "fleche-credits.svg"
+    %div{ flex: "5", "hide-sm" => "" }
+  .line-separator{ "ng-if" => "referrals.length > 0 "}
+  %md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "isLoadingReferrals" }
+  .referrals{ "ng-if" => "referrals.length > 0 "}
+    %h2 {{'referrals.referrals_title' | t}}
+    .table-responsive
+      %table.table.table-condensed
+        %thead
+          %tr
+            %th {{'referrals.email_header' | t}}
+            %th {{'referrals.customer_header' | t}}
+            %th {{'referrals.date_header' | t}}
+            %th {{'referrals.state_header' | t}}
+            %th{ "ng-show" => "session.user.user_type == 'pro'" } {{'referrals.reward_header' | t}}
+        %tbody
+          %tr{ "dir-paginate" => "referral in referrals | itemsPerPage: 20: 'sidebarReferrals'", "pagination-id" => "sidebarReferrals" }
+            %td {{referral.email}}
+            %td {{referral.customer_name}}
+            %td {{referral.send_at | amDateFormat:'D MMM YYYY'}}
+            %td {{'referrals.state.' + referral.workflow_state | t}}
+            %td{ "ng-show" => "session.user.user_type == 'pro'" } {{referral.workflow_state == "processed" ? referral.reward : 0 }}
+      %dir-pagination-controls{ "pagination-id" => "sidebarReferrals" }

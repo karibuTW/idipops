@@ -1,0 +1,47 @@
+{
+  "lib": {
+    "name": "bower-rails generated lib assets",
+    "dependencies": {
+      "angular": "latest",
+      "angular-touch": "latest",
+      "angular-i18n": "latest",
+      "angular-ui-router": "latest",
+      "angular-bootstrap": "latest",
+      "angular-material": "latest",
+      "angular-animate": "1.4.3",
+      "angular-cookies": "latest",
+      "angular-aria": "latest",
+      "hammerjs": "latest",
+      // "bootstrap-sass-official": "latest",
+      //"angular-bootstrap": "latest",
+      "ng-tags-input": "latest",
+      "angular-moment": "latest",
+      "angular-ellipsis": "latest",
+      "angular-sanitize": "latest",
+      // "angular-ui-slider": "latest",
+      "angular-xeditable": "latest",
+      "ngInfiniteScroll": "latest",
+      "angular-simple-logger": "latest",
+      "angular-google-maps": "latest",
+      "ngImgCrop": "latest",
+      "notify.js": "latest",
+      "visibilityjs": "latest",
+      "angular-toastr": "latest",
+      "api-check": "latest",
+      "angular-formly": "latest",
+      "angular-formly-templates-bootstrap": "latest",
+      "angular-utils-pagination": "latest",
+      "ngFx": "latest",
+      "angular-google-analytics": "latest",
+      "angular-carousel": "latest"
+      //"jusas-angularjs-slider": "latest"
+      //"angular-markdown-directive": "latest"
+    }
+  },
+  "vendor": {
+    "name": "bower-rails generated vendor assets",
+    "dependencies": {
+      // "three.js"    : "https://raw.github.com/mrdoob/three.js/master/build/three.js"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+%div{ "ng-controller" => "FavoriteProfessionalsController" }
+	%div{ layout: "column" }
+		%div{ layout: "row", "layout-align" => "space-between center" }
+			.button-stroke{ flex: "50" }
+				%button.button.button_js.grey_border_black_text{ "ui-sref" => "home.users-dashboard" }
+					%span.button_label {{'general.back' | t}}
+			%div{ flex: "50" }
+				%search-box{ "ng-model" => "filter.searchTerms" }
+		%h1.orange {{'favorites.title' | t}}
+		%p{ "ng-hide" => "isLoading || myFavorites.length > 0" } {{'favorites.no_results' | t}}
+		.fav-pros-list{ layout: "column" }
+			%div{ "dir-paginate" => "pro in myFavorites | filter:filter.searchTerms | itemsPerPage: 10" }
+				%div{ "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator no-padding' ]" }
+					.fav-pros.no-padding{ layout: "row", "layout-align" => "start start", "layout-wrap" => true }
+						.box-left.resp-box-left{ flex: "10", layout: "row", "layout-align" => "start center", "flex-sm" => "30" }
+							%avatar.fav-pro-face{"avatar-url" => "pro.avatar_url"}
+						.box.resp-box{ flex: "65", layout: "column", "flex-sm" => "70" }
+							%a.orange.list-header{ "ui-sref" => "pro({pid: pro.pretty_name})" } {{pro.display_name}}
+							.fav-pro-activity.primary {{pro.primary_activity}}
+							%div{ layout: "row" }
+								.fav-pro-activity{ "ng-show" => "pro.secondary_activity" } {{pro.secondary_activity}}
+								.fav-pro-activity{ "ng-show" => "pro.tertiary_activity" } &nbsp;| {{pro.tertiary_activity}}
+								.fav-pro-activity{ "ng-show" => "pro.quaternary_activity" } &nbsp;| {{pro.quaternary_activity}}
+							.footer-fav-pros{ layout: "column" }
+								%div{ "ng-repeat" => "address in pro.addresses" }
+									%i.fa.fa-map-marker.fa-fw
+									&nbsp;{{address.formatted_address}}
+						.box-right.resp-box-right{ layout: "column", flex: "25", "flex-sm" => "100", "layout-sm" => "row", "layout-align-sm" => "start center" }
+							%heart-box{ "is-favorite" => "true", "pro-id" => "pro.id", "clickable" => "true" }
+							%p.timestamp {{'user.registered_on' | t:{ date: (pro.first_login*1000 | amDateFormat:'D MMM YYYY')} }}
+		%div{ layout: "column", "layout-align" => "start center" }
+			%dir-pagination-controls
+			%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isLoading"}

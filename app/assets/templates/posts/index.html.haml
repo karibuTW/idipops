@@ -1,0 +1,98 @@
+.post-page.posts{ layout: "column", "ng-controller" => "PostsController" }
+	.search-filter.sticky-bar{ "ng-class" => "{reduced: stickyReduced}" }
+		.posts-banner{ "layout-align" => "space-between center", layout: "row", "hide-xs" => "true", "show-gt-xs" => "true" }
+			.posts-banner-text{ "layout-align" => "center center", layout: "column", flex: "" }
+				.banner-header{ "ng-bind-html" => "'posts.banner_header' | t" }
+				.banner-subheader {{'posts.banner_subheader' | t}}
+			.mini-video
+				%a.html5lightbox{ href: "https://www.youtube.com/embed/qP9rVqBscGQ?rel=0&amp;showinfo=0", title: "Idipops : le 1er réseau social des services" }
+					= video_tag "idipops242p.mp4", size: "220x124", autoplay: "true", poster: "white.png"
+				= image_tag "icons/expand-grey.svg", class: "video-expand"
+		.mobile-options{ layout: "row", "hide-gt-xs" => "true", "layout-align" => "space-between center", href: "", "ng-click" => "isOptionsCollapsed = !isOptionsCollapsed" }
+			%h2 Options
+			.collapsable-info-dropdown
+				%i.fa.fa-2x{ "ng-class" => "isOptionsCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+		.search-content{ "uib-collapse" => "isOptionsCollapsed" }
+			%div{ "layout-gt-md" => "row", layout: "column", "layout-align-gt-md" => "space-between center" }
+				.post-filter{ layout: "row", "layout-align" => "start center", "layout-wrap" => "true" }
+					%a.post-filter-type{ "ng-class" => "!filter.category && !filter.premium && !filter.zone && (!filter.search || filter.search == '') ? 'active' : ''", href: "", "ng-click" => "updateFilter('all', true)" } {{'post.filter.all' | t}}
+					%a.post-filter-type{ "ng-class" => "filter.zone ? 'active' : ''", href: "", "ng-click" => "updateFilter('zone', !filter.zone)", layout: "row", "layout-align" => "center center" }
+						= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/dans-ma-zone-grey.svg"))).to_html.html_safe
+						.filter-label {{'post.filter.zone' | t}}
+						%md-tooltip{ "md-direction" => "bottom", "md-autohide" => "true" } {{'post.filter.zone_tooltip' | t}}
+					-# %a.post-filter-type{ "ng-class" => "filter.type == 'category' ? 'active' : ''", href: "", "ng-click" => "updateFilter('category')" }
+					%post-category-selection-link.post-filter-type{ "selection-callback" => "onCategoryChanged", "default-label" => "'post.filter.category_select_label' | t", "category-id" => "filter.category", "button-classes" => "filter.category ? 'active' : ''" }
+					%a.post-filter-type{ "ng-class" => "filter.premium ? 'active' : ''", href: "", "ng-click" => "updateFilter('premium', !filter.premium)", layout: "row", "layout-align" => "center center" }
+						= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/premiums-grey.svg"))).to_html.html_safe
+						.filter-label {{'post.filter.premium' | t}}
+						%md-tooltip{ "md-direction" => "bottom", "md-autohide" => "true" } {{'post.filter.premium_tooltip' | t}}
+				.post-filter{ layout: "row", "layout-align-gt-md" => "end center", "layout-align" => "start center", "layout-wrap" => "true", flex: "" }
+					%form.post-search{ "ng-submit" => "search()", "flex-gt-xs" => "50", "flex-xs" => "100" }
+						.generic-search-box
+							%input.search-input#search-company{type: "text", "ng-model" => "filter.search", placeholder: "Rechercher" }
+							%span.search-button{ "ng-click" => "search()" }
+								%i.search-icon.fa.fa-search
+					%div{ layout: "row", "layout-align" => "start center"}
+						.sort-title{ "hide-xs" => "true" }
+							{{'post.sort.title' | t}}
+						%select.form-control{ "ng-model" => "filter.sort", "ng-change" => "refreshPosts()" }
+							%option{ value: "most_recent" } {{'post.sort.most_recent' | t}}
+							%option{ value: "most_seen" } {{'post.sort.most_seen' | t}}
+							%option{ value: "most_liked" } {{'post.sort.most_liked' | t}}
+					.post-sort{ layout: "row", "layout-align" => "start center", "ng-hide" => "filter.sort == 'most_recent'" }
+						-# .sort-title{ "hide-xs" => "true" }
+						-# 	{{'post.sort.title' | t}}
+						%select.form-control{ "ng-model" => "filter.time", "ng-change" => "refreshPosts()" }
+							%option{ value: "all" } {{'post.time.all' | t}}
+							%option{ value: "week" } {{'post.time.week' | t}}
+							%option{ value: "month" } {{'post.time.month' | t}}
+							%option{ value: "year" } {{'post.time.year' | t}}
+	.posts-content
+		.posts-deals.show-slide-down{ "ng-show" => "topDeals.length > 0" }
+			%deal-row{ deals: "topDeals", wide: "false", "reload-callback" => "loadPromotedDeals", "num-of-deals" => "5" }
+		%div{ "ng-show" => "posts.length > 0" }
+			%deckgrid.deckgrid{ source: "posts", class: "deckgrid" }
+				.post-deck-card{ "ng-class" => "card.sponsored ? 'sponsored' : ''", "uib-tooltip" => "{{card.user_type == 'pro' ? ('post.pro_tooltip' | t) : ''}}" }
+					.image-block{ "ng-show" => "card.featured_image_url", "layout-align" => "center center", layout: "row" }
+						%img{ "ng-src" => "{{card.featured_image_url}}", "ui-sref" => "posts.show({poid: card.slug})", alt: "{{card.title}}" }
+					.upper-block
+						.category-name{ layout: "row", "layout-align" => "start center" }
+							= image_tag "icons/categories-orange.svg"
+							%a.orange{ "ng-click" => "mother.updateFilter('category', card.category_id)", href: "" } {{card.category_name}}
+						.post-title{ layout: "row", "layout-align" => "space-between center", "ui-sref" => "posts.show({poid: card.slug})" }
+							%span {{card.title}}
+							.category-icon
+								.question-icon{ "ng-show" => "card.post_type == 'question'" }
+									= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/questions-blue.svg"))).to_html.html_safe
+								.sharing-icon{ "ng-show" => "card.post_type == 'sharing'" }
+									= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/share-green.svg"))).to_html.html_safe
+						%p.timestamp
+							{{'post.posted' | t}}
+							%span{"am-time-ago" => "card.created_at"}
+						.post-description{ "ui-sref" => "posts.show({poid: card.slug})", "ng-bind-html" => "mother.convertDescription(card.description)" }
+					.lower-block{ layout: "row", "layout-align" => "space-between center", "ng-class" => "card.user_type == 'pro' ? 'pro' : ''" }
+						%div{ layout: "row", "layout-align" => "start center" }
+							%avatar.post-face{ "avatar-url" => "card.user_avatar_url"}
+							.post-user-name{ flex: "" }
+								%span{ "ng-show" => "card.user_type == 'particulier'" } {{card.user_nickname}}
+								%a{ "ng-show" => "card.user_type == 'pro'", "ui-sref" => "pro({pid: card.user_nickname})" } {{card.user_nickname}}
+						%div{ layout: "row" }
+							.post-numbers.author-subscribe{ layout: "row", "uib-tooltip" => "{{'post.no_self_subscribe' | t}}", "tooltip-is-open" => "card.showSelfSubscribeTooltip", "tooltip-placement" => "top", "tooltip-trigger" => "none" }
+								.subscribe-button{ "ng-click" => "card.author_subscribed ? mother.unsubscribeAuthor(card) : mother.subscribeAuthor(card)", "ng-class" => "card.author_subscribing? 'pending' : card.author_subscribed ? 'active' : ''" }
+									= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/follow-grey.svg"))).to_html.html_safe
+								.post-num {{card.num_of_subscriptions}}
+							.post-numbers{ layout: "row" }
+								%img{ "ng-src" => asset_path('icons/views-grey.svg') }
+								.post-num {{card.num_of_views}}
+							.post-numbers{ layout: "row" }
+								.subscribe-button{ "ng-click" => "card.favorited ? mother.removeFromFavorites(card) : mother.addToFavorites(card)", "ng-class" => "card.adding_to_favorites? 'pending' : card.favorited ? 'active-red' : ''" }
+									= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/heart-grey.svg"))).to_html.html_safe
+								.post-num {{card.num_of_favorited}}
+	.button-stroke.load-more-button{ "ng-show" => "!isLoading && hasMorePosts && posts.length > 0", layout: "row", "layout-align" => "center center" }
+		%button.button.button_js.orange_border_orange_text{ "ng-click" => "loadPosts()" }
+			%span.button_label
+				{{'post.load_more_label' | t}}
+	%div{ "ng-show" => "!isLoading && posts.length == 0" }
+		%p {{'post.no_posts' | t}}
+	.loading-centered{ "ng-show" => "isLoading" }
+		%md-progress-circular{ "md-mode" => "indeterminate" }

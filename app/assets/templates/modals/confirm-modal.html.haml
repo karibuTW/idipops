@@ -1,0 +1,9 @@
+.modal-header
+	%h3.modal-title {{confirmTitle}}
+.modal-body
+	%p {{confirmText}}
+.modal-footer.button-stroke
+	%button.button.button_js.orange_border_black_text{ "ng-click" => "confirm()"}
+		%span.button_label {{confirmLabel}}
+	%button.button.button_js.orange_border_black_text{ "ng-click" => "cancel()"}
+		%span.button_label {{cancelLabel}}

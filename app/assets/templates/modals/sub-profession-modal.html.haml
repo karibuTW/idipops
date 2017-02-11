@@ -1,0 +1,21 @@
+.modal-header.container-fluid
+	.row.visible-xs-block
+		%a.modal-close.col-xs-offset-10.col-xs-2{ "ng-click" => "cancel()", href: "" }
+			%i.fa.fa-times
+	.row
+		%h3.modal-title.col-sm-6 {{title}}
+		.col-sm-1.hidden-xs
+		.col-sm-4
+			%search-box{ "ng-model" => "itemsFilter.searchTerms", "ng-show" => "!isShowingRoot" }
+		%a.modal-close.col-sm-1.hidden-xs{ "ng-click" => "cancel()", href: "" }
+			%i.fa.fa-times
+.modal-body.container-fluid
+	.row
+		%div{ "dir-paginate" => "subprofession in professions | filter:itemsFilter.searchTerms | itemsPerPage: pageSize: 'professionsPagination'", "pagination-id" => "professionsPagination" }
+			%a.profession-list.col-sm-4.col-xs-12{ href: "", "ng-click" => "selectProfession(subprofession)" } {{ subprofession.name }}
+	.row.text-centered{ "ng-show" => "!isShowingRoot" }
+		%dir-pagination-controls{ "pagination-id" => "professionsPagination" }
+.modal-footer.button-stroke
+	%button.button.button_js.grey_border_black_text{ "ng-click" => "showRoot()", "ng-show" => "!isShowingRoot" }
+		%span.button_label
+			{{"activity_search.back_to_main" | t}}

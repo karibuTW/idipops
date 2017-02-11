@@ -1,0 +1,67 @@
+%div{ layout: "column", "ng-controller" => "SingleDealController"}
+	.page-padding
+		%h1.page-title {{"deals.title" | t}}
+		.page-subtitle {{"deals.subtitle" | t}}
+	.deal-single{ layout: "row" }
+		%div{ layout: "column", flex: "100" }
+			.page-bloc{ "ng-show" => "isLoading", "layout-align" => "center center" }
+				%md-progress-circular{ "md-mode" => "indeterminate" }
+			.page-bloc{ layout: "row", "ng-show" => "!isLoading && singleDeal", "layout-xs" => "column"  }
+				.deal-main{ layout: "column", flex: ""}
+					%div
+						%img.featured{ "ng-src" => "{{singleDeal.featured_image_url ? singleDeal.featured_image_url : 'uneon1024x576.svg'}}"}
+					.deal-sub{ "layout-gt-sm" => "row", "layout-sm" => "column", "layout-xs" => "column" }
+						.deal-content{ flex: "" }
+							.tagline {{singleDeal.tagline}}
+							.validity{ "ng-bind-html" => "'deals.validity' | t:{startDate: (singleDeal.start_date | amDateFormat:'D MMM YYYY'), endDate: (singleDeal.end_date | amDateFormat:'D MMM YYYY')}" }
+							%p{ "ng-bind-html" => "replaceNewLinesInText(singleDeal.description)" }
+							.address-validity {{"deals.valid_addresses" | t}}
+							%ul.nothing
+								%li{ "ng-repeat" => "address in singleDeal.addresses" }
+									%i.fa.fa-map-marker
+									&nbsp;
+									{{address.formatted_address}}
+							.post-numbers{ layout: "row" }
+								.subscribe-button{ "ng-click" => "singleDeal.favorited ? removeFromFavorites() : addToFavorites()", "ng-class" => "adding_to_favorites? 'pending' : singleDeal.favorited ? 'active-red' : ''" }
+									= (Nokogiri::HTML::DocumentFragment.parse File.read(Rails.root.join('app', 'assets', 'images', "icons/heart-grey.svg"))).to_html.html_safe
+								.post-num {{singleDeal.num_of_favorited}}
+						.deal-share{ "layout-xs" => "row", "layout-align" => "space-between center"}
+							{{"deals.share" | t}}
+							.social-icons{ layout: "row" }
+								%a{ href: "https://twitter.com/intent/tweet?url={{safeUrl}}&text={{safeTitle}}", target: "_blank" }
+									= image_tag "icons/twitter_darkgrey.svg"
+								%a{ href: "https://plus.google.com/share?url={{safeUrl}}", target: "_blank" }
+									= image_tag "icons/googleplus_darkgrey.svg"
+								%a{ href: "https://www.facebook.com/sharer/sharer.php?u={{safeUrl}}", target: "_blank" }
+									= image_tag "icons/fb_darkgrey.svg"
+				.deal-company-col{ layout: "column" }
+					.bordered.profile.side{ layout: "column" }
+						.out20{ layout: "row" }
+							%avatar.face.user-info{ "avatar-url" => "singleDeal.logo_url"}
+							-# .user{ layout: "column", "layout-align" => "end start" }
+						.deal.name {{singleDeal.company_name}}
+						-# %div{ layout: "row", "layout-align" => "center center", "ng-if" => "singleQR.start_date" }
+						-# 	.text-centered.ad-bordered-date{ flex: "40" }
+						-# 		%i.fa.fa-calendar-o.fa-fw
+						-# 		&nbsp; Début
+						-# 	.text-centered.border-left.ad-bordered-date.orange{ flex: "60" }
+						-# 		{{singleQR.start_date | amDateFormat:'D MMM YYYY'}}
+					.button-stroke.deal-button
+						%button.button.button_js.orange_fill_white_text.transparent_hover.btn-block{ "ui-sref" => "pro({pid: singleDeal.pro_pretty_name})" }
+							%span.button_label
+								{{"deals.full_profile" | t}}
+					-# %deal-company-box{ "ng-repeat" => "deal in ownerDeals", deal: "deal" }
+					%deal-grid{ layout: "column", deals: "ownerDeals", wide: "false", "num-of-deals" => "1", "force-num-of-deals" => "true", "layout-align" => "start center" }
+			.similar-deals-header{ layout: "row", "ng-show" => "similarDeals.length > 0", "hide-xs" => true }
+				%h2
+					{{"deals.similar" | t}}
+				%div
+	.deal-list-promoted.below{ layout: "row", "hide-xs" => true }
+		%div{ layout: "column", flex: "100", "layout-align" => "center start", "layout-fill" => "" }
+			.similar-deals{ layout: "row", "layout-wrap" => "" }
+				%deal-grid{ deals: "similarDeals", wide: "false", "num-of-deals" => "5" }
+				-# %deal-list-box{ "ng-repeat" => "deal in similarDeals", deal: "deal" }
+			.button-stroke.back-to-list
+				%button.button.button_js.grey_border_black_text{ "ui-sref" => "deal-list" }
+					%span.button_label
+						{{"deals.back_to_list" | t}}

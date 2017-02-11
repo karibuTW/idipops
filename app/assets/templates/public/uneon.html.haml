@@ -1,0 +1,54 @@
+%div{ layout: "column"}
+	.page-padding
+		%h1.page-title{ "ng-bind-html" => "'uneon.title' | t"}
+		.page-subtitle {{'uneon.subtitle' | t}}
+	%hr.page
+	.page-padding{ layout: "column", flex: "80" }
+		.page-bloc{ layout: "row", "layout-wrap" => true }
+			= image_tag "uneon-preso/uneon-parle.svg", flex: "30", class: "uneon-parle", "flex-sm" =>"100"
+			.resp-uneon-description-text{ flex: "70", "flex-sm" => 100, "ng-bind-html" => "'uneon.introduction' | t" }
+		%md-tabs.page-bloc{ "md-dynamic-height" => "" }
+			%md-tab
+				%md-tab-label {{'uneon.for_users' | t}}
+				%md-tab-body
+					.inside-tab
+						%p.page-subheader.text-centered {{'uneon.users_subheader' | t}}
+						%div{ layout: "row", "layout-wrap" => "", "layout-align" => "center center" }
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-01-conversations.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.users_point1' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-02-target.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.users_point2' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-03-quotations.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.users_point3' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-04-piggy.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.users_point4' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-05-free.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.users_point5' | t}}
+						%p.page-bloc.text-centered {{'uneon.users_introduction' | t}}
+			%md-tab
+				%md-tab-label {{'uneon.for_pros' | t}}
+				%md-tab-body
+					.inside-tab
+						%p.page-subheader.text-centered {{'uneon.pros_subheader' | t}}
+						%div{ layout: "row", "layout-wrap" => "", "layout-align" => "center center" }
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-06-value.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.pros_point1' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-11-conversation.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.pros_point2' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-09-customizequotes.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.pros_point3' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-08-paidfeatures.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.pros_point4' | t}}
+							.uneon-bloc{ layout: "column", "layout-align" => "center center" }
+								= image_tag "uneon-preso/icons-07-compensation.svg", class: "uneon-icon"
+								.uneon-info {{'uneon.pros_point5' | t}}
+						%p.page-bloc.text-centered {{'uneon.pros_introduction' | t}}

@@ -1,0 +1,12 @@
+Bonjour
+
+Une nouvelle annonce a été créée et doit être revue avant d'être publiée.
+Voici l'annonce concernée :
+
+- if @classified_ad.title.present?
+  = @classified_ad.title
+= l @classified_ad.created_at, format: :short
+
+= @content
+
+Voir l'annonce : #{admin_classified_ad_url(@classified_ad)}

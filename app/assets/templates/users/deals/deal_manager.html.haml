@@ -1,0 +1,44 @@
+%div{ "ng-controller" => "DealManagerController" }
+	%div{ layout: "column" }
+		.button-stroke{ flex: "50" }
+			%button.button.button_js.grey_border_black_text{ "ui-sref" => "home.users-dashboard" }
+				%span.button_label {{'general.back' | t}}
+		%h1 {{'deals.manager.title' | t}}
+		.options-select{ layout: "row", "layout-sm" => "column" }
+			%md-radio-group.dashboard-radio{ "flex-sm" => "100", flex: "60", "ng-model" => "filter.selectedFilter", layout: "row" }
+				%md-radio-button.md-primary{ value: "current", "aria-label" => "{{'deals.manager.current_label' | t}}"} {{'deals.manager.current_label' | t}}
+				%md-radio-button.md-primary{ value: "future", "aria-label" => "{{'deals.manager.future_label' | t}}"} {{'deals.manager.future_label' | t}}
+				%md-radio-button.md-primary{ value: "past", "aria-label" => "{{'deals.manager.past_label' | t}}"} {{'deals.manager.past_label' | t}}
+			%div{ flex: "40", "flex-sm" => "100" }
+				%search-box{ "ng-model" => "filter.searchTerms" }
+		%div{ "ng-hide" => "isLoading || (myDeals | filter:{status: filter.selectedFilter}:true | filter:filter.searchTerms).length > 0" }
+			%p {{'deals.manager.no_results' | t}}
+			%div{ "layout-align" => "center center", layout: "column", "ng-show" => "filter.searchTerms == ''" }
+				.button-stroke
+					%button.button.button_js.orange_border_orange_text.appeal{ "ui-sref" => "home.post-deal" }
+						%span.button_label {{'deals.manager.post_label' | t}}
+		.fav-pros-list{ layout: "column" }
+			%div{ "dir-paginate" => "deal in myDeals | filter:{status: filter.selectedFilter}:true | filter:filter.searchTerms | itemsPerPage: 10" }
+				%div{ "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell', $first ? 'top-rounded6' : '', $last ? 'bottom-rounded6' : 'line-separator no-padding' ]" }
+					.fav-pros.no-padding{ layout: "row", "layout-align" => "start start", "layout-wrap" => true }
+						.box-left.resp-box-left{ flex: "10", layout: "row", "layout-align" => "start center", "flex-sm" => "30" }
+							%avatar.fav-pro-face{"avatar-url" => "deal.list_image_url"}
+						.box.resp-box{ flex: "65", layout: "column", "flex-sm" => "70" }
+							%a.orange.list-header{ "ui-sref" => "deal-details({dealid: deal.id})" } {{deal.tagline}}
+							%p {{deal.description}}
+						%div{ flex: "30", "hide-gt-sm" => "" }
+						.box-right.box-deal-info.resp-box-right{ layout: "column", flex: "25", "flex-sm" => "65", "layout-align-sm" => "start start" }
+							.deal-timestamp {{'deals.manager.start_date' | t:{ start_date: (deal.start_date | amDateFormat:'D MMM YYYY')} }}
+							.deal-timestamp.with-margin-bottom {{'deals.manager.end_date' | t:{ end_date: (deal.end_date | amDateFormat:'D MMM YYYY')} }}
+							.button-stroke{ layout: "row" }
+								%button.button.button_js.grey_border_black_text.deal-mng-button{ "ui-sref" => "home.post-deal({did: deal.id})" }
+									%span.button_label
+										%i.fa.fa-pencil-square-o
+									%md-tooltip{ "md-direction" => "top", "md-autohide" => "true" } {{'deals.manager.edit_label' | t}}
+								%button.button.button_js.grey_border_black_text{ "ng-click" => "deleteDeal(deal.id)", href: "" }
+									%span.button_label
+										%i.fa.fa-trash-o
+									%md-tooltip{ "md-direction" => "top", "md-autohide" => "true" } {{'deals.manager.delete_label' | t}}
+		%div{ layout: "column", "layout-align" => "start center" }
+			%dir-pagination-controls
+			%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isLoading"}

@@ -1,0 +1,1147 @@
+fr:
+  editor:
+    bold: Gras
+    italic: Italique
+    underline: Souligné
+    strikethrough: Barré
+    subscript: Indice
+    superscript: Exposant
+    justifyleft: Aligner à gauche
+    justifycenter: Centrer
+    justifyright: Aligner à droite
+    justifyfull: Justifier
+    insertorderedlist: Liste triée
+    insertunorderedlist: Liste non triée
+    outdent: Retrait négatif
+    indent: Ajouter un retrait
+    removeformat: Supprimer la mise en forme
+    undo: Annuler
+    redo: Refaire
+    fontcolor: Couleur de police
+    backgroundcolor: Couleur de fond
+    insertimage: Insérer une image
+    inserthorizontalrule: Insérer une ligne horizontale
+    insertspecialsymbol: Insérer un symbole
+    insertlink: Ajouter un lien
+    unlink: Supprimer un lien
+    print: Imprimer
+    font: Police
+    size: Taille
+    style: Style
+  general:
+    search: Recherche
+    back: Retour
+    websocket_lost: Connexion perdue avec le websocket
+    websocket_reconnect: "<div>Reconnexion dans %{time} secondes...</div>"
+    connection_error: Erreur de connexion.
+    copy: Copier
+    today: Aujourd’hui
+    opening_hour: Heures d'ouverture
+    not_available: indisponible
+    description: "Idipops, des idées qui vous rendent service"
+    signup_modal:
+      title: Vous ne vous êtes pas identifié
+      message: Oups ! Vous devez être identifié pour effectuer cette opération. Voulez-vous vous identifier ?
+      confirm_label: Je veux m'identifier ou m'inscrire gratuitement
+      cancel_label: Plus tard
+  toolbar:
+    posts: Posts
+    create_post: Ajouter
+    look_for_pros: Champions
+    post_classified_ad: Contacter des Champions
+    post_deal: Poster un bon plan
+    good_deals: Bons plans
+    discover_uneo: Découvrez Idipops
+    pros: Champions
+    users: Particuliers
+    dashboard: Mon Espace
+    disconnect: Déconnexion
+    connect: S'identifier/ S'inscrire
+    discover_uneo_pros: Champions
+    discover_uneo_users: Particuliers
+  footer:
+    join: "Rejoignez-nous sur"
+    blog: Blog
+    who: Qui est Idipops ?
+    cgv: CGV - CGU
+    contact: Contact
+    credits: "Fait par&nbsp; <a target='_blank' href='http://jolynpeng.com' title='Jolyn Peng'>JPD</a> &nbsp;+&nbsp; <a target='_blank' href='http://www.upwork.com/o/profiles/users/_~0194d81d487e23bd6c/' title='Benjamin Durin'>BD</a>"
+  how_it_works:
+    title: "De l’idée à sa réalisation"
+    subtitle: "Idipops : le nouveau réseau social des services, avec plein d’idées et des champions pour les réaliser"
+    first_section:
+      title: "1. Parcourez les idées de toute la communauté : les champions ou les particuliers"
+      description: Partagez vos idées et posez vos questions à la communauté
+    second_section:
+      title: "2. Choisissez une catégorie en fonction de vos besoins pour trouver l’idée qui vous convient. Vous pouvez même sélectionner les idées des champions qui couvrent à coup sûr votre localité"
+    third_section:
+      title: "3. Visitez le profil du champion pour en savoir plus et le contacter"
+    fourth_section:
+      title: "4. Ou cherchez directement un champion près de chez vous en naviguant sur la carte"
+    fifth_section:
+      title: "5. Gérez vos idées préférées, vos messages et posts dans votre espace personnel"
+    users:
+      title: Découvrez les pouvoirs d'Idipops
+      subtitle: Au service des particuliers
+      pros_button_label: Au service des Champions
+      search_label: Recherche
+      pros_label: Profils de nos champions
+      quotations_label: Devis
+      classified_ads_label: Annonces
+      deals_label: Bons plans
+      my_account_label: Mon compte
+      classified_ads_tab:
+        title: Le meilleur moyen pour contacter les Champions d’Idipops
+        content_0: "Envoyez une seule annonce à tous les Champions qui correspondent à vos besoins, même de métiers différents"
+        content_1: "Décrivez vos besoins. Plus c'est précis, plus vous trouverez!"
+        content_2: "Gérez toutes les réponses à votre annonce au même endroit"
+      deals_tab:
+        title: É-co-no-mi-sez !
+        content_0: "Faites des affaires en dénichant de vrais bons plans, vérifiés par les équipes d’Idipops"
+        content_1: "Offres promotionnelles, rabais, discounts, cadeaux, remboursements, coupons ... tout y est pour se faire plaisir !"
+        content_2: "Ne manquez aucune affaire en suivant les bons plans autour de chez vous"
+      my_account_tab:
+        title: Gérez votre espace personnel
+        content_0: Suivez vos échanges et gérez vos devis et annonces au même endroit
+        content_1: Retrouvez rapidement vos coups de cœur et leurs bons plans
+        content_2: Envoyez des demandes de devis groupées depuis votre espace
+      pros_tab:
+        title: Explorez les profils qui vous intéressent
+        content_0: Consultez les avis de la communauté Idipops et affinez votre choix
+        content_1: Échangez directement avec nos Champions
+        content_2: Envoyez une demande de devis d'un simple clic
+        content_3: Partagez votre avis et aidez la Communauté Idipops à trouver les meilleurs Champions
+        content_4: Conservez vos coups de cœur pour les comparer depuis votre espace personnel
+      quotations_tab:
+        title: Trouvez gratuitement le meilleur Champion près de chez vous
+        content_0: "Demandez un devis gratuitement dans le profil des Champions sélectionnés"
+        content_1: "Remplissez le formulaire de devis et obtenez une réponse rapide<br/><br/>Mieux vous détaillerez, plus la réponse sera adaptée et de qualité"
+        content_2: "Gérez et comparez simplement vos échanges et devis avec les Champions"
+      search_tab:
+        title: Trouvez votre bonheur facilement
+        content_0: Tapez votre recherche ou...
+        content_1: ... sélectionnez une catégorie...
+        content_2: ... parmi les centaines de disponible
+        content_3: "Ajustez les critères : lieux, tags, avis, ..."
+        content_4: ... à votre guise
+        content_5: Déplacez-vous sur la carte et la liste des profils se mettra à jour automatiquement
+        content_6: Consultez les profils autour de chez vous
+        content_7: Profitez directement de vrais bons plans liés à votre recherche!
+        content_8: "Conservez vos coups de cœur, pour mieux les retrouver"
+    pros:
+      title: Découvrez les pouvoirs d'Idipops
+      subtitle: Au service des Champions
+      users_button_label: Au service des particuliers
+      profile_label: Profil
+      space_label: Espace des Champions
+      classified_ads_label: Annonces autour de moi
+      quotations_label: Devis
+      deals_label: Bons plans
+      visibility_label: Options de visibilité
+      classified_ads_tab:
+        title: Accédez aux annonces et démarchez
+        content_0: "Visualisez un résumé de l'annonce gratuitement (Incluant description, localité et nombre de Champions Idipops ayant accédé à l'annonce)"
+        content_1: "Recherchez directement une annonce particulière"
+        content_2: "Démarchez efficacement via une mise en relation simplifiée"
+      deals_tab:
+        title: Communiquez vos offres promotionnelles
+        content_0: "Postez simplement vos bons plans et attirez de nouveaux clients"
+        content_1: "Que ce soit sur votre profil..."
+        content_2: "... ou sur la page bons plans."
+        content_3: "Optimisez votre opération promotionnelle en augmentant sa visibilité sur la page des bons plans"
+        content_4: "... ou en \"Top Bons plans\" sur la page d'accueil"
+      profile_tab:
+        title: Créez votre profil et mettez en valeur votre activité
+        content_0: "Apparaissez gratuitement dans la liste de recherche avec les informations clés de votre activité"
+        content_1: "Mettez en évidence votre entreprise sur la carte interactive d’Idipops"
+        content_2: "Renseignez votre page personnelle et mettez en valeur vos compétences"
+        content_3: "Vous faites du bon boulot et les avis clients de la communauté Idipops le font savoir"
+        content_4: "Communiquez facilement avec vos prospects"
+        content_5: "Les coups de cœur des utilisateurs vous rendent plus attractif"
+        content_6: "Boostez votre activité en proposant des bons plans"
+      quotations_tab:
+        title: Générez vos opportunités
+        content_0: "Recevez et répondez simplement à vos demandes de devis"
+        content_1: "Tout comme les annonces, les demandes de devis des particuliers sont gratuites"
+        content_2: "Accédez à la description et échangez avec vos prospects"
+        content_3: "Comprenez les choix de vos prospects grâce au retour client après chaque contact"
+        content_4: "Comprenez les choix de vos prospects grâce au retour client après chaque contact"
+      space_tab:
+        title: Communiquez efficacement
+        content_0: "Visualisez toutes vos notifications en un clin d'œil"
+        content_1: "Gérez directement le suivi et la relance de vos prospects"
+        content_2: "Démarchez en parcourant les annonces près de chez vous"
+        content_3: "Gardez le fil de vos discussions avec l'historique de vos messages"
+        content_4: "Rechargez vos flèches simplement et décochez les comme bon vous semble"
+      visibility_tab:
+        title: Améliorer votre visibilité pour un meilleur retour
+        content_0: "Soyez en tête de liste sur votre zone de couverture"
+        content_1: "Mettez en avant votre profil sur la carte interactive d’Idipops"
+        content_2: "Affichez vos bons plans dans nos bannières à forte visibilité"
+        content_3: "Ciblez vos actions uniquement sur des prospects qualifiés (profession recherchée, localité souhaitée, etc.)"
+  proposal_response:
+    accept_title: "J'accepte cette proposition"
+    accept_text: "Merci d'expliquer pourquoi vous choisissez ce champion."
+    accept_label: Accepter
+    reject_title: "Je refuse cette proposition"
+    reject_text: "Merci d'expliquer pourquoi vous ne choisissez pas ce champion."
+    reject_label: Refuser
+  pro_dashboard:
+    classified_ads_around_me: Autour de moi
+    classified_ads_around_me_tip: Demandes de contact sur votre zone de couverture
+    address: Adresse
+    no_classified_ads: Aucune annonce n'a été trouvée
+    times_seen: "Vue %{views} fois"
+    classified_ad: Annonce
+    updated: Mise à jour
+    my_leads: Mes Leads
+    deals: Bons plans
+    communications: Communications
+    my_leads_tip: "Opportunités d’affaires en cours"
+    classified_ads: Annonces
+    messages: Messages
+    pending_quotations: Devis en attente
+    quotations_sent: Devis envoyés
+    no_quotations: Aucune demande n'a été trouvée
+    quotation_request: Demande de devis
+    received: Reçue
+    quotation: Devis
+    sent: Envoyé
+    my_results: Mes Résultats
+    my_results_tip: Bilan de vos Leads
+    accepted_leads: Leads acceptés
+    rejected_leads: Leads refusés
+    no_leads: Aucun lead n'a été trouvé
+    no_results: Aucun résultat n'a été trouvé
+    no_subscriptions: Vous n'avez aucun abonnement
+    no_favorites: Vous n'avez aucun coup de cœur
+    add_post: Ajouter un post
+  user_dashboard:
+    title: Tableau de bord
+    preferences: Préférences
+    classified_ads: Annonces
+    my_classified_ads: Mes annonces
+    subscriptions: Abonnements
+    favorites: Coups de cœur
+    posts: Posts
+    classified_ads_tip: Toutes vos annonces
+    communications: Communications
+    actives: Actives
+    inactives: Inactives
+    rejected_or_reported: Rejetées ou signalées
+    times_seen: "Vue %{views} fois"
+    classified_ad: Annonce
+    premium_posts: Meilleurs posts
+    updated: Mise à jour
+    no_classified_ads: Aucune annonce ne correspond à votre recherche
+    no_posts: Aucun post trouvé
+    my_posts: Mes posts
+    mentions: Mentions
+    post_label: Contacter des Champions
+    find_pro_label: Trouver un champion
+    quotation: Devis
+    quotation_tip: Toutes vos demandes de devis
+    quotation_received: Devis reçu
+    messages: Messages
+    messages_tip: Toutes vos conversations
+    all: Tous
+    sent: Envoyés
+    replied: Répondus
+    quotation_request: Demande de devis
+    sent_on: Envoyée le
+    no_results: Nous n'avons rien trouvé pour cette catégorie
+    pro: Champion
+    post: Post
+    deal: Bon plan
+    edit_label: Modifier
+  visibility:
+    title: Booster mon activité
+    header1: Toutes les idées d’Idipops pour vous développer
+    content1: "<h4>Ouvrir une annonce, une demande de devis ou un message</h4>
+    <p>Afin de vous soutenir dans votre développement, Idipops vous donne libre accès à tous les leads qui vous correspondent.</p>
+    <h4>Coût pour mille (CPM): Tarif pour mille vues</h4>
+    <p>Tous les tarifs de nos options de visibilité sont basés sur le système de CPM. Mais nous faisons bien plus pour vous.</p>
+    <p>Ayant à cœur de proposer un service optimal pour nos Champions, nous vous fournissons des vues ciblées et qualifiées. Votre profil et vos Bons Plans seront vus <strong>1000 fois, par des personnes cherchant votre métier ou vos tags, et localisées sur votre zone de couverture.</strong></p>
+    <p>Seul Idipops peut vous offrir une telle qualité de prospects pour des tarifs aussi exceptionnels.</p>
+    <p>Et bien évidemment, les vues ne sont décomptées uniquement si vous apparaissez à l'écran !</p>"
+    header2: Les bonnes idées d’Idipops pour vous démarquer
+    subheader2: ... et être plus visible
+    content2a: "<h4>Profil sponsorisé</h4>
+    <p>Votre profil apparaîtra en premier sur la liste de résultat de recherche. Ceci lorsqu'un particulier se trouvant sur votre zone de couverture cherchera votre métier ou un de vos tags. Et le tout pour 1000 vues !</p>
+    <p>La valeur sûre !</p>"
+    content2b: "<h4>Visibilité Profil - Profil ouvert sur la carte</h4>
+    <p>Une pop-up mettant en avant votre entreprise sera ouverte sur la carte, au niveau votre adresse. Ceci lorsqu'un particulier cherche votre métier ou un de vos tags et que votre entreprise se trouve sur la carte. Et le tout pour 1000 vues localisées!</p>
+    <p>Idéal pour sortir du lot !</p>"
+    remaining_impressions_number: "Nombre d'impressions restantes : %{impressions}"
+    add_impressions_label: Ajouter 1000 impressions
+    header3: Les bonnes idées d’Idipops pour vos Bons Plans
+    subheader3: ... et attirer une plus grande clientèle
+    content3: "<p>Pour vous aider à mettre vos offres en avant,&nbsp;Idipops vous permet de poster des bons plans gratuitement.</p>
+    <h4>Bon Plan sponsorisé</h4>
+    <p>Votre Bon Plan apparaîtra en premier sur la liste de résultat de la page \"bons plans\". Ceci lorsqu'un particulier se trouvant sur votre zone de couverture, cherchera un bon plan. Et le tout pour 1000 vues localisées !</p>
+    <p>Le point de départ d'une promotion réussie !</p>
+    <h4>Visibilité Bon Plan - Sur carte</h4>
+    <p>Votre Bon Plan sera placé en haut de la carte pour être suggéré aux personnes recherchant votre profession ou les tags liés à votre Bon Plan (que vous aurez rentrés au moment de le poster). Et le tout toujours pour 1000 vues localisées !</p>
+    <p>Le meilleur moyen pour rediriger les prospects vers vous !</p>
+    <h4>Visibilité Bon Plan - Sur page d'accueil</h4>
+    <p>Votre plan sera présent sur la page d'accueil d’Idipops dans la rubrique Top Bons Plans ou seulement 5 bons plans sont affichés. La visibilité de votre offre est alors optimisée et immanquable.</p>
+    <p>Le maximum de visibilité !</p>
+    <p>Pour profiter de ces solutions, postez un Bon Plan !</p>"
+    post_deal_label: Publier un bon plan
+    manage_deals_label: Gérer mes bons plans
+    solutions_summary: Résumé des solutions
+    impressions_added: Vous avez ajouté 1000 impressions.
+    profile_modal:
+      loading_title: Chargement...
+      loading_text: Merci de patienter pendant que nous vérifions le prix.
+      cancel_label: Annuler
+      reload_label: Recharger
+      reload_title: "Oups ! Flèches insuffisantes"
+      reload_text: "Vous ne disposez pas d'assez de crédits. Il vous faut %{amount} flèches pour continuer."
+      buy_label: Acheter
+      buy_profile_title: Ajouter 1000 impressions pour sponsoriser mon profil
+      buy_map_profile_title: Ajouter 1000 impressions pour sponsoriser mon profil sur la carte
+      buy_text: "Voulez-vous acheter 1000 impressions pour %{amount} flèches ?"
+  home:
+    credits_to_spend: Flèches à décocher
+    add_credits: Rechargez vos crédits
+    edit_profile_label: Modifier mon profil
+    my_favorites_label: Mes coups de cœur
+    view_public_profile_label: Voir mon profil public
+    publish_classified_ad_label: Contacter des Champions
+    boost_activity_label: Booster mon activité
+    my_deals_label: Mes bons plans
+    referrals_label: Inviter
+    change_email_modal:
+      title: Changement de courriel
+      content: Tapez votre nouveau courriel puis validez. Vous serez redirigé vers Persona pour vérifier le nouveau courriel.
+      confirm_label: Valider
+      cancel_label: Annuler
+      input_label: Nouveau courriel
+      email_used: Ce courriel est déjà utilisé !
+  index:
+    header: A votre service !
+    tagline: des idées qui vous rendent service
+    deals_header: TOP Bons Plans
+    deals_tagline: "Offres promotionnelles, rabais, discounts, cadeaux, remboursements, coupons... Tout y est pour se faire plaisir !"
+    deals_label: Tous les bons plans
+    invite_friends_label: Aidez vos champions préférés ! Parrainez-les et Idipops leur offrira davantage de visibilité
+    invite_from_pros_label: Parrainez et gagnez en visibilité
+    uneon_tooltip: Qui est Idipops ?
+    slogan1: "<div class='intro-circle'>Gratuit</div>
+    <div class='intro-text'>Recherchez, postez et contactez les champions d’idipops sans frais et <strong>sans limite</strong>
+    </div>"
+    slogan2: "<div class='intro-circle'>Direct</div>
+    <div class='intro-text'>Gérez facilement tous vos <strong>échanges</strong> et <strong>devis</strong> depuis votre espace personnel
+    </div>"
+    slogan3: "<div class='intro-circle'>Social</div>
+    <div class='intro-text'>Partagez vos <strong>coups de coeur</strong> et bénéficiez des expériences et bons plans de la <strong>communauté</strong> Idipops
+    </div>"
+    more: Et bien d'autres encore...
+    user_ccm_label: Au service des Particuliers
+    pro_ccm_label: Au service des Champions
+    discover_uneon: "Découvrez les pouvoirs d’"
+    uneon: Idipops
+  classified_ad:
+    title: Annonce
+    publish: Publier
+    republish: Renvoyer
+    suspend: Suspendre
+    close: Clore
+    report: Signaler
+    edit: Modifier
+    spam: Spam
+    inappropriate: Contenu inapproprié
+    cheating: Contenu mensonger
+    other: Autre
+    reject_reason: "Motif du refus :"
+    published: Publiée
+    start: Début
+    send_quotation: Envoyer un devis
+    messages: Messages
+    know_more_label: En savoir plus sur Idipops
+    quotation_file_sent_error: "L'envoi du fichier a échoué"
+    classified_ad_published: Annonce publiée
+    close_title: Vous êtes sur le point de clore définitivement cette annonce
+    close_text: Si vous cliquez sur Clore, vous ne pourrez plus utiliser cette annonce et les champions ne pourront plus y accéder.
+    cancel_label: Annuler
+    closed_by_user: "La demande a été fermée par l'initiateur"
+    report_title: "Merci d'indiquer pourquoi vous voulez signaler cette annonce"
+    report_text: Choisissez une raison ci-dessous et cliquez sur Signaler pour qu'un administrateur vérifie cette annonce.
+    see_quotation_request: Voir la demande de devis
+    unlock_modal:
+      loading_title: Chargement...
+      loading_text: Merci de patienter pendant que nous vérifions le prix.
+      cancel_label: Annuler
+      reload_label: Recharger
+      reload_title: "Oups! Flèches insuffisantes"
+      reload_text: "Vous ne disposez pas d'assez de crédits. Il vous faut %{amount} flèches pour continuer."
+      buy_label: Acheter
+      classified_ad_not_authorized_title: "Vous n'êtes pas autorisé à voir cette annonce"
+      quotation_request_not_authorized_title: "Vous n'êtes pas autorisé à voir cette demande de devis"
+      classified_ad_buy_text: "Voulez-vous acheter le droit de voir l'annonce %{name} pour %{amount} flèches ?"
+      quotation_request_buy_text: "Voulez-vous acheter le droit de voir la demande de devis %{name} pour %{amount} flèches ?"
+      free_offer_label: "J'en profite"
+      classified_ad_free_offer_title: Idipops vous offre ce Lead
+      classified_ad_free_offer_text: "Une fois ouverte, retrouvez l'annonce %{name} dans \"Mes Leads\"."
+      quotation_request_free_offer_text: Vous pouvez voir cette demande de devis gratuitement.
+    public:
+      title: Bienvenue sur Idipops !
+      intro: "<p>Ici nous vous proposons une plateforme pour rentrer en contact gratuitement avec des personnes recherchant vos services.</p><p>Et c'est vraiment gratuit! Pas d'abonnements ou d'achats de devis. Idipops, le cupidon des services, est là pour vous aider à vous développer. Les fonctionnalités payantes, pour être plus visible sur le site, sont optionnelles.</p><p>Inscrivez-vous pour accéder à toutes les annonces autour de vous et poster vos bons plans.<br>N'hésitez pas à parrainer pour obtenir de la visibilité en bonus !</p>"
+      tagline: "Pour pouvoir postuler à cette annonce, créez un compte. C'est facile, et surtout c'est gratuit !"
+      signup: "Je m'inscris"
+      how_it_works: "Comment ça marche ?"
+    post:
+      title: Publiez une annonce
+      subtitle: "En une seule annonce, contactez les meilleurs champions près de chez vous"
+      edit_title: Modifiez votre annonce
+      title_label: Titre
+      description_label: Description
+      professions_label: Professions
+      professions_placeholder: Entrez des professions
+      professions_help: Ajoutez au moins une profession
+      location_label: Ville
+      start_date_label: Date de début
+      photos_label: Photos
+      select_photos_label: Choisir des photos...
+      delete_label: Supprimer
+      post_label: Publier l'annonce
+      save_label: Enregistrer
+      post_help: Les annonces seront revues par notre équipe avant d'être publiées.
+      tip_title: "Les conseils d’Idipops&nbsp;: Poster une annonce"
+      tip: "<p>Envoyez <strong>une seule annonce</strong> à tous les Champions qui correspondent à vos besoins.</p>
+        <p>Choisissez les professions des Champions recherchés et Idipops postera votre annonce chez <strong>tous ceux qui couvrent votre localité.</strong></p>
+        <p>Décrivez vos besoins : plus c'est <strong>clair,</strong> plus vous <strong>trouverez&nbsp;!</strong> En apportant plus de détails ou en joignant des photos, les Champions pourront adapter leurs réponses et devis au mieux.</p>
+        <p>Retrouvez votre annonce et les réponses des Champions dans votre <strong>espace personnel.</strong></p>"
+  posts:
+    title: Idipops
+    banner_header: Des idées qui vous rendent service&nbsp;!
+    banner_subheader: Les meilleurs conseils et idées de la communauté sur le thème des services
+  post:
+    free_register: Inscrivez-vous pour commenter et accéder à toutes les fonctionnalités gratuitement
+    post_published: Post publié
+    posted: Posté
+    subscribed: "Vous êtes désormais abonné à la catégorie %{category}"
+    unsubscribed: "Vous n'êtes plus abonné à la catégorie %{category}"
+    author_subscribed: "Vous êtes désormais abonné à %{author}"
+    author_unsubscribed: "Vous n'êtes plus abonné à %{author}"
+    favorited: Le post a été ajouté à vos coups de coeur
+    unfavorited: Le post a été enlevé de vos coups de coeur
+    new_post_from: "Nouveau post de %{user_name}"
+    new_post_mention_from: "Vous avez été mentionné dans un post de %{user_name}"
+    comment_added: Votre commentaire a été ajouté
+    cancel_label: Annuler
+    report: Signaler
+    report_title: "Merci d'indiquer pourquoi vous voulez signaler ce post"
+    report_text: Choisissez une raison ci-dessous et cliquez sur Signaler pour qu'un administrateur vérifie ce post.
+    reported_success: Le post a été signalé avec succès
+    back_label: Retour
+    load_more_label: Plus d’idées
+    no_posts: Il n'y a pas de posts
+    no_self_subscribe: Vous ne pouvez pas vous abonner à vous-même !
+    pro_tooltip: Post de Champion
+    find_best_pros: "Trouvez les meilleurs <a class='orange' href='/pros?pids=%{profession_id}'>%{profession_name}</a> autour de vous"
+    filter:
+      all: Tous les posts
+      zone: Dans ma zone
+      premium: Meilleurs posts
+      premium_tooltip: Sélectionnés par Idipops
+      zone_tooltip: Posts des Champions qui couvrent votre localité
+      category_select_label: Catégorie
+    sort:
+      title: Trier par
+      most_recent: Les plus récents
+      most_seen: Les plus vus
+      most_liked: Les plus aimés
+    time:
+      all: Tout
+      week: < 1 semaine
+      month: < 1 mois
+      year: < 1 année
+    comments:
+      no_comments: Aucun commentaire n'a été fait pour l'instant.
+      comment: Commenter
+      comments: Commentaires
+      send_comment: Envoyer le commentaire
+      new_comment_from: "Nouveau commentaire de %{user_name}"
+      new_comment_mention_from: "Vous avez été mentionné dans un commentaire du post de %{user_name}"
+    type_prompts:
+      prompt: Type du post
+      question: Question
+      sharing: Partage
+    post:
+      title: Publiez un post
+      subtitle: "Vivamus ac risus in ante mattis"
+      edit_title: Modifiez votre post
+      title_label: Titre
+      description_label: Contenu
+      post_label: Publier le post
+      save_label: Enregistrer
+      post_help: "Les posts seront revus par notre équipe avant d'être publiés."
+      tip_title: "Les conseils d’Idipops&nbsp;: Publier un post"
+      tip: "<p>Grâce à Idipops, le monde des services s’ouvre à tous&nbsp;!</p><p>Que vous soyez particulier ou professionnel, partagez votre <strong>expérience</strong> ou votre <strong>savoir-faire</strong> pour <strong>donner des idées à la communauté</strong> et vous <strong>mettre en valeur.</strong></p><p>Pour <strong>trouver une solution</strong> à vos problèmes, <strong>posez vos questions</strong> à la communauté Idipops, tout simplement&nbsp;! Les membres, professionnels ou non, voleront à votre secours.</p><p>Enfin, rien de tel pour expliquer un problème ou partager ses réalisations que de belles photos&nbsp;!</p><p>Au fait, ici,<strong> pas de pub </strong>directe ou de réduction, etc... sinon votre post sera refusé. Pour cela, rendez-vous dans la section <a title='Bons Plans' href='/bons-plans' class='orange'>Bons Plans</a>.</p>"
+      photos_label: Galerie
+      select_photos_label: Choisir des photos...
+      type_label: Type
+      category_label: Catégorie
+      category_select_label: Choisissez une catégorie
+      featured_image_label: Image principale
+      select_photo_label: Choisir une photo
+      sponsoring_label: Sponsoriser le post
+      sponsoring_cost: "1000 impressions pour %{cost} flèches"
+      remaining_impressions_number: "Nombre d'impressions restantes : %{impressions}"
+      featured_image_help: "Poids maximum: 3Mo"
+  quotation_request:
+    title: Demande de devis
+    send_to: Envoyez une demande de devis à 
+    added_pros_placeholder: Entrez des noms
+    added_pros_label: "Ajoutez d'autres champions"
+    send_to_more_pros_label: "Envoyer la demande à d'autres champions"
+    send_label: Envoyer la demande
+    know_more_label: En savoir plus sur Idipops
+    quotation_request_sent: Demande de devis envoyée avec succès
+    close: Clore
+    close_title: Vous êtes sur le point de clore définitivement cette demande de devis ainsi que l'annonce liée s'il y en a une.
+    close_text: Si vous cliquez sur Clore, les champions ne pourront plus accéder à cette demande de devis et à l'annonce publique s'il y en a une. Toutes les demandes de devis liées seront aussi closes.
+    cancel_label: Annuler
+    tip: "<h2 class='text-centered'>Les conseils d’Idipops</h2>
+      <p>Pour que votre Champion puisse répondre au mieux à votre demande, <strong>complétez chaque partie</strong> du modèle de devis.</p>
+      <p>Si les informations que vous souhaitez obtenir n'ont pas de section spécifique, <strong>apportez vos précisions</strong> dans les champs dédiés à la description de votre demande.</p>
+      <p>Vous pouvez en profiter pour <strong>envoyer cette demande aux autres champions</strong> du même métier et sur votre zone en gardant la dernière case cochée.</p>
+      <p>En la décochant, votre demande ne sera envoyée qu'au champion que vous avez précédemment sélectionné.</p>
+      <p>Retrouvez toutes les <strong>réponses des Champions</strong> dans la partie <strong>\"Devis / Envoyés\" de votre tableau de bord.</strong></p>"
+  image:
+    select_image: Choisir une image...
+    send_image: Enregistrer
+    cancel: Annuler
+    wrong_size: Votre image n'a pas la taille requise !
+    minimum_size: "Taille minimum : %{minWidth}x%{minHeight}."
+    maximum_size: "Taille maximum : %{maxWidth}x%{maxHeight}."
+  conversations:
+    no_conversations: Aucune conversation pour l'instant
+    start: Démarrer la conversation
+    new_message: Nouveau
+    my_message: Mon message...
+    reply: Répondre
+    view_quotation: Voir le devis
+    accept: Accepter
+    reject: Refuser
+    is_typing: "%{name} est en train de taper"
+    new_quotation_request: Nouvelle demande de devis
+    new_quotation: Nouveau devis
+    offer_rejected: Offre rejetée
+    offer_accepted: Offre acceptée
+    new_message_from: "Nouveau message de %{user_name}"
+    message_sent: Le message a été envoyé.
+    message_failed: L'envoi du message a échoué.
+  user:
+    registered_on: "Inscrit le %{date}"
+    signin:
+      title: Bienvenue sur Idipops ! Le réseau social des services
+      sign_in_title: Veuillez vous identifier
+      sign_up_title: Inscrivez-vous, c'est gratuit
+      accept_conditions: "En m'inscrivant ou me connectant, je reconnais avoir lu et accepté les <a href='/cgv' class='orange'>Conditions d'Utilisation</a> d’Idipops."
+      email: Email
+      password: Mot de passe
+      password_confirmation: Confirmation du mot de passe
+      sign_in_label: S'identifier
+      signing_in_label: Identification...
+      sign_up_label: Etape suivante
+      signing_up_label: Enregistrement...
+      forgotten_password: Mot de passe oublié ?
+      create_account: Pas encore de compte ? Inscrivez-vous, c'est gratuit
+      connexion: Déjà inscrit ? Identifiez-vous
+      email_used: Ce courriel est déjà utilisé !
+      passwords_no_match: Les mots de passe ne correspondent pas
+      request_password_title: Réinitialisation du mot de passe
+      request_password_text: Après réinitialisation de votre mot de passe, un nouveau mot de passe vous sera envoyé par email.
+      request_password_label: Réinitialiser
+      cancel_label: Annuler
+      password_sent: Un nouveau mot de passe vous a été envoyé
+    edit:
+      title: Mettez vos informations à jour
+      user: Je cherche un service
+      pro: Je propose mes services
+      change_password_label: Changer le mot de passe
+      nickname: Pseudo
+      avatar_not_saved: Vous devez enregistrer votre avatar ci-dessus avant de continuer.
+      logo_not_saved: Vous devez enregistrer votre logo ci-dessus avant de continuer.
+      message_pro: "<p>Bonjour ! Vous avez choisi de vous inscrire comme <strong>Champion</strong> sur Idipops.</p><p>Vous recevrez et consulterez des demandes de devis, des messages et annonces de particuliers gratuitement.</p>
+        <p>Idipops, Cupidon des services</p>"
+      message_particulier: "<p>Bonjour ! Vous avez choisi de vous inscrire comme <strong>particulier</strong> sur Idipops.</p><p>Vous pourrez entre autres consulter et contacter les Champions Idipops par demande de devis ou par annonce.</p><p>Idipops, Cupidon des services</p>"
+      first_name: Prénom
+      last_name: Nom
+      city: Ville
+      birth_date: Date de naissance
+      land_line: Téléphone fixe
+      mobile_line: Téléphone mobile
+      photo: Photo
+      newsletter_subscribe: Inscription à la newsletter
+      save: Enregistrer
+      saving: Enregistrement...
+      main_activity: Activité principale
+      select_activity: Choisissez une profession
+      other_activity: Autre activité
+      company_name: Nom de la société
+      siret_help: Si vous en possédez un. Cela nous permettra de vérifier l'existence de votre société.
+      billing: Facturation
+      by_quotation: Sur devis
+      by_prestation: A la prestation
+      hourly: Horaire
+      address: Adresse
+      action_range: Rayon d'action
+      contact: Contact
+      fax: Fax
+      website: Site web
+      logo: Logo
+      tags: Tags (15 maximum)
+      enter_tags: Entrez des tags
+      short_description: Une présentation de votre société
+      long_description: Une description plus élaborée de votre société
+      references: Vos références clients
+      advantages: Vos avantages
+      gallery: Galerie
+      select_photos_label: Choisir des photos...
+      newsletter_registration: Inscription à la newsletter
+      email_notifications: Recevoir les notifications par courriel
+      saving: Enregistrement...
+      save_label: Enregistrer
+      username_help: Lettres, chiffres et tirets seulement. Pas d'espace ou de caractères de ponctuation.
+      tags_helper: "Tapez <kbd>Entrée</kbd> ou <kbd>,</kbd> après avoir entré un tag.<br/>Les tags sont essentiels pour vous : ils lient les recherches des particuliers à votre profil. Pensez aux termes qui conduiront les particuliers vers votre profil lors de leurs recherches et ajoutez-les&nbsp;!"
+      tags_helper_more: "Vous pourrez modifier ou ajouter des tags une fois votre inscription terminée. Rendez-vous sur \"modifier mon profil\" ou sur \"Booster mon business\""
+      opening_hour:
+        apply_to_other: Appliquer aux autres jours de la semaine
+        same_as_the_1st_address: Identique à l'adresse n°1
+        configure: Configurer
+      change_password:
+        title: Changement du mot de passe
+        old_password: Mot de passe actuel
+        new_password: Nouveau mot de passe
+        password_confirmation: Confirmation du mot de passe
+        save: Mettre à jour
+        saving: Mise à jour...
+        password_changed: Mot de passe mis à jour avec succès
+  not_connected:
+    header: On dirait que vous avez oublié de vous identifier
+    subheader: "Pour avoir accès à toutes les fonctions d’Idipops, créez un compte, c'est gratuit&nbsp;!"
+    signin: S'identifier
+    signup: Créer un compte
+  incomplete_profile:
+    header: Vous n'avez pas encore complété votre profil
+    subheader: "Pour avoir accès à toutes les fonctions d’idipops, merci de compléter votre profil"
+    complete_profile_label: Compléter le profil
+  activity_search:
+    search: Chercher
+    no_result: Rien ne correspond à votre recherche
+    what: Que cherchez-vous ?
+    back_to_main: Retour aux catégories principales
+  pro_listing:
+    title: Trouver des professionnels
+    city: Ville
+    tags: Tags
+    sort_by: Trier par
+    proximity: Proximité
+    rating: Note
+    search_with_map_update: Rechercher quand la carte change
+    no_results: "Oups! Pas de champions trouvés... Vous pouvez choisir une catégorie en modifiant vos tags."
+  pro_profile:
+    title: Profil pro
+    free_register: Inscrivez-vous pour contacter les Champions et accéder à toutes les fonctionnalités gratuitement
+    num_of_ratings:
+      zero: (Pas de notes)
+      one: "(%{count} note)"
+      other: "(%{count} notes)"
+    siret: SIRET
+    introduction: Présentation
+    my_assets: Mes avantages
+    my_references: Mes références
+    by_quotation: Sur devis
+    by_prestation: A la prestation
+    main_activity: Activité principale
+    secondary_activities: Activités secondaires
+    no_comments: Aucun commentaire n'a été fait pour l'instant.
+    comments: Commentaires
+    view_less: Voir moins
+    view_more: Voir plus
+    my_rating: Ma note
+    send_comment: Envoyer le commentaire
+    request_quotation: Demander un devis
+    send_message: Envoyer un message
+    remove_address_title: Confirmation de suppression
+    remove_address_text: "Etes-vous sûr de vouloir supprimer l'adresse %{address} ?"
+    confirm_delete_label: Supprimer
+    cancel_delete_label: Annuler
+    no_address_error: "Vous devez entrer au moins une adresse valide. Pour cela, commencez à la taper dans le champ adresse puis sélectionnez-la quand elle apparaît dans la liste de suggestions."
+    no_activity_error: Vous devez sélectionner votre activité principale avant de pouvoir continuer.
+    remove_address_success: "L'adresse sera définitivement supprimée une fois que vous aurez enregistré vos changements."
+    last_address_not_correct: La dernière adresse entrée n'est pas correcte.
+    changes_saved: Modifications enregistrées
+    comment_sent: Le commentaire a été envoyé avec succès
+    opening_hour:
+      view_all: Voir toutes les horaires
+      close: Fermé
+  favorites:
+    title: Mes coups de cœur
+    no_results: Vous n'avez aucun coup de cœur pour l'instant
+  deals:
+    title: Bons plans
+    subtitle: É-co-no-mi-sez
+    place: Ville ou code postal
+    all_activities: Toutes professions
+    search_co_name: Cherchez le nom d'une société
+    no_deals: Nous n'avons trouvé aucun bon plan
+    share: Partager
+    full_profile: Profil complet
+    similar: Bons plans similaires
+    back_to_list: Retour à la liste
+    validity: "Valide du <span class='validity-date'>%{startDate}</span> au <span class='validity-date'>%{endDate}</span>"
+    valid_addresses: "Valable ici :"
+    offered_by: Offert par
+    know_more_label: En savoir plus sur Idipops
+    deal_published: Bon plan publié
+    deal_deleted: Bon plan supprimé
+    favorited: Le bon plan a été ajouté à vos coups de cœur
+    unfavorited: Le bon plan a été enlevé de vos coups de cœur
+    manager:
+      title: Mes bons plans
+      no_results: "Vous n'avez aucun bon plan pour l'instant"
+      post_label: Ajouter un bon plan
+      start_date: "Du %{start_date}"
+      end_date: "Au %{end_date}"
+      edit_label: Modifier
+      delete_label: Supprimer
+      cancel_label: Annuler
+      delete_text: "Une fois supprimé, ce bon plan ne sera plus visible par les particuliers."
+      delete_title: "Etes-vous sûr de vouloir supprimer ce bon plan ?"
+      current_label: En cours
+      future_label: A venir
+      past_label: Expirés
+    post:
+      title: Publiez un bon plan
+      edit_title: Modifiez votre bon plan
+      address_label: Adresse
+      tagline_label: Accroche
+      description_label: Description
+      start_date_label: Date de début
+      end_date_label: Date de fin
+      featured_image_label: Image principale
+      listing_image_label: Image de listing
+      featured_image_help: "Taille minimum : 1024x576"
+      listing_image_help: "Taille minimum : 400x320"
+      promotion_title: Où voulez-vous promouvoir votre bon plan ?
+      homepage_title: Page d'accueil
+      deals_title: Page Bons plans
+      map_title: Carte
+      more_addresses_title: Adresses supplémentaires
+      select_at_leats_one_address: Vous devez sélectionner au moins une adresse.
+      remaining_deal: "(reste %{remaining})"
+      homepage_help: "Votre bon plan sera visible 1000 fois sur la page d'accueil d’idipops, pour un bon plan immanquable."
+      deals_help: "Votre bon plan sera visible 1000 fois sur la page \"Bons Plans\", dans la partie sponsorisée en tête des bons plans."
+      map_help: "Votre bon plan sera visible 1000 fois en haut de la carte, sur des recherches localisées sur votre activité."
+      more_addresses_help: "Au-delà de %{numFreeAddresses} adresses, le coût supplémentaire est de %{cost} flèches par adresse."
+      impression_tooltip: "Coût pour mille (CPM) : vos Bons Plans seront vus 1000 fois, par des personnes cherchant votre métier ou vos tags, et localisées sur votre zone de couverture."
+      tags_help: "Les tags sont essentiels pour vous : ils lient les recherches des particuliers à votre profil. Pensez aux termes qui conduiront les particuliers vers votre profil lors de leurs recherches et ajoutez-les&nbsp;!"
+      credits_cost: "Coût: %{cost} flèches"
+      total_amount_label: Montant total
+      unsufficient_credit: Crédit insuffisant
+      total_amount: "%{credit_amount} flèches"
+      tags_label: Choisissez des tags pour un meilleur ciblage (15 maximum)
+      tags_placeholder: Entrez des tags
+      post_label: Publier le bon plan
+      save_label: Enregistrer
+      tips_title: Conseils
+      tips_content: "<p>Pour que votre bon plan crée un impact, <strong>soignez le titre</strong> et sélectionnez avec attention vos <strong>images principales</strong> et de <strong>listing.</strong></p>
+      <p><strong>Choisissez bien vos tags</strong> qui lieront les recherches à votre bon plan afin d’attirer des <strong>prospects qualifiés</strong> et d’augmenter votre taux de conversion.</p>
+      <p>Votre bon plan sera <strong>modifiable</strong> même une fois posté (contenu, date, image, visibilité) sauf pour les <strong>adresses sélectionnées</strong> (jusqu’à 3 gratuites).</p>
+      <p>Attention, une fois la date de fin atteinte, votre bon plan ne sera plus visible.</p>
+      <p>Rappel : <strong>pour être validé,</strong> un bon plan doit obligatoirement <strong>offrir un avantage</strong> aux membres de la communauté d’idipops, par rapport à votre offre habituelle.</p>"
+  referrals:
+    title: Invitations
+    header: Gagnez des flèches en invitant vos amis sur Idipops.
+    subheader: "Pour chaque invité qui s'inscrit comme Champion, il recevra un bonus de %{reward} flèches grâce a vous."
+    subheader_pro: "Pour chaque invité qui s'inscrit comme Champion, vous gagnez tous deux un bonus de %{reward} flèches."
+    my_rewards: Mes récompenses
+    send_referral_email: "Envoyez un email d'invitation"
+    referrals_title: Statut des invitations
+    email_message: "Je me suis inscrit sur Idipops et je vous invite à me rejoindre.\nIdipops est une plateforme sociale et innovante où particuliers et entreprises se retrouvent pour échanger directement.\nEn tant que Champion, Idipops permet de prospecter et d’être visible sur internet sans avoir à payer.\nPour les particuliers, vous pourrez trouver les meilleurs services et commerces autour de vous.\nEn proposant vos services sur Idipops, vous recevrez %{reward} points bonus lors de votre inscription !\n\nA bientôt sur Idipops\n%{name}"
+    email_subject: "%{pro_name} vous invite à rejoindre Idipops"
+    email_header: Courriel
+    customer_header: Nom
+    date_header: "Date d'invitation"
+    state_header: Statut
+    reward_header: Récompense
+    emails_label: Courriels
+    subject_label: Objet
+    message_label: Message
+    content_pro: "Parainnez un proche et recevez %{reward} points !"
+    content_user: Parainnez un proche
+    emails_placeholder: Ajoutez une ou plusieurs adresses emails ici
+    referral_email_sent: "L'invitation a été envoyée"
+    referral_email_exists: "L'email existe déjà"
+    link_description_pro: "Partagez ce lien avec vos amis, vous obtiendrez %{reward} flèches pour chaque invité qui s'inscrit comme Champion."
+    link_description_user: "Partagez ce lien avec vos amis pour une inscription rapide. Si vous parrainez un champion, celui-ci obtiendra %{reward} points grâce à vous !"
+    accept:
+        but_connected: "Vous voulez accepter une invitation mais vous êtes déjà connecté à un compte. Si ce n'est pas votre compte, déconnectez-vous puis acceptez l'invitation."
+        header: Bienvenue sur Idipops
+        subheader: Il vous suffit juste de créer un compte pour faire partie de la famille. Et en plus, c'est gratuit !
+        signup: Créer un compte
+    state:
+        pending: Envoyée
+        registered: Inscrit
+        processed: Gagnant
+  prices:
+    changing_rate: "1 euro = %{changeCredits} flèches"
+    pricing_in_credits: Tarifs en flèches
+    deal_map: Visibilité Bon Plan - Sur carte (CPM)
+    deal_deals: Bon Plan sponsorisé (CPM)
+    deal_homepage: Visibilité Bon Plan - Sur page d'accueil (CPM)
+    sponsored_map_profile: Visibilité Profil - Profil ouvert sur la carte (CPM)
+    sponsored_profile: Profil sponsorisé (CPM)
+    bonus_signup: Points offerts à l'inscription
+    classified_ad_unlock: Ouvrir une annonce, un devis, un message
+  credits:
+    title: Mes flèches
+    my_arrows: Mes flèches
+    you_have: "Vous avez :"
+    buying_credits: Achats crédits
+    buying_tips: "Les conseils d'Idipops : Achat de crédit"
+    forfait1_name: "Idipops<br/>Découverte"
+    forfait2_name: "Idipops<br/>Initiative"
+    forfait3_name: "Idipops<br/>Performance"
+    forfait4_name: "Idipops<br/>Ultime"
+    numbers_to_add: Nombre de flèches à ajouter
+    changing_rate: "Taux de change :<br/><strong>1 euro = %{changeCredits} flèches</strong>"
+    cost: "Coût : %{amount}€"
+    adding: En cours...
+    add_label: Créditer mon compte
+    transactions_title: Transactions
+    date_header: Date
+    description_header: Description
+    cost_header: Coût
+    credits_header: Flèches
+    balance_header: Balance
+    invoice_header: Facture
+    no_transactions: Aucune transaction enregistrée
+    select_pack: "Sélectionnez un pack :"
+    enter_amount: ou Entrez le nombre de flèches que vous souhaitez directement acheter
+    payment_succeeded: Votre paiement a bien été enregistré.
+    payment_failed: Votre paiement a échoué.
+    redirection_message: Vous allez être redirigé vers notre plateforme de paiement. Merci de patienter.
+    pricing_header: Voir les tarifs
+    transactions:
+      deal_map: Visibilité Bon Plan - Sur carte (CPM)
+      deal_deals: Bon Plan sponsorisé (CPM)
+      deal_homepage: Visibilité Bon Plan - Sur page d'accueil (CPM)
+      sponsored_map_profile: Visibilité Profil - Profil ouvert sur la carte (CPM)
+      sponsored_profile: Profil sponsorisé (CPM)
+      bonus_signup: Points offerts à l'inscription
+      bonus_referral: Points offerts pour une invitation
+      classified_ad_unlock: Ouvrir une annonce, un devis, un message
+      forfait_1: Achat d’Idipops Découverte
+      forfait_2: Achat d’Idipops Initiative
+      forfait_3: Achat d’Idipops Performance
+      forfait_4: Achat d’Idipops Ultime
+      change_rate: Achat de flèches
+      credit_adding: Achat de crédits
+      admin_operation: Opération manuelle Idipops
+      deal_more_addresses: Visibilité Bon Plan - Adresses supplémentaires
+      sponsored_post: Visibilité Post - Post sponsorisé
+    tip_content: "<p>
+            Idipops est là pour vous aider à&nbsp;
+            <strong>atteindre vos futurs clients</strong>
+            et vos flèches sont vos moyens pour y arriver.
+          </p>
+          <p>
+            Celles-ci vous permettent de:
+            </p><ul>
+              <li>
+                <strong>Améliorer la visibilité</strong>
+                de votre profil
+              </li>
+              <li>
+                <strong>Mettre en valeur</strong>
+                vos bons plans
+              </li>
+              <li>Et bien d'autres</li>
+            </ul>
+          <p></p>
+          <p>
+            Sur Idipops, vos actions marketing sont
+            <strong>ciblées</strong>
+            sur des prospects présents
+            <strong>sur votre zone de couverture</strong>
+            et recherchant des champions de
+            <strong>votre activité.</strong>
+          </p>
+          <p>
+            Taux de change :
+            <strong>1 euro = %{changeCredits} flèches,</strong>
+            à utiliser comme
+            <strong>bon vous semble.</strong>
+          </p>"
+  uneon:
+    title: "Mais qui est Idipops&nbsp;?"
+    subtitle: Il va vous faire aimer nos champions (même les banquiers!)
+    introduction: "<p>Près de 80% des emplois en France touchent le secteur des services. Le nombre de professionnels du service est immense et il est très souvent fastidieux de faire son choix.</p>
+          <p>
+            D'un côté, vous et moi :
+            <em>“Comment efficacement choisir un prestataire de service fiable ?”</em>
+          </p>
+          <p>
+            De l'autre les prestataires de services, nos champions :
+            <em>“Comment se démarquer et mettre en valeur nos compétences ?”</em>
+          </p>
+          <p>Idipops a décidé d’unir ces 2 parties et d’enlever toutes ces contraintes.</p>
+          <p>
+            <a class='orange' href='/'>Idipops.com</a>
+            vous offre un unique espace d'échange pour trouver gratuitement les meilleurs services et commerces autour de vous.
+          </p>
+          <p>
+            Pour vous aider, nous avons embauché <strong>Idipops</strong>, le Cupidon des services, capable de trouver votre Champion, peu importe sa profession !
+          </p>"
+    for_users: Pour les particuliers
+    users_subheader: Ses pouvoirs grandissent chaque jour
+    users_point1: Communauté Idipops
+    users_point2: Communication directe
+    users_point3: Echanges centralisés
+    users_point4: Bons Plans
+    users_point5: Univers sans limites
+    users_introduction: Ainsi, Idipops vous aide à trouver rapidement les meilleurs prestataires de service près de chez vous tout en économisant.
+    for_pros: Pour les champions
+    pros_subheader: Idipops vous donne les moyens de grandir
+    pros_point1: Mise en valeur
+    pros_point2: Retours clients
+    pros_point3: Devis personnalisables
+    pros_point4: Prospects qualifiés
+    pros_point5: Recommandations
+    pros_introduction: Les Champions peuvent continuellement améliorer la qualité de leurs services et ainsi augmenter leur revenus.
+  cgv:
+    title: CONDITIONS GENERALES DE VENTES ET D’UTILISATION
+    content: "<h2>MENTIONS LEGALES</h2>
+        <p>IDIPOPS SAS, immatriculée sous le numéro 81157359100013 dans la ville de Nevers ayant pour numéro de TVA Intracommunautaire le FR 27 811573591, et dont le siège social est situé au 41 rue de la Banne, Forges, 58160 SAUVIGNY-LES-BOIS, dispose d’un capital de 3000 Euros et gère le site internet idipops.com</p>
+        <p>Idipops.com est un site de mise en relation entre particuliers, prestataires de service et commerces, hébergé par l’entreprise OVH, au 2 rue Kellermann - 59100 Roubaix - France.</p>
+        <p>Les présentes Conditions Générales de ventes et d’utilisation ont pour objet de définir les modalités de mise à disposition du site http://idipops.com et les conditions d'utilisation du Service par le particulier.</p>
+        <p>Le directeur de publication, Morgan DUARTE est à votre disposition via l’email contact@idipops.com ou par téléphone au 09 72 21 25 84 (Numéro non surtaxé).</p>
+        <h2>DEFINITION</h2>
+        <p>
+          <strong>Idipops :</strong>
+          désigne l’ensemble des services fournis, gratuits ou payants, permettant une mise en relation entre particuliers, prestataires de service et commerces.
+        </p>
+        <p>
+          <strong>Site :</strong>
+          désigne le site internet exploité par Idipops SAS principalement accessible à l’adresse http://idipops.com
+        </p>
+        <p>
+          <strong>Champion :</strong>
+          désigne les personnes ou entreprises inscrites sur le site et mettant à disposition leur service sur le site. Il peut s’agir aussi bien de particulier non professionnels comme d’entreprises. Les Champions se classent dans les catégories de profession prédéfinies par Idipops SAS. Les Champions ont la possibilité de demander la création de nouvelles catégories, soumises à la validation d’idipops SAS.
+        </p>
+        <p>
+          <strong>Particulier :</strong>
+          désigne les personnes qui consultent le site Idipops à la recherche de bons plans et services.
+        </p>
+        <p>
+          <strong>Annonce :</strong>
+          désigne tous les éléments déposés par un particulier sous sa responsabilité éditoriale exclusive et inscrit sur le site à la recherche de services.
+        </p>
+        <p>
+          <strong>Compte pro :</strong>
+          désigne l’espace mis à disposition gratuitement aux champions inscrits à partir duquel chaque champion pourra gérer son profil, ses messages ainsi que ses achats et dépenses de crédits.
+        </p>
+        <p>
+          <strong>Compte perso :</strong>
+          désigne l’espace mis à disposition gratuitement aux particuliers inscrits à partir duquel chaque particulier pourra gérer ses messages, poster des annonces, accéder à ses coups de cœur et modifier ses données.
+        </p>
+        <p>
+          <strong>Tag :</strong>
+          désigne un mot-clé assigné à un profil de champion ou bon plan. Ils sont choisis par les champions qui les associent à leurs profil et bons plans. Les utilisateurs peuvent taper et choisir un tag dans la barre de recherche afin de trouver les champions associés à ce tag. Un tag peut également être ajouté ou supprimé sur la page de résultat de recherche afin d’affiner ou élargir la recherche.
+        </p>
+        <p>
+          <strong>Demande de devis :</strong>
+          désigne l’envoi d’un formulaire par un particulier inscrit à un champion dans le but d’obtenir un devis.
+        </p>
+        <p>
+          <strong>Bon plan :</strong>
+          désigne l’ensemble des éléments déposés par un Champion dans la rubrique bons plans du site. Les bons plans sont visibles par toute personne naviguant sur le site. La publication d’un bon plan est soumise à modération. Il ne s’agit uniquement que d’offre promotionnelle, de remboursement, de rabais, ou de toute offre avantageuse pour le particulier par rapport à l’offre habituelle d’un champion. Un bon plan ne peut être une publicité seule, sans avantage pour le particulier.
+        </p>
+        <p>
+          <strong>Services :</strong>
+          désigne l’ensemble des services mis à la disposition des particuliers et champions par Idipops SAS
+        </p>
+        <p>
+          <strong>Options payantes :</strong>
+          désigne l’ensemble des services et options de visibilités payantes à la disposition des champions ayant auparavant acheté des crédits. Ces fonctions sont optionnelles et toutes les autres fonctionnalités restent toujours accessibles gratuitement.
+        </p>
+        <p>
+          <strong>Coup de cœur :</strong>
+          désigne les profils et bons plans favoris des particuliers. Tout particulier inscrit peut désigner un champion ou un bon plan comme coup de cœur.
+        </p>
+        <p>
+          <strong>Flèches :</strong>
+          désigne les crédits que les champions peuvent acheter et dépenser comme bon leur semble afin d’attirer et contacter les particuliers pour leur proposer leurs services ou bons plans.
+        </p>
+<p>
+          <strong>Post :</strong>
+          désigne les publications des membres inscrits, présents sur la page idipops.com/post.
+        </p>
+
+        <h2>ACCEPTATION</h2>
+        <p>La souscription, quelle qu’elle soit, à une option payante ou achat de crédit équivaut à l’acceptation de toutes les CGV et CGU rédigées ci-dessous.</p>
+        <p>Tout Particulier - Tout Champion déclare en accédant et utilisant le service Idipops, avoir pris connaissance des présentes Conditions Générales d’Utilisation et les accepter sans réserve. Toutes modifications futures sont également expressément acceptées.  Les présentes CGU sont donc pleinement opposables aux Particuliers et aux Champions.</p>
+        <p>Les présentes CGV-CGU prennent effet à partir du 1er juillet 2015 et ce jusqu’à une durée indéterminée.</p>
+        <h2>DESCRIPTION DES SERVICES</h2>
+        <p>Tout particulier, en accédant au site internet, pourra :</p>
+        <ul>
+          <li>S’inscrire</li>
+          <li>Effectuer une recherche d’un Champion</li>
+          <li>Accéder aux résultats de cette recherche</li>
+          <li>Accéder aux profils des champions</li>
+          <li>Accéder aux bons plans</li>
+          <li>Envoyer un devis ou un message aux champions après inscription</li>
+          <li>Mettre le profil d’un champion en coup de cœur après inscription</li>
+          <li>Partager un bon plan ou un profil de champion sur facebook ou twitter</li>
+          <li>Poster une annonce après inscription</li>
+        </ul>
+        <p>Tout Champion, en accédant au site internet, pourra :</p>
+        <ul>
+          <li>S’inscrire</li>
+          <li>Créer et modifier son profil</li>
+          <li>Etre référencé sur les résultats de sa catégorie</li>
+          <li>Etre référencé sur la carte pour sa catégorie</li>
+          <li>Accéder aux options payantes de mise en valeur</li>
+          <li>Poster des bons plans</li>
+          <li>Répondre aux messages, devis et annonces des particuliers qui lui sont adressés</li>
+          <li>Gérer ses crédits sous forme de flèches</li>
+        </ul>
+        <h2>ENGAGEMENT DU CHAMPION</h2>
+        <p>Le Champion garantit détenir tous les droits (notamment des droits de propriété intellectuelle) ou avoir obtenu toutes les autorisations nécessaires à la publication de son profil et des bons plans rattaches à son compte.</p>
+        <p>Le Champion garantit que le profil et ses bons plans ne contreviennent à aucune réglementation en vigueur (notamment relatives à la publicité, à la concurrence, à la promotion des ventes, à l'utilisation de la langue française, à l'utilisation de données personnelles, à la prohibition de la commercialisation de certains biens ou services), ni aucun droit de tiers (notamment aux droits de propriété intellectuelle et aux droits de la personnalité) et qu'il ne comporte aucun message diffamatoire ou dommageable à l'égard de tiers.</p>
+        <p> Ainsi, le Champion s'engage notamment à ce que le profil, les posts et les bons plans ne contiennent :</p>
+        <ul>
+          <li>aucun lien hypertexte redirigeant les Particuliers vers des sites internet autre que celui de la société Idipops SAS, exception faite du propre site professionnel du champion et dans la rubrique consacrée uniquement.</li>
+          <li>aucune information fausse, mensongère ou de nature à induire en erreur les Particuliers.</li>
+          <li>aucune mention diffamatoire ou de nature à nuire aux intérêts et/ou à l'image d’idipops SAS ou de tout tiers.</li>
+          <li>aucun contenu portant atteinte aux droits de propriété intellectuelle de tiers.</li>
+        </ul>
+        <p>Le Champion s'engage à ne poster que des Bons Plans contenant des biens ou services disponibles dont il dispose. Idem pour sa description dans son profil. Le Champion s'engage, en cas d'indisponibilité du bien ou service, à procéder au retrait du profil et/ou bon plan du Service Idipops dans les plus brefs délais.</p>
+        <p>Le Champion s’engage à ne poster aucune information mensongère ou trompeuse au sujet de ses activités et coordonnées. Le Champion et le particulier s’engagent à ne publier des posts uniquement à caractère de conseil, de démonstration de savoir-faire et s’interdit de diffuser de la publicité directe. Un particulier peut également poser des questions.</p>
+        <p>A ce titre, le champion reconnaît et accepte qu’il est le seul responsable du contenu qu’il publie sur le site, que ce soit dans son profil, ses posts, ses bons plans ou ses échanges avec les particuliers (messages, devis, annonces).</p>
+        <p>Le Champion assume l’entière responsabilité.</p>
+        <p>Dans ce cadre, l'Annonceur déclare et reconnaît qu'il est seul responsable du contenu des Annonces qu'il publie et rend accessibles aux Utilisateurs, ainsi que de tout document ou information qu'il transmet aux Utilisateurs.</p>
+        <p>L'Annonceur assume l'entière responsabilité éditoriale de tout(s) contenu(s) publie(s).</p>
+        <p>« En résultat, le Champion relève Idipops SAS de toutes responsabilités, les garantit contre tout recours ou action en relation avec le contenu publie par le Champion qui pourrait être intenté contre ces derniers par tout tiers, et prendra à sa charge tous les dommages-intérêts ainsi que les frais et dépens auxquels ils pourraient être condamnés ou qui seraient prévus à leur encontre par un accord transactionnel signé par ces derniers  avec ce tiers , nonobstant tant tout dommages-intérêts dont Idipops SAS pourrait réclamer à raison des faits dommageables du Champion. »</p>
+        <p>En déposant tout contenu, chaque utilisateur du site reconnaît et accepte que Idipops puisse supprimer, à tout moment, sans indemnité ni remboursement des sommes engagées.</p>
+        <p>Tout Bon Plan est soumis à modération et est diffusé immédiatement après validation par les équipes d’idipops. Tout Bon Plan est soumis à une période de validité allant au maximum jusqu'à 1 an.</p>
+        <p>Tout utilisateur, particulier et champion, s'engage également à ce que son Compte Personnel et/ou son Compte Pro ne contienne :</p>
+        <ul>
+          <li>aucune information obligatoire fausse et/ou mensongère.</li>
+          <li>aucune information portant atteinte aux droits d'un tiers.</li>
+        </ul>
+        <p>Le titulaire du compte reconnaît qu'il est seul responsable des informations diffusées sur son Compte Personnel et/ou de son Compte Pro.</p>
+        <p>En créant un Compte Personnel et/ou un Compte Pro, chaque titulaire, particulier et champion,  reconnaît et accepte que Idipops SAS puisse supprimer, à tout moment, sans indemnité ni droit à remboursement des sommes engagées, un compte qui serait contraire notamment à la loi française et/ou aux règles de diffusion fixées par Idipops SAS.</p>
+        <h2>MODALITES DE SOUSCRIPTION AUX OPTIONS PAYANTES ET A L’ACHAT DE CREDIT</h2>
+        <h3>1. Achat de crédit et confirmation d’une commande</h3>
+        <p>Chaque Champion possède un compte. C’est depuis ce compte que s’effectuent tous les achats de crédits. Les crédits achetés à partir d’un compte sont rattachés à ce compte et uniquement à ce compte. Ils ne peuvent être transférés sur un autre compte.</p>
+        <p>Les crédits achetés servent à utiliser les options payantes de visibilité : tête de liste, achat de tags (en plus des tags gratuits), visibilité du profil (liste et carte) et visibilité des bons plans.</p>
+        <p>L’achat des crédits se fait uniquement par paiement en ligne sur le site http://idipops.com , par carte de crédit.</p>
+        <p>Après la commande, un email de confirmation de commande sera adressé au champion pour confirmer le bon traitement du paiement.</p>
+        <h3>2. Espace et Moment de souscription</h3>
+        <p>L’achat de crédit se fait à partir du site internet, à l’intérieur du compte pro mis à la disposition des champions. L’achat de crédit peut se faire à tout moment.</p>
+        <p>Le paiement se fait au moment du choix des options.</p>
+        <h3>3. Durée et effet de la ou des option(s) payante(s) et des crédits</h3>
+        <p>Les crédits achetés par les champions n’ont pas de limite d’utilisation. Ils ne sont utilisables que pour les options payantes proposées par Idipops.</p>
+        <p>Les crédits sont disponible immédiatement après leur achat.</p>
+        <p>Idipops SAS se réserve le droit de refuser la diffusion de tout plan modifiée qui ne respecterait pas les règles de diffusion du site.</p>
+        <p>La suppression d'un Compte Personnel entraîne la suppression de tout(s) bon plan ou visibilité attaché(s) à ce compte (même adresse mail) et, en conséquence, de toute(s) option(s) payante(s) souscrite(s) et ne donne aucun droit à remboursement, ni indemnité, ce que le champion reconnaît et accepte.</p>
+        <h3>4. Remboursement</h3>
+        <p>Les crédits, une fois achetés par le champion, ne sont pas remboursables. Les options payantes ne sont pas non plus remboursables.</p>
+        <p>Cependant, si vos crédits ne sont pas ajoutés sur votre compte suite au paiement en ligne et après avoir reçu l’email de confirmation, vous pouvez contacter le service client d’idipops à l’adresse contact@idipops.com afin d’exposer votre situation et vous faire créditer votre compte à hauteur de votre paiement.</p>
+        <h3>5. En cas de suppression d’un Bon Plan et/ou d’un profil</h3>
+        <p>Si la diffusion d'un Bon Plan et/ou d’un profil est refusée par Idipops SAS en raison de sa non-conformité aux règles de diffusion du site Idipops :</p>
+        <p>Le montant de la ou des option(s) payante(s) souscrite(s) lors du dépôt ou de la modification du Bon Plan ou la visibilité du profil ne sera pas prélevé et un email sera adressé au Champion l'informant que son Bon Plan et/ou son profil a été refusée par Idipops SAS et ne sera pas diffusée.</p>
+        <p>Dans le cas d'un paiement de la ou des option(s) payante(s) par crédits, les sommes payées seront restituées sous forme de crédits, ce que le Champion reconnait et accepte.</p>
+        <p>En revanche, si Idipops SAS était contraint de supprimer le Bon Plan et/ou le profil en cours de diffusion en raison de sa non-conformité aux règles de diffusion du Service et notamment parce que son contenu a été, légitimement, signalé comme abusif, Idipops SAS ne remboursera pas au Champion les crédits et/ou le montant de la ou des option(s) payante(s) souscrite(s) lors du dépôt ou de la modification du Bon Plan et/ou du profil ainsi supprimé en cours de diffusion.</p>
+        <p>En cas de suppression volontaire par le champion, Idipops SAS ne remboursera pas les crédits restants au moment de la suppression.</p>
+        <h3>6. En cas de suppression d'un Compte Champion</h3>
+        <p>La suppression d'un Compte Champion, volontaire ou après utilisation abusive du compte, entraîne la suppression de tout(s) Bon Plan(s) et profil attaché(s), et en conséquence, la suppression de toute(s) option(s) payante(s) souscrite(s) pour ces Bons Plans et ce profil et ne donne droit à aucun droit à remboursement, ni indemnité, ce que le Champion reconnaît et accepte.</p>
+        <p>La suppression d'un Compte Champion entraîne la suppression des crédits associés, n'ouvrant aucun droit à remboursement, ce que le Champion reconnaît et accepte.</p>
+        <h3>7. Rétractation</h3>
+        <p>Les droits de rétractation suivent les articles L121-20 à L121-20-2, L121-20-4 et R121-1-2 du code de la consommation. Toutefois, en validant la commande, la personne ayant souscrit à l’achat sur le site accepte qu’Idipops SAS commence à exécuter la prestation et renonce expressément à son droit de rétractation.</p>
+        <h2>DESCRIPTIONS DES OPTIONS PAYANTES</h2>
+        <p>Une option payante n’est souscrite que pour un seul compte et plus précisément pour une seule adresse. Un champion peut inscrire plusieurs adresses à son profil s’il possède plusieurs lieux de travail ou plusieurs agences. En revanche, au moment de payer l’option, il doit choisir quelle adresse bénéficiera de cette option.</p>
+        <p>En conséquence, une fois payée, l’option ne peut être transférée à une autre adresse.</p>
+        <p>Les options payantes sont cumulatives dans le sens ou un champion peut souscrire à plusieurs options en même temps et pour la même adresse.</p>
+        <p>Il est possible de souscrire aux options payantes à partir du site internet ou du site mobile.</p>
+        <p>Les prix varient en fonction de la profession choisie comme activité principale et son visible après inscription sur la page « tableau de bord », dans la partie de recharge de crédit ou la partie « booster mon activité ».</p>
+        <h3>1. Profil sponsorisé</h3>
+        <p>Afin d’être affiché au-dessus de la liste du résultat de la recherche, un champion peut souscrire a l’option « Profil sponsorise ». Il faut alors choisir le nombre de jours pendant lesquels le profil sera sponsorise. Le tarif journalier sera alors multiplie par le nombre de jours choisi.</p>
+        <p>Le champion devra également choisir le ou les départements et la ou les professions dans lesquelles sera le profil sera sponsorise. Le tarif sera alors multiplie par le nombre de département et de profession choisis.</p>
+        <p>Le profil sponsorise apparaîtra au-dessus de la liste des résultats de la recherche en fonction des recherches des utilisateurs d’idipops.fr.</p>
+        <h3>2. Bons Plans</h3>
+        <p>Un Champion peut poster un bon plan de manière gratuite. La publication de ce bon plan est soumise à modération par les équipes d’Idipops SAS. Tout champion reconnaît et accepte qu’un bon plan puisse être refuse ou supprime si le modérateur juge qu’il n’est pas conforme à la définition mentionnée précédemment. Seul le modérateur est juge et tout refus ou suppression d’annonce ne peut être contesté.</p>
+        <h3>3. Top bon plan</h3>
+        <p>Une fois le Bon Plan posté, il est possible de le mettre en valeur à plusieurs endroits. La première mise en valeur se trouve au-dessus de la carte de recherche. Le champion pourra choisir pour quel métier, quel département et pour combien de jour son bon plan apparaîtra au-dessus de la carte. Comme pour le profil sponsorisé, le tarif sera alors multiplié par le nombre de département et de profession choisis.</p>
+        <p>La deuxième mise en valeur se trouve sur la page d’accueil et est limité à 5 bons plans. Pour cette mise en valeur, il n’y a pas de limite de profession et de département. Le bon plan sera automatiquement visible de toute personne arrivant sur le site internet http://idipops.com, quel que soit sa localisation et sa recherche.</p>
+        <h3>4. Achat de Tags</h3>
+        <p>Afin d’augmenter ses chances d’être trouvé lorsqu’un utilisateur lance une recherche, un champion peut ajouter des tags qui lient à son profil et ses bons plans. L’ajout de tags pour le profil et pour un bon plan se fait séparément. Pour le profil, cela se fait depuis la page de modification du profil et pour le bon plan, il se fait au moment du postage du bon plan.</p>
+        <h2>OPTIONS GRATUITES</h2>
+        <h3>1. Ouverture d’une demande de devis</h3>
+        <p>Les champions peuvent recevoir des demandes de devis, les ouvrir et y répondre gratuitement. Une fois le devis ouvert, le demandeur et le champion peuvent communiquer sans limites jusqu'à trouver un accord ou organiser une rencontre.</p>
+        <p>L’ouverture d’un devis se fait depuis l’espace des champions dans la rubrique « toutes mes conversations ». L’ouverture d’un devis est gratuite et se fait depuis l’espace des champions dans la rubrique « toutes mes conversations ».</p>
+        <h3>2. Ouverture d’une annonce</h3>
+        <p>Les particuliers peuvent envoyer des demandes à plusieurs champions de plusieurs métiers en une fois. L’accès à cette fonction est gratuit. Une fois le devis ouvert, le demandeur et le champion peuvent communiquer sans limites jusqu'à trouver un accord ou organiser une rencontre.</p>
+        <p>L’ouverture d’un devis se fait depuis l’espace des champions dans la rubrique «annonces autour de chez moi».</p>
+        <p>Avant d’ouvrir l’annonce, le champion a accès aux informations clés afin d’être sûr que l’annonce lui correspond : une description de l’annonce, le lieu et le nombre de champions ayant ouvert l’annonce.</p>
+        <h2>COOKIES ET GEOLOCALISATION</h2>
+        <p>Afin de faciliter la navigation sur le site Internet, des cookies peuvent être implantés dans le support de communication des utilisateurs afin par exemple de conserver leurs critères de recherche, et de faciliter la navigation.</p>
+        <p>Un réglage du navigateur de son support de communication permet à tout Utilisateur de refuser l'implantation de cookies. Cependant, l'Utilisateur est informé que le refus des cookies peut perturber l'utilisation du Service.</p>
+        <h2>TRAITEMENT DES DONNEES PERSONNELLES</h2>
+        <h3>Collecte</h3>
+        <p>Le bon fonctionnement du site http://idipops.com nécessite la collecte d’informations à propos des utilisateurs s’étant inscrits. Ces données sont collectées lors de l’enregistrement du particulier ou du champion.</p>
+        <p>La collecte, le traitement et l'utilisation de données personnelles par la Idipops SAS ne sont réalisés que si le Membre accepte les présentes CGU et donne ainsi son consentement express à l'utilisation de ses données. Le consentement requis de l’utilisateur est enregistré sur la base de données d'Idipops.</p>
+        <h3>Utilisation</h3>
+        <p>Les données ainsi collectées peuvent être utilisées pour les fins suivantes :</p>
+        <ul>
+          <li>la gestion du profil, des bons plans, notamment sa validation</li>
+          <li>la publication et le suivi des bons plans et du profil</li>
+          <li>l'envoi de formulaires de réponses</li>
+          <li>l’envoi de newsletter</li>
+          <li>l'envoi de propositions commerciales et/ou promotionnelles, émanant uniquement d’Idipops SAS et concernant exclusivement le service Idipops</li>
+          <li>l'envoi de propositions commerciales et/ou promotionnelles, émanant de sociétés tiers en relation avec Idipops SAS et ne concernant pas exclusivement le service Idipops</li>
+          <li>l'envoi d'enquêtes de satisfaction</li>
+          <li>statistiques</li>
+        </ul>
+        <p>Idipops SAS s’engage à ne procéder à aucune vente de base de données à des sociétés tierces.</p>
+        <p>En outre, cet envoi de propositions commerciales et/ou promotionnelles ne sera effectué qu'après avoir reçu le consentement exprès des personnes concernées. Il est toujours possible de se désinscrire pour ne pas recevoir ces propositions et offre commerciales.</p>
+        <h2>RESPONSABILITE ET FORCE MAJEURE</h2>
+        <p>La responsabilité d’IDIPOPS SAS ne peut être engagée en cas d'inexécution ou de mauvaise exécution de la commande due, soit du fait du Champion, soit d'un cas de force majeure.</p>
+        <h3>Responsabilité d'Idipops SAS</h3>
+        <p>Idipops SAS ne peut être en aucun cas tenue responsable du contenu publiés par les utilisateurs et ne donne aucune garantie, expresse ou implicite, à cet égard.</p>
+        <p>Idipops SAS est un tiers aux correspondances et relations entre les Champions et les particuliers, et exclut de ce fait toute responsabilité à cet égard.</p>
+        <h3>Limitation</h3>
+        <p>Idipops SAS s’engage à tout mettre en œuvre pour fournir le Service précédemment décrit à la fois pour les particuliers et les Champions.</p>
+        <p>Toutefois, Idipops SAS décline toute responsabilité en cas de :</p>
+        <ul>
+          <il>interruptions, de pannes, de modifications et de dysfonctionnement du Service</il>
+          <li>la perte de données ou d'informations stockées par Idipops SAS</li>
+          <li>impossibilité momentanée d'accès au Site Internet</li>
+          <li>dommages directs ou indirects causés à l'utilisateur, et ce peu importe la nature de ce dommage</li>
+          <li>utilisation anormale ou d'une exploitation illicite du Service par tout Utilisateur</li>
+          <li>attaque ou piratage informatique, privation, suppression ou interdiction, temporaire ou définitive, et pour quelque cause que ce soit, de l’accès au réseau internet</li>
+        </ul>
+        <h2>MODIFICATION DES CGV-CGU</h2>
+        <p>Idipops SAS se réserve la possibilité, à tout moment, de modifier en tout ou partie les CGV ainsi que les CGU.</p>
+        <p>Les Champions et particuliers sont invités à consulter régulièrement les CGV et CGU afin de prendre connaissance des changements apportés.</p>
+        <h2>DROIT APPLICABLE</h2>
+        <p>Si une partie des CGU ou CGV devait s'avérer illégale, invalide ou inapplicable, pour quelle que raison que ce soit, les dispositions en question seraient réputées non écrites, sans remettre en cause la validité des autres dispositions qui continueront de s'appliquer entre les Utilisateurs ou les Champions et Idipops SAS.</p>
+        <p>Tout litige relève de la compétence exclusive du tribunal de Commerce de Nevers, même en cas d'appel en garantie ou de pluralité de défendeurs, ou en cas de procédure d'urgence ou conservatoire, en référé ou par requête.</p>
+        <p>Les présentes CGU-CGV sont soumises à la loi française, incluant la loi Informatique et Libertés comme l’indique la loi du 6 janvier 1978.</p>
+        <p>Toute réclamation doit être adressée au Service Client d’idipops SAS et en français.</p>"
+  weekdays:
+    1: Lundi
+    2: Mardi
+    3: Mercredi
+    4: Jeudi
+    5: Vendredi
+    6: Samedi
+    0: Dimanche
+

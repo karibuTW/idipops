@@ -1,0 +1,12 @@
+.modal-header
+	%h3.modal-title {{confirmTitle}}
+.modal-body{ layout: "column", "layout-align" => "center center", "ng-show" => "isLoading"}
+	%p {{confirmText}}
+	%md-progress-circular{ "md-mode" => "indeterminate" }
+.modal-body{ "ng-hide" => "isLoading"}
+	%p {{confirmText}}
+.modal-footer.button-stroke
+	%button.button.button_js.orange_border_black_text{ "ng-click" => "confirm()", "ng-hide" => "isLoading"}
+		%span.button_label {{confirmLabel}}
+	%button.button.button_js.orange_border_black_text{ "ng-click" => "cancel()"}
+		%span.button_label {{cancelLabel}}

@@ -1,0 +1,41 @@
+%div{ layout: "column", "ng-controller" => "DealListController"}
+	.deals-filter{ layout: "row" }
+		.deal-header{ flex: "100" }
+			%h1.page-title.text-center-sm {{"deals.title" | t}}
+			-# .page-subtitle É-co-no-mi-sez
+			%div{ layout: "row", "layout-wrap" => "" }
+				.form-horizontal.filters{ flex: "25", "flex-sm" => "50", "flex-xs" => "100" }
+					.generic-search-box
+						%input.search-input{ type: "text", "ng-model" => "searchOptions.place", "uib-typeahead" => "parloc as (parloc.place_name + ' ' + parloc.postal_code) for parloc in searchCities($viewValue)", "typeahead-loading" => "loadingSearchLocation", "typeahead-min-length" => "3", "typeahead-wait-ms" => "200", "typeahead-editable" => "false", "typeahead-on-select" => "updateCenter($item, $model, $index)", placeholder: "Ville ou code postal" }
+						%span.search-button
+							%i.search-icon.fa.fa-search
+					%md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "loadingSearchLocation" }
+				.form-horizontal.filters{ flex: "75", "flex-sm" => "50", "flex-xs" => "100"}
+					%tags-input#tags{"ng-model" => "searchOptions.tags", "placeholder" => "{{'activity_search.what' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true", "on-tag-added" => "searchDeals()", "on-tag-removed" => "searchDeals()", "display-property" => "label", template: "tag-template" }
+						%auto-complete{ source: "searchAll($query)", "min-length" => 1, template: "tag-complete-template" }
+					%script#tag-template{ type: "text/ng-template" }
+						.tag-search-template{ layout: "row" }
+							= image_tag "icons/profession.svg", "ng-show" => "data.type == 'profession'"
+							= image_tag "icons/societe.svg", "ng-show" => "data.type == 'user'"
+							= image_tag "icons/tag.svg", "ng-show" => "data.type == 'tag'"
+							%div {{data.label}}
+							%a.remove-button{ "ng-click" => "$removeTag()" } x
+					%script#tag-complete-template{ type: "text/ng-template" }
+						.tag-search-template{ layout: "row", "layout-align" => "start center" }
+							= image_tag "icons/profession.svg", "ng-show" => "data.type == 'profession'"
+							= image_tag "icons/societe.svg", "ng-show" => "data.type == 'user'"
+							= image_tag "icons/tag.svg", "ng-show" => "data.type == 'tag'"
+							%div{ "ng-bind-html" => "$highlight($getDisplayText())" }
+	-# %hr.page
+	.deal-list-promoted{ layout: "row", "ng-show" => "promotedDeals.length > 0" }
+		.deal-list{ flex: "100" }
+			%deal-row{ deals: "promotedDeals", wide: "false", "reload-callback" => "loadPromotedDeals", "num-of-deals" => "5" }
+			-# %deal-featured-box{ "ng-repeat" => "deal in promotedDeals", deal: "deal" }
+
+	.loading-centered{ "ng-show" => "isLoading" }
+		%md-progress-circular{ "md-mode" => "indeterminate"}
+	.deal-list-all{ layout: "row" }
+		%div{ flex: "100", "ng-show" => "deals.length > 0", layout: "row", "layout-align-xs" => "center center" }
+			%deal-grid{ deals: "deals", wide: "false", "num-of-deals" => "5" }
+		%div{ flex: "100", "ng-hide" => "deals.length > 0 || isLoading" }
+			%p.nothing {{"deals.no_deals" | t}}

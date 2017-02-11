@@ -1,0 +1,74 @@
+.page-header
+  %h1
+    = "Post ##{@post.id}: #{@post.title}"
+
+.row
+  .col-sm-6
+    .row
+      .col-sm-3
+        %strong Posté par
+      .col-sm-9
+        = link_to admin_user_path(@post.user), class: "btn btn-default btn-xs" do
+          = image_tag @post.user.avatar.thumb('20x20').url, style: "width: 20px; height:20px;" if @post.user.avatar_stored?
+          = @post.user.pretty_name
+    .row
+      .col-sm-3
+        %strong Statut
+      .col-sm-9
+        %span.label.label-default= @post.current_state
+        - if @post.can_accept?
+          = form_for [:admin, @post], html: {style: "display: inline-block;"} do |f|
+            = hidden_field_tag :workflow_event, "accept"
+            %button.btn.btn-success.btn-xs{ type: "submit"} Publier
+        -# - else
+        -#   - if @post.can_publish?
+        -#     = form_for [:admin, @post], html: {style: "display: inline-block;"} do |f|
+        -#       = hidden_field_tag :workflow_event, "publish"
+        -#       %button.btn.btn-success.btn-xs{ type: "submit"} Publier
+        -#   - if @post.can_close?
+        -#     = form_for [:admin, @post], html: {style: "display: inline-block;"} do |f|
+        -#       = hidden_field_tag :workflow_event, "close"
+        -#       %button.btn.btn-success.btn-xs{ type: "submit"} Fermer
+        -#   - if @post.can_suspend?
+        -#     = form_for [:admin, @post], html: {style: "display: inline-block;"} do |f|
+        -#       = hidden_field_tag :workflow_event, "suspend"
+        -#       %button.btn.btn-success.btn-xs{ type: "submit"} Suspendre
+    .row
+      .col-sm-3
+      .col-sm-9
+        - if @post.can_reject?
+          = form_for [:admin, @post], html: {style: "display: inline-block;"} do |f|
+            = f.text_area :reject_reason, size: "60x5", class: "form-control", placeholder: "Raison du refus"
+            = hidden_field_tag :workflow_event, "reject"
+            %button.btn.btn-danger.btn-xs{ type: "submit"} Refuser
+  .col-sm-6
+    .row
+      .col-sm-3
+        %strong Description
+      .col-sm-9= @post.description
+
+.row
+  %h2 Commentaires
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th #
+        %th Contenu
+        %th Date
+        %th Utilisateur
+        %th Action
+    %tbody
+      - @post.post_comments.each do |comment|
+        %tr
+          %td= comment.id
+          %td= comment.content[0..50]
+          %td= comment.created_at
+          %td
+            = link_to admin_user_path(comment.user), class: "btn btn-default btn-xs" do
+              = comment.user.pretty_name
+          %td
+            = link_to "Voir", admin_post_comment_path(comment), class: "btn btn-default btn-xs"
+          %td
+            = link_to admin_post_comment_path(comment), class: 'btn btn-danger btn-xs', method: :delete, title: "Supprimer le commentaire #{comment.id}", data: {confirm: "Vous allez supprimer le commentaire #{comment.id}. Etes-vous sûr ?"} do
+              %i.fa.fa-times

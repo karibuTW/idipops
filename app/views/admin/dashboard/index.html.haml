@@ -1,0 +1,84 @@
+.page-header
+  %h1 Admin dashboard
+
+.row
+  .col-sm-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Utilisateurs
+      .panel-body
+        .row
+          .col-xs-6 Total
+          .col-xs-6.text-right
+            %strong= @user_count
+        .row
+          .col-xs-6 Actifs
+          .col-xs-6.text-right
+            %strong= @active_user_count
+        %p
+        = link_to 'Voir tous les utilisateurs', admin_users_path, class: 'btn btn-primary btn-lg btn-block'
+
+  .col-sm-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Professions
+      .panel-body
+        .row
+          .col-xs-6 Total
+          .col-xs-6.text-right
+            %strong= @profession_count
+        .row
+          .col-xs-6 Actives
+          .col-xs-6.text-right
+            %strong= @active_profession_count
+        %p
+        = link_to 'Voir toutes les professions', admin_professions_path, class: 'btn btn-primary btn-lg btn-block'
+
+  .col-sm-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Annonces
+      .panel-body
+        .row
+          .col-xs-6 Total
+          .col-xs-6.text-right
+            %strong= @classified_ad_count
+        .row
+          .col-xs-6 Ouvertes
+          .col-xs-6.text-right
+            %strong= @published_classified_ad_count
+        %p
+        = link_to 'Voir toutes les annonces', admin_classified_ads_path, class: 'btn btn-primary btn-lg btn-block'
+
+.row
+  .col-sm-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Posts
+      .panel-body
+        .row
+          .col-xs-6 Total
+          .col-xs-6.text-right
+            %strong= @post_count
+        .row
+          .col-xs-6 Publiés
+          .col-xs-6.text-right
+            %strong= @published_post_count
+        %p
+        = link_to 'Voir tous les posts', admin_posts_path, class: 'btn btn-primary btn-lg btn-block'
+
+  .col-sm-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Catégories des posts
+      .panel-body
+        .row
+          .col-xs-6 Total
+          .col-xs-6.text-right
+            %strong= @post_category_count
+        .row
+          .col-xs-6 Actives
+          .col-xs-6.text-right
+            %strong= @active_post_count
+        %p
+        = link_to 'Voir toutes les catégories', admin_post_categories_path, class: 'btn btn-primary btn-lg btn-block'

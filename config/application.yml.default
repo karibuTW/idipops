@@ -1,0 +1,25 @@
+default: &default
+
+  GOOGLE_KEY: 
+  GOOGLE_ANALYTICS_KEY: 
+  AWS_ACCESS_KEY_ID: 
+  AWS_SECRET_ACCESS_KEY: 
+  AWS_REGION: 
+  NUMBER_OF_FREE_ADDRESSES_FOR_DEALS: 3
+  PREMIUM_LIMIT: 0.2
+  SENDINBLUE_LISTS:
+    - "4"
+    - "5"
+    - "6"
+    - "7"
+    - "8"
+    - "9"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

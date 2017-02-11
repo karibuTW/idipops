@@ -1,0 +1,12 @@
+Bonjour #{@user_to.display_name}
+
+Vous avez reçu un nouveau message de la part de #{@user_from.display_name}
+
+- if @title.present?
+  = @title
+
+= l @date, format: :short
+
+= @content
+
+Voir le message : #{@conversation_path}

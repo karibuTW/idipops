@@ -1,0 +1,66 @@
+%div
+	%p.nothing{ "ng-show" => "conversations.length == 0" }
+		{{"conversations.no_conversations" | t}}
+	.new-message{ "ng-show" => "classifiedAdId && conversations.length == 0 && sessionUser.user_type == 'pro'" }
+		%textarea.form-control#messageReply{rows: "3", "ng-model" => "messageReply.newConversation", placeholder: "{{'conversations.my_message' | t}}", required: "", "ng-disabled" => "isPosting || isLoadingConversation || !canPost" }
+		.button-stroke
+			%button.button.button_js.orange_border_black_text{ "ng-click" => "replyToClassified()", "ng-disabled" => "isPosting || isLoadingConversation || !canPost" }
+				%span.button_label
+					{{"conversations.start" | t}}
+	%div{ layout: "row", "ng-show" => "conversations.length > 0", "layout-wrap" => true, "layout-xs" =>"column" }
+		.resp-conversation-message-wrapper{ layout: "row", "flex-gt-xs" => "", "flex-xs" => "100", "layout-xs" =>"column", "layout-sm" =>"column", "flex-order-gt-sm" => "1", "flex-order" => "2"  }
+			.conversation-picker.resp-conversation-picker{ layout: "column", "flex-xs" => "100", "flex-sm" => "100", "flex-gt-sm" => "20" }
+				.conversation-participant{ layout: "column", "ng-repeat" => "conversation in conversations", "ng-class" => "conversation.id == selectedConversation.id ? 'active' : ''", "ng-click" => "getConversation(conversation.id)", href: ""}
+					.participant-info{ layout: "row" }
+						%avatar.face{ "avatar-url" => "conversation.user.avatar_url"}
+						.user{ layout: "column", "layout-align" => "end start", flex: ""}
+							%div{ "ng-switch" => "conversation.user.user_type" }
+								.name{ "ng-switch-when" => "particulier" } {{conversation.user.display_name}}
+								%a.name{ "ng-switch-when" => "pro", "ui-sref" => "pro({pid: conversation.user.pretty_name})" } {{conversation.user.display_name}}
+							.conversation-activity{ "ng-if" => "conversation.user.activity" } {{conversation.user.activity}}
+						.date.resp-date{"am-time-ago" => "conversation.updated_at", "ng-hide" => "conversation.unread", "hide-gt-sm" => true}
+					.date{"am-time-ago" => "conversation.updated_at",  "ng-hide" => "conversation.unread", "hide-xs" => true, "hide-sm" => true}
+					.new-message{ "ng-show" => "conversation.unread" } {{"conversations.new_message" | t}}
+			.messages.resp-messages{ layout: "column", "flex-sm" => "100", "flex-gt-sm" => "80", "flex-xs" => "100" }
+				.message{ "ng-repeat" => "message in selectedConversation.messages", layout: "column", "ng-class" => "[$odd ? 'bg-cell' : 'pro-bg-cell' ]" }
+					.user{ layout: "row", "layout-align" => "space-between center" }
+						%div{ layout: "row", "layout-align" => "start center" }
+							%avatar.face{ "avatar-url" => "sessionUser.id == message.user_id ? sessionUser.avatar_url : selectedConversation.user.avatar_url"}
+							.name
+								{{sessionUser.id == message.user_id ? sessionUser.display_name : selectedConversation.user.display_name}}
+						%span.timestamp{"am-time-ago" => "message.created_at"}>
+					.content{ layout: "column", "ng-class" => "message.system_generated ? 'system' : ''" }
+						.text{"ng-show" => "message.system_generated", "ng-bind-html" => "translateSystemMessage(message)"}
+						%formatted-message.text{"ng-hide" => "message.system_generated", "text" => "message.content"}
+				.is-typing{ "ng-class" => "selectedConversation.isTyping ? 'visible' : ''" }
+					{{"conversations.is_typing" | t:{name: selectedConversation.user.display_name} }}
+					%i.fa.fa-spinner.fa-spin
+				%textarea.form-control#messageReply{rows: "3", "ng-model" => "messageReply[selectedConversation.id]", placeholder: "Mon message...", required: "", "ng-disabled" => "isPosting || isLoadingConversation || !canPost", "ng-change" => "replyChangedHandler()" }
+				.button-stroke
+					%button.button.button_js.orange_border_black_text{ "ng-click" => "sendMessage()", "ng-disabled" => "isPosting || isLoadingConversation || !canPost" }
+						%span.button_label
+							{{"conversations.reply" | t}}
+			-#%div{ flex: "5", "ng-show" => "showUserCard && selectedConversation" }
+		.conversation-user{ "flex-gt-sm" => "30", "flex-xs" => "100", "flex-sm" => "100", "ng-show" => "showUserCard && selectedConversation", "flex-order-gt-sm" => "2", "flex-order" => "1" }
+			.bordered.profile.side{ layout: "column", "layout-fill" => "" }
+				.out20{ layout: "row", "layout-wrap" => "true" }
+					%avatar.face.user-info{ "avatar-url" => "selectedConversation.user.avatar_url"}
+					.user.resp-user{ layout: "column", "layout-align" => "end start" }
+						.name{ "ng-hide" => "selectedConversation.user.activity" } {{selectedConversation.user.display_name}}
+						%a.orange.name{ "ng-show" => "selectedConversation.user.activity", "ui-sref" => "pro({pid: selectedConversation.user.pretty_name})" } {{selectedConversation.user.display_name}}
+						.date {{"user.registered_on" | t:{date: (selectedConversation.user.first_login*1000 | amDateFormat:'D MMM YYYY')} }}
+				.activity{ "ng-if" => "selectedConversation.user.activity" } {{selectedConversation.user.activity}}
+				.place{ "ng-show" => "selectedConversation.user.place_name" }
+					%i.fa.fa-map-marker.fa-fw
+					&nbsp; {{selectedConversation.user.place_name}}
+			.button-stroke{ "ng-show" => "selectedConversation.quotation_url" }
+				%button.button.button_js.orange_fill_white_text.btn-block{ "ng-click" => "showQuotation(selectedConversation.quotation_url)"  }
+					%span.button_label
+						{{"conversations.view_quotation" | t}}
+			.quotation-buttons{ layout: "row", "ng-show" => "selectedConversation.status == 'pending' && selectedConversation.quotation_url && sessionUser.user_type != 'pro' ", "layout-align" => "space-between center" }
+				.button-stroke{ flex: "45" }
+					%button.button.button_js.cyan-button.btn-block{ "ng-click" => "acceptRequest(selectedConversation.id)" }
+						%span.button_label {{"conversations.accept" | t}}
+				.button-stroke{ flex: "45" }
+					%button.button.button_js.cyan-button.btn-block{ "ng-click" => "rejectRequest(selectedConversation.id)" }
+						%span.button_label {{"conversations.reject" | t}}

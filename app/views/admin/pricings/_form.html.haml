@@ -1,0 +1,14 @@
+.row
+  .col-sm-12
+
+    = form_for [:admin, @pricing] do |f|
+
+      .form-group
+        %label Type
+        = f.select(:target, [ ['Forfait 1', 'forfait_1'], ['Forfait 2', 'forfait_2'], ['Forfait 3', 'forfait_3'], ['Forfait 4', 'forfait_4'], ['Taux de change', 'change_rate'], ["Visibilité Bon plan - Page d'accueil", 'deal_homepage'], ["Visibilité Bon Plan - Bons plans sponsorisés sur page BP", 'deal_deals'], ["Visibilité Bon plan - Sur carte", 'deal_map'], ["Visibilité Bon plan - Plus d'adresses", 'deal_more_addresses'], ['Visibilité Profil - Profil sponsorisé', 'sponsored_profile'], ['Visibilité Profil - Profil ouvert sur carte', 'sponsored_map_profile'], ['Ouvrir une annonce', 'classified_ad_unlock'], ["Points offerts à l'inscription", 'bonus_signup'], ["Points offerts pour parrainage", 'bonus_referral'], ['Visibilité Post - Post sponsorisé', 'sponsored_post'] ], include_blank: true, required: true)
+
+      .form-group
+        %label Date de début
+        = f.date_field :start_date, min: Date.today, required: true, class: "form-control"
+
+      = f.submit "Enregistrer", class: "btn btn-primary"

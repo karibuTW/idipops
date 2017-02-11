@@ -1,0 +1,11 @@
+%table{:align => "center", :cellpadding => "0", :cellspacing => "0", :style => "padding:10px 0 60px 0;", :width => "100%"}
+  %tbody
+    %tr{:style => ""}
+      %td{:align => "left", :style => "padding:20px 0;"}
+        %p{:style => "font-size:1.5em;color:#f57c00;padding:0 0 20px 0;margin:0"}
+          = "Bonjour #{@user_name}"
+        %p{:style => "padding:0 0 10px 0;margin:0"}
+          = "#{@email} a accepté votre invitation sur MyUneo.com :"
+    %tr
+      %td{:align => "left"}
+        %p= "Vous avez été récompensé avec succès par #{@reward} flèche."

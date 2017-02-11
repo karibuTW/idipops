@@ -1,0 +1,95 @@
+%not-connected-info{ "ng-hide" => "session.connected" }
+%profile-not-complete-info{ "ng-show" => "session.connected && !session.user.user_type" }
+
+.post-page{ layout: "row", "ng-show" => "session.connected && session.user.user_type", "layout-xs" => "column", "layout-wrap" => true, "ng-controller" => "PostPostController" }
+	.grey-bg.rounded6{ "flex-gt-xs" => "70", flex: "100", "flex-order-xs" => "2"}
+		.button-stroke.post-box
+			%button.button.button_js.grey_border_black_text{ "ng-click" => "$back()" }
+				%span.button_label
+					{{'general.back' | t}}
+		%h1.line-separator.post-box {{(mode == 'create' ? 'post.post.title' : 'post.post.edit_title') | t}}
+		.post-box{ layout: "column"}
+			%form.form-horizontal{role: "form", "ng-submit" => "postPost()"}
+				.form-group.required.title
+					%label.col-sm-3.control-label{for: "type"} {{'post.post.type_label' | t}}
+					.form-inline.col-sm-8
+						%select.form-control{ "ng-model" => "newPost.post_type", required: "" }
+							%option{ value: "" } {{'post.type_prompts.prompt' | t}}
+							%option{ value: "question" } {{'post.type_prompts.question' | t}}
+							%option{ value: "sharing" } {{'post.type_prompts.sharing' | t}}
+				.form-group.required
+					%label.col-sm-3.control-label{for: "post_category"} {{'post.post.category_label' | t}}
+					.col-sm-9
+						%post-category-selection-button.posting#post_category{ "selection-callback" => "onCategoryChanged", "default-label" => "'post.post.category_select_label' | t", "category-id" => "newPost.id", "button-classes" => "'select-category-button'" }
+				.form-group
+					%label.col-sm-3.control-label{for: "photos"} {{'post.post.featured_image_label' | t}}
+					%div.col-sm-9
+						%img.photo-thumb.with-margin-bottom{ "ng-src" => "{{newPost.featured_image_url}}", "ng-if" => "newPost.featured_image_url && newPost.featuredImage == null" }
+						%single-image-upload#img-featured{ "image-blob" => "newPost.featuredImage", "image-height" => "112", "image-width" => "200", "min-width" => "600", "min-height" => "600", "max-width" => "1600", "max-height" => "1600" }
+						.help-block {{'post.post.featured_image_help' | t}}
+					-# .col-sm-9
+					-# 	%span.btn-file.btn.btn-default{ "ng-hide" => "featuredImageUploader.queue.length > 0" }
+					-# 		{{'post.post.select_photo_label' | t}}
+					-# 		%input{ type: "file", "nv-file-select" => "", uploader: "featuredImageUploader", accept: "image/*" }
+					-# 	.added-photos{ "ng-show" => "featuredImageUploader.queue.length > 0" }
+					-# 		.added-photo{ "ng-show" => "featuredImageUploader.isHTML5", "ng-repeat" => "item in featuredImageUploader.queue" }
+					-# 			%div{"ng-thumb" => "{ file: item._file, height: 100 }" }
+					-# 			%a{ "ng-click" => "removePhoto(item)", href: "" }
+					-# 				%i.fa.fa-times.fa-2x
+				.form-group.required
+					%label.col-sm-3.control-label{for: "title"} {{'post.post.title_label' | t}}
+					.col-sm-9
+						%input.form-control#title{type: "text", "ng-model" => "newPost.title", maxlength: 60, required: "" }
+				.form-group.required
+					%label.col-sm-3.control-label{for: "description"} {{'post.post.description_label' | t}}
+					.col-sm-9
+						%wysiwyg-edit#description{ content: "newPost.description", config: "editorConfig" }
+						-# %textarea.form-control#description{rows: "6", "ng-model" => "newPost.description", maxlength: 2000, required: "" }
+				-# .form-group.required
+				-# 	%label.col-sm-3.control-label{for: "professions"} {{'classified_ad.post.professions_label' | t}}
+				-# 	%div.col-sm-9
+				-# 		%tags-input#professions{"ng-model" => "newPost.professions", "placeholder" => "{{'classified_ad.post.professions_placeholder' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true", "display-property" => "name", "min-tags" => "1", "on-tag-added" => "onTagAdded()", "min-length" => "2" }
+				-# 			%auto-complete{ source: "searchProfessions($query)", "min-length" => 1 }
+				-# 		.help-block{ "ng-show" => "noProfessionAdded" } {{'classified_ad.post.professions_help' | t}}
+				%div
+					.form-group
+						%label.col-sm-3.control-label{for: "photos"} {{'post.post.photos_label' | t}}
+						.col-sm-9
+							.photos-to-remove{ layout: "row", "layout-wrap" => "", "ng-if" => "mode == 'edit'" }
+								%div{ "ng-repeat" => "photo in newPost.post_photos" }
+									.photo-to-remove{ layout: "row" }
+										%img.photo-thumb{ "ng-src" => "{{photo.attachment_url}}" }
+										%a{ "ng-click" => "deletePhoto(photo)", href: "" }
+											%i.fa.fa-times.fa-2x
+							%span.btn-file.btn.btn-default
+								{{'post.post.select_photos_label' | t}}
+								%input{ type: "file", "nv-file-select" => "", uploader: "photoUploader", multiple: "", accept: "image/*" }
+							.added-photos{ layout: "row", "layout-wrap" => "" }
+								.added-photo{ "ng-show" => "photoUploader.isHTML5", "ng-repeat" => "item in photoUploader.queue" }
+									%div{ layout: "row" }
+										%div{"ng-thumb" => "{ file: item._file, height: 100 }" }
+										%a{ "ng-click" => "removePhoto(item)", href: "" }
+											%i.fa.fa-times.fa-2x
+				.form-group{ "ng-if" => "session.user.user_type == 'pro'" }
+					%label.col-sm-3.control-label{for: "sponsoring"} {{'post.post.sponsoring_label' | t}}
+					.col-sm-9
+						%md-checkbox.md-primary.one-checkbox.checkbox-deal{ "ng-model" => "newPost.sponsoring", "aria-label" => "{{'user_dashboard.premium_posts' | t}}", "ng-disabled" => "isPosting" } {{'post.post.sponsoring_cost' | t:{ cost: sponsoringCost } }}
+						%p.help-block{ "ng-if" => "mode == 'edit'" } {{'post.post.remaining_impressions_number' | t:{ impressions: newPost.sponsored_impressions } }}
+				.form-group.submit-group
+					%label.col-sm-3
+						%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isPosting" }
+					%div.col-sm-9.button-stroke
+						%button.button.button_js.orange_border_black_text{ type: "submit", "ng-disabled" => "newPost.category_id == null || newPost.description == null || newPost.description == ''" }
+							%span.button_label {{ (mode == 'create' ? 'post.post.post_label' : 'post.post.save_label') | t}}
+						%p.help-block{ "ng-if" => "mode == 'create'" } {{'post.post.post_help' | t}}
+	%div{ flex: "30", "show-gt-xs" => "", "hide-xs" => ""}
+		.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+			%h2.text-centered{ "ng-bind-html" => "'post.post.tip_title' | t" }
+			%div{ "ng-bind-html" => "'post.post.tip' | t" }
+	.margin-top-2x-sm{ "flex" => "100", "flex-order" => "1", "hide-gt-xs" => "" }
+		.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+			.resp-post-tips{ layout: "row", "ng-click" => "isCollapsed = !isCollapsed", "layout-align" => "space-between center" }
+				%h2.text-centered{ "ng-bind-html" => "'post.post.tip_title' | t" }
+				.collapsable-info-dropdown
+					%i.fa.fa-2x{ "ng-class" => "isCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+			.resp-collapsable{ "uib-collapse" => "isCollapsed", "ng-bind-html" => "'post.post.tip' | t" }

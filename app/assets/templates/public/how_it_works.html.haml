@@ -1,0 +1,30 @@
+.how-it-works{ layout: "column", "ng-controller" => "HowItWorksController" }
+	.ccm-headers{ layout: "column" }
+		%h1.page-title {{'how_it_works.title' | t}}
+		.page-subtitle {{'how_it_works.subtitle' | t}}
+	.how-it-works-video{ layout: "row", "layout-align" => "center center"}
+		%iframe{ width: "560", height: "315", src: "https://www.youtube.com/embed/qP9rVqBscGQ?rel=0", frameborder: "0", allowfullscreen: "" }
+	%uib-accordion
+		%uib-accordion-group{ heading: "{{'how_it_works.first_section.title' | t}}", "ng-click" => "scrollToView()"}
+			.page-subtitle {{'how_it_works.first_section.description' | t}}
+			%div{ "layout-align" => "center center", layout: "column" }
+				= image_tag "how-it-works/ccm1.jpg", class: "ccm-img"
+		%uib-accordion-group{ heading: "{{'how_it_works.second_section.title' | t}}", "ng-click" => "scrollToView()" }
+			%div{ "layout-align" => "center center", layout: "column" }
+				= image_tag "how-it-works/ccm2.jpg", class: "ccm-img"
+		%uib-accordion-group{ heading: "{{'how_it_works.third_section.title' | t}}", "ng-click" => "scrollToView()"}
+			%div{ "layout-align" => "center center", layout: "column" }
+				= image_tag "how-it-works/ccm3.jpg", class: "ccm-img"
+		%uib-accordion-group{ heading: "{{'how_it_works.fourth_section.title' | t}}", "ng-click" => "scrollToView()"}
+			%div{ "layout-align" => "center center", layout: "column" }
+				= image_tag "how-it-works/ccm4.jpg", class: "ccm-img"
+		%uib-accordion-group{ heading: "{{'how_it_works.fifth_section.title' | t}}", "ng-click" => "scrollToView()"}
+			%div{ "layout-align" => "center center", layout: "column" }
+				= image_tag "how-it-works/ccm5.jpg", class: "ccm-img"
+	.link-buttons{ layout: "row", "layout-xs" => "column", "layout-align" => "center center" }
+		.button-stroke
+			%button.button.button_js.cyan-fill-white-text.big{ href: "", "ui-sref" => "how-it-works-pros" }
+				%span.button_label {{'toolbar.discover_uneo_pros' | t}}
+		.button-stroke
+			%button.button.button_js.cyan-fill-white-text.big{ href: "", "ui-sref" => "how-it-works-users" }
+				%span.button_label {{'toolbar.discover_uneo_users' | t}}

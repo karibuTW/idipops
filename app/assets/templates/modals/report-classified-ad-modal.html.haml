@@ -1,0 +1,16 @@
+%form{ role: "form" }
+	.modal-header
+		%h3.modal-title {{title}}
+	.modal-body
+		%p {{introText}}
+		%md-radio-group{ "ng-model" => "reportReason.type" }
+			%md-radio-button.md-primary{ value: "spam", "aria-label" => "Particulier"} {{"classified_ad.spam" | t}}
+			%md-radio-button.md-primary{ value: "inapropriate", "aria-label" => "Professionnel"} {{"classified_ad.inappropriate" | t}}
+			%md-radio-button.md-primary{ value: "cheating", "aria-label" => "Professionnel"} {{"classified_ad.cheating" | t}}
+			%md-radio-button.md-primary{ value: "other", "aria-label" => "Professionnel"} {{"classified_ad.other" | t}}
+		%textarea.form-control.fade-hide{rows: "3", "ng-model" => "reportReason.reason", maxlength: 255, "ng-show" => "reportReason.type == 'other'" }
+	.modal-footer.button-stroke
+		%button.button.button_js.orange_border_black_text{ type: "submit", "ng-click" => "confirm()"}
+			%span.button_label {{confirmLabel}}
+		%button.button.button_js.orange_border_black_text{ "ng-click" => "cancel()"}
+			%span.button_label {{cancelLabel}}

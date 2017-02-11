@@ -1,0 +1,118 @@
+%div{ layout: "row", "layout-sm" => "column", "layout-wrap" => true, "ng-show" => "session.user.user_type == 'pro'", "ng-controller" => "PostDealController" }
+	.grey-bg.center-column{ flex: "60", "flex-md" => "100", "flex-order-md" => "2", "flex-sm" => "100" }
+		.button-stroke
+			%button.button.button_js.grey_border_black_text{ "ui-sref" => "home.pros-dashboard", "ng-show" => "session.connected", type: "button" }
+				%span.button_label
+					{{'general.back' | t}}
+		%h1.line-separator {{ (mode == 'edit' ? 'deals.post.edit_title' : 'deals.post.title') | t}}
+
+		%div{ layout: "column", "layout-padding" => ""}
+			%form.form-horizontal{role: "form", "ng-submit" => "postDeal()"}
+				.form-group{ "ng-hide" => "!session.user.addresses || session.user.addresses.length < 2" }
+					%label.col-sm-4.control-label{for: "address"} {{'deals.post.address_label' | t}}
+					.col-sm-8.deal-addresses
+						%md-list
+							%md-list-item{ "ng-repeat" => "address in session.user.addresses" }
+								%p {{address.formatted_address}}
+								%md-checkbox.md-primary{ "ng-model" => "newDeal.selected_address_ids[address.id]", "ng-disabled" => "mode == 'edit' ", "ng-change" => "addressChanged(newDeal.selected_address_ids[address.id])" }
+						-# %select.form-control#address{ "ng-model" => "newDeal.address_id", "ng-options" => "address.id as address.formatted_address for address in session.user.addresses" }
+				.form-group.required
+					%label.col-sm-4.control-label{for: "title"} {{'deals.post.tagline_label' | t}}
+					%div.col-sm-8
+						%input.form-control#title{type: "text", "ng-model" => "newDeal.tagline", maxlength: 40, required: "" }
+				.form-group.required
+					%label.col-sm-4.control-label{for: "description"} {{'deals.post.description_label' | t}}
+					%div.col-sm-8
+						%textarea.form-control#description{rows: "5", "ng-model" => "newDeal.description", maxlength: 500, required: "" }
+				.form-group
+					%label.col-sm-4.control-label{for: "start-date"} {{'deals.post.start_date_label' | t}}
+					.col-sm-8
+						%md-datepicker#start-date{ "ng-model" => "newDeal.startDate", "ng-required" => "true", "md-min-date" => "minDate", "md-max-date" => "maxDate" }
+						-# .input-group
+						-# 	%input.form-control#start-date{type: "text", "ng-model" => "newDeal.start_date", "min-date" => "minDate", "datepicker-popup" => "dd/MM/yyyy", "is-open" => "isStartCalendarOpened", "show-button-bar" => "false", "datepicker-options" => "dateOptions" }
+						-# 	%span.input-group-btn
+						-# 		%button.btn.btn-default{ "ng-click" => "openCalendar($event, 'start')" }
+						-# 			%i.glyphicon.glyphicon-calendar
+				.form-group
+					%label.col-sm-4.control-label{for: "end-date"} {{'deals.post.end_date_label' | t}}
+					.col-sm-8
+						%md-datepicker#end-date{ "ng-model" => "newDeal.endDate", "ng-required" => "true", "md-min-date" => "newDeal.startDate", "ng-change" => "setMaxDate()" }
+						-# .input-group
+						-# 	%input.form-control#end-date{type: "text", "ng-model" => "newDeal.end_date", "min-date" => "newDeal.start_date", "datepicker-popup" => "dd/MM/yyyy", "is-open" => "isEndCalendarOpened", "show-button-bar" => "false", "datepicker-options" => "dateOptions" }
+						-# 	%span.input-group-btn
+						-# 		%button.btn.btn-default{ "ng-click" => "openCalendar($event, 'end')" }
+						-# 			%i.glyphicon.glyphicon-calendar
+				.form-group
+					%label.col-sm-4.control-label{for: "img-featured"} {{'deals.post.featured_image_label' | t}}
+					%div.col-sm-8
+						%img.photo-thumb.with-margin-bottom{ "ng-src" => "{{newDeal.featured_image_url}}", "ng-if" => "newDeal.featured_image_url && newDeal.featuredImage == null" }
+						%single-image-upload#img-featured{ "image-blob" => "newDeal.featuredImage", "image-height" => "112", "image-width" => "200", "min-width" => "1024", "min-height" => "576" }
+						.help-block {{'deals.post.featured_image_help' | t}}
+				.form-group
+					%label.col-sm-4.control-label{for: "img-listing"} {{'deals.post.listing_image_label' | t}}
+					%div.col-sm-8
+						%img.photo-thumb.with-margin-bottom{ "ng-src" => "{{newDeal.list_image_url}}", "ng-if" => "newDeal.list_image_url && newDeal.listImage == null" }
+						%single-image-upload#img-listing{ "image-blob" => "newDeal.listImage", "image-height" => "160", "image-width" => "200", "min-width" => "400", "min-height" => "320" }
+						.help-block {{'deals.post.listing_image_help' | t}}
+				.form-group.form-group-lg.promotion
+					%label.col-sm-12.control-label {{'deals.post.promotion_title' | t}}
+				.form-group.promotion
+					%label.col-sm-4.control-label{for: "deal-homepage"}
+						{{'deals.post.homepage_title' | t}}
+						%span.remaining_promotion{ "ng-if" => "newDeal.promotions.deal_homepage" } {{'deals.post.remaining_deal' | t:{remaining: newDeal.promotions.deal_homepage} }}
+					%div.col-sm-8{ "uib-tooltip" => "{{'deals.post.impression_tooltip' | t}}"}
+						%md-checkbox.md-primary.one-checkbox.checkbox-deal#deal-homepage{ "ng-model" => "promotion.deal_homepage" } {{'deals.post.credits_cost' | t:{ cost: promotionPrices.deal_homepage } }}
+						.help-block {{'deals.post.homepage_help' | t}}
+				.form-group.promotion
+					%label.col-sm-4.control-label{for: "deal-deals"}
+						{{'deals.post.deals_title' | t}}
+						%span.remaining_promotion{ "ng-if" => "newDeal.promotions.deal_deals" } {{'deals.post.remaining_deal' | t:{remaining: newDeal.promotions.deal_deals} }}
+					%div.col-sm-8{ "uib-tooltip" => "{{'deals.post.impression_tooltip' | t}}"}
+						%md-checkbox.md-primary.one-checkbox.checkbox-deal#deal-deals{ "ng-model" => "promotion.deal_deals" } {{'deals.post.credits_cost' | t:{ cost: promotionPrices.deal_deals } }}
+						.help-block {{'deals.post.deals_help' | t}}
+				.form-group.promotion
+					%label.col-sm-4.control-label{for: "deal-map"}
+						{{'deals.post.map_title' | t}}
+						%span.remaining_promotion{ "ng-if" => "newDeal.promotions.deal_map" } {{'deals.post.remaining_deal' | t:{remaining: newDeal.promotions.deal_map} }}
+					%div.col-sm-8{ "uib-tooltip" => "{{'deals.post.impression_tooltip' | t}}"}
+						%md-checkbox.md-primary.one-checkbox.checkbox-deal#deal-map{ "ng-model" => "promotion.deal_map" } {{'deals.post.credits_cost' | t:{ cost: promotionPrices.deal_map } }}
+						.help-block {{'deals.post.map_help' | t}}
+				.form-group.promotion{ "ng-show" => "additionalAddressesCost > 0"}
+					%label.col-sm-4.control-label{for: "deal-more-addresses"}
+						{{'deals.post.more_addresses_title' | t}}
+					%div.col-sm-8
+						%p.form-control-static#deal-more-addresses {{'deals.post.credits_cost' | t:{ cost: additionalAddressesCost } }}
+						.help-block {{'deals.post.more_addresses_help' | t:{ cost: promotionPrices.deal_more_addresses, numFreeAddresses: NUMBER_OF_FREE_ADDRESSES } }}
+				.form-group
+					%label.col-sm-4.control-label{for: "deal-total"} {{'deals.post.total_amount_label' | t}}
+					.control-label.col-sm-8#deal-total
+						%i.fa.fa-exclamation-triangle.text-danger.show-slide-down{ "ng-show" => "totalAmount() > session.user.balance", "uib-tooltip" => "{{'deals.post.unsufficient_credit' | t}}" }
+						&nbsp;
+						{{'deals.post.total_amount' | t:{credit_amount: totalAmount()} }}
+				.form-group.show-slide-down{ "ng-show" => "promotion.deal_map || promotion.deal_deals || promotion.deal_homepage" }
+					%label.col-sm-4.control-label{for: "deal-tags"} {{'deals.post.tags_label' | t}}
+					.col-sm-8
+						%tags-input#deal-tags{"ng-model" => "promotion.tags", "placeholder" => "{{'deals.post.tags_placeholder' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true", "max-tags" => "15", "on-tag-adding" => "checkTagLimit()", text: "textToRemove", "ng-blur" => "textToRemove=''" }
+							%auto-complete{ source: "searchTags($query)", "min-length" => 1 }
+						.help-block{ "ng-bind-html" => "'deals.post.tags_help' | t"} 
+				.form-group.submit-group
+					.col-sm-4
+						%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isPosting" }
+						.button-stroke{ "ng-hide" => "isPosting" }
+							%button.button.button_js.grey_border_black_text{ "ui-sref" => "home.pros-dashboard", "ng-show" => "session.connected", type: "button" }
+								%span.button_label {{'general.back' | t}}
+					.col-sm-8.button-stroke
+						%button.button.button_js.orange_border_black_text{ type: "submit", "ng-disabled" => "totalAmount() > session.user.balance || isPosting" }
+							%span.button_label {{ (mode == 'create' ? 'deals.post.post_label' : 'deals.post.save_label') | t}}
+	%div{ flex: "40", "hide-sm" => "", "hide-md" => "" }
+		.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+			%h2.text-centered {{'deals.post.tips_title' | t}}
+			%div{ "ng-bind-html" => "'deals.post.tips_content' | t" }
+	.margin-top-2x-sm{ "flex-md" => "100", "flex-sm" => "100", "flex-order-md" => "1", "flex-order-sm" => "1", "ng-click" => "isCollapsed = !isCollapsed", "hide-gt-md" => "" }
+		.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+			.resp-post-tips{ layout: "row" }
+				.collapsable-info-dropdown
+					%i.fa.fa-2x{ "ng-class" => "isCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+				%h2.text-centered {{'deals.post.tips_title' | t}}
+			.resp-collapsable{ "ng-bind-html" => "'deals.post.tips_content' | t", "uib-collapse" => "isCollapsed" }
+

@@ -1,0 +1,19 @@
+%div
+  .fullwidth{ layout: "column", "layout-align" => 'center' }
+    .search-box{ layout: "row", "layout-align" => 'center'  }
+      %div{ "flex-gt-sm" => "50", "flex-sm" => "" }
+        %input.form-control#prosearch{type: "text", "ng-model" => "searchOptions.tags", "uib-typeahead" => "result.label for result in searchTags($viewValue)", "typeahead-loading" => "loadingParLocation", "typeahead-min-length" => "2", "typeahead-wait-ms" => "200", "typeahead-editable" => "false", "placeholder" => "{{'activity_search.what' | t}}", "typeahead-template-url" => "modals/pro-search-template.html", "typeahead-on-select" => "searchPros($item, $model, $label)", "typeahead-focus-first" => "false", "ng-keypress" => "searchPressed($event)", "typeahead-append-to-body" => "appendTypeAheadToBody" }
+        .search-not-found{ "ng-hide" => "hasResults" }
+          {{"activity_search.no_result" | t}}
+      %div.button-stroke
+        %a.button.button_js.white_border_white_text.search-button.resp-text-centered{ "ng-click" => "searchPressed()", href: "" }
+          %span.button_label{"hide-sm"=>true} {{"activity_search.search" | t}}
+          %i.fa.fa-search{"hide-gt-sm" => true}
+    %div.profession-menu
+      .sub-profession-menu.slide-left{ layout: "row", "layout-wrap" => "", "layout-align" => "center center", "layout-margin" => "" }
+        %a.button.button_js.service{ "ng-repeat" => "profession in professions", "ng-click" => "professionSelectHandler(profession)"}
+          -# %span.button_icon
+          %img.profession-thumb{ "ng-src" => "{{profession.image_uid != null ? 'images/?uid='+profession.image_uid : 'images/profession_default.svg'}}" }
+          %span.button_label {{ profession.name }}
+        
+        

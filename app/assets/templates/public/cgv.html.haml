@@ -1,0 +1,6 @@
+%div{ layout: "column"}
+	.page-padding
+		%h1.page-title {{'cgv.title' | t}}
+	%hr.page
+	.page-padding
+		.page-bloc{ "ng-bind-html" => "'cgv.content' | t" }

@@ -1,0 +1,85 @@
+%not-connected-info{ "ng-hide" => "session.connected" }
+
+.home{ layout: "row", "ng-show" => "session.connected" }
+	%div{ layout: "row", flex: "100", "layout-wrap" => true, "ng-controller" => "PostClassifiedController" }
+		.grey-bg.rounded6{ flex: "75", "flex-sm" => "100", "flex-xs" => "100", "flex-order-gt-sm" => "1", "flex-order-xs" => "2", "flex-order-sm" => "2" }
+			%h1.form-box.no-bottom-padding {{(mode == 'create' ? 'classified_ad.post.title' : 'classified_ad.post.edit_title') | t}}
+			.page-subtitle.form-box.line-separator {{'classified_ad.post.subtitle' | t}}
+			.form-box{ layout: "column"}
+				%form.form-horizontal{role: "form", "ng-submit" => "postClassified()"}
+					.form-group.required.title
+						%label.col-sm-3.control-label{for: "title"} {{'classified_ad.post.title_label' | t}}
+						%div.col-sm-9
+							%input.form-control#title{type: "text", "ng-model" => "newAd.title", maxlength: 40, required: "" }
+					.form-group.required
+						%label.col-sm-3.control-label{for: "description"} {{'classified_ad.post.description_label' | t}}
+						%div.col-sm-9
+							%textarea.form-control#description{rows: "6", "ng-model" => "newAd.description", maxlength: 2000, required: "" }
+					.form-group.required
+						%label.col-sm-3.control-label{for: "professions"} {{'classified_ad.post.professions_label' | t}}
+						%div.col-sm-9
+							%tags-input#professions{"ng-model" => "newAd.professions", "placeholder" => "{{'classified_ad.post.professions_placeholder' | t}}", "replace-spaces-with-dashes" => "false", type: "text", "add-from-autocomplete-only" => "true", "display-property" => "name", "min-tags" => "1", "on-tag-added" => "onTagAdded()", "min-length" => "2" }
+								%auto-complete{ source: "searchProfessions($query)", "min-length" => 1 }
+							.help-block{ "ng-show" => "noProfessionAdded" } {{'classified_ad.post.professions_help' | t}}
+					%div
+						.form-group.city.required
+							%label.col-sm-3.control-label{for: "location"} {{'classified_ad.post.location_label' | t}}
+							%div.col-sm-9
+								%input.form-control#location{type: "text", "ng-model" => "newAd.place", "uib-typeahead" => "parloc as (parloc.place_name + ' ' + parloc.postal_code) for parloc in searchCities($viewValue)", "typeahead-loading" => "loadingParLocation", "typeahead-min-length" => "3", "typeahead-wait-ms" => "200", "typeahead-editable" => "false", required: "", autocomplete: "off" }
+						.form-group
+							.col-sm-3
+							.col-sm-9
+								%md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "loadingParLocation" }
+						.form-group
+							%label.col-sm-3.control-label{for: "start-date"} {{'classified_ad.post.start_date_label' | t}}
+							.col-sm-9
+								%md-datepicker#start-date{ "ng-model" => "newAd.startDate", "md-min-date" => "minDate", "ng-required" => "false" }
+								-# .input-group
+								-# 	%input.form-control#start-date{type: "text", "ng-model" => "newAd.start_date", "min-date" => "minDate", "datepicker-popup" => "dd/MM/yyyy", "is-open" => "isCalendarOpened", "show-button-bar" => "false", "datepicker-options" => "dateOptions" }
+								-# 	%span.input-group-btn
+								-# 		%button.btn.btn-default{ "ng-click" => "openCalendar($event)" }
+								-# 			%i.glyphicon.glyphicon-calendar
+						.form-group
+							%label.col-sm-3.control-label{for: "photos"} {{'classified_ad.post.photos_label' | t}}
+							.col-sm-9
+								.photos-to-remove{ layout: "row", "layout-wrap" => "", "ng-if" => "mode == 'edit'" }
+									%div{ "ng-repeat" => "photo in newAd.classified_ad_photos" }
+										.photo-to-remove{ layout: "row" }
+											%img.photo-thumb{ "ng-src" => "{{photo.attachment_url}}" }
+											%a{ "ng-click" => "deletePhoto(photo)", href: "" }
+												%i.fa.fa-times.fa-2x
+								%span.btn-file.btn.btn-default
+									{{'classified_ad.post.select_photos_label' | t}}
+									%input{ type: "file", "nv-file-select" => "", uploader: "photoUploader", multiple: "", accept: "image/*" }
+								.added-photos{ layout: "row", "layout-wrap" => "" }
+									.added-photo{ "ng-show" => "photoUploader.isHTML5", "ng-repeat" => "item in photoUploader.queue" }
+										%div{ layout: "row" }
+											%div{"ng-thumb" => "{ file: item._file, height: 100 }" }
+											%a{ "ng-click" => "removePhoto(item)", href: "" }
+												%i.fa.fa-times.fa-2x
+					.form-group.submit-group
+						%label.col-sm-3
+							%md-progress-circular{ "md-mode" => "indeterminate", "ng-show" => "isPosting" }
+						%div.col-sm-9.button-stroke
+							%button.button.button_js.orange_border_black_text{ type: "submit" }
+								%span.button_label {{ (mode == 'create' ? 'classified_ad.post.post_label' : 'classified_ad.post.save_label') | t}}
+							%p.help-block{ "ng-if" => "mode == 'create'" } {{'classified_ad.post.post_help' | t}}
+		%div{ flex: "25", "hide-sm" => "", "hide-xs" => "", "flex-order-xs" => "1", "flex-order-sm" => "1", "flex-order-gt-sm" => "2"}
+			.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+				%h2.text-centered{ "ng-bind-html" => "'classified_ad.post.tip_title' | t" }
+				%div{ "ng-bind-html" => "'classified_ad.post.tip' | t" }
+				.button-stroke
+					%a.button.button_js.orange_border_black_text.btn-block.tip{ "ui-sref" => "how-it-works-users.search", target: "_blank" }
+						%span.button_label {{'classified_ad.know_more_label' | t}}
+		.margin-top-2x-sm{ flex: "100", "flex-order" => "1", "hide-gt-sm" => "" }
+			.bordered.post-tips{ layout: "column", "layout-padding" => "" }
+				.resp-post-tips{ layout: "row", "ng-click" => "isCollapsed = !isCollapsed", "layout-align" => "space-between center" }
+					%h2.text-centered{ "ng-bind-html" => "'classified_ad.post.tip_title' | t" }
+					.collapsable-info-dropdown
+						%i.fa.fa-2x{ "ng-class" => "isCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+				.resp-collapsable{ "uib-collapse" => "isCollapsed", "ng-bind-html" => "'classified_ad.post.tip' | t" }
+				.button-stroke{ "uib-collapse" => "isCollapsed" }
+					%a.button.button_js.orange_border_black_text.btn-block.tip{ "ui-sref" => "how-it-works-users.search", target: "_blank" }
+						%span.button_label {{'classified_ad.know_more_label' | t}}
+
+

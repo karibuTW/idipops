@@ -1,0 +1,93 @@
+%not-connected-info{ "ng-hide" => "session.connected" }
+
+.home{ layout: "row", "ng-show" => "session.connected" }
+	%div{ "layout-sm" => "column", flex: "100", "layout-gt-sm" => "row" }
+		%div{ "flex-gt-sm" => "25", "flex" => "100", layout: "column" }
+			.bordered.padding-bottom.profile.side.resp-profile{"ng-controller" => "DashboardController", layout: "column", "ng-show" => "session.user.user_type != null"  }
+				%div
+					.out20{ layout: "row"}
+						%avatar.face.user-info{"avatar-url" => "session.user.avatar_url"}
+						.user{ layout: "column", "layout-align" => "end start" }
+							.name {{session.user.display_name}}
+							.date {{"user.registered_on" | t:{date: (session.user.first_login*1000 | amDateFormat:'D MMM YYYY')} }}
+					.line.main{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info {{activities.primaryActivity}}
+					.line.secondary{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info {{activities.secondaryActivity}}
+					.line.secondary{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info {{activities.tertiaryActivity}}
+					.line.secondary{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info {{activities.quaternaryActivity}}
+					.line{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info
+							.description {{session.user.short_description}}
+				.resp-col-profile
+					.line{ "ng-show" => "session.user.user_type == 'particulier'" }	
+						.user-info
+							%i.fa.fa-map-marker.fa-fw
+							&nbsp; {{session.user.place.place_name}}
+					.line{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info
+							.info
+								%div{ "ng-repeat" => "address in session.user.addresses" }
+									%i.fa.fa-map-marker.fa-fw
+									&nbsp; {{address.formatted_address}}
+					.line
+						.user-info{ "ng-mouseover" => "editingEmail = true", "ng-mouseleave" => "editingEmail = false" }
+							.info
+							%i.fa.fa-fw{ "ng-click" => "changeEmail()", "ng-class" => "editingEmail ? 'fa-pencil-square orange' : 'fa-envelope' " }
+							&nbsp; {{session.user.email}}
+					.line.website{"ng-show" => "session.user.user_type == 'pro'", "ng-show" => "session.user.website"}
+						.user-info
+							%i.fa.fa-globe.fa-fw
+							%a{href: "{{session.user.website}}", target: "_blank", title: "{{session.user.website}}"} &nbsp; {{session.user.website}}
+					%br
+					.line{"ng-show" => "session.user.user_type == 'pro'" }
+						.user-info
+							.credits{ layout: "row", "layout-align" => "center center" }
+								.credit-amount{ flex: "" } {{session.user.balance | numberByThousand}}
+								%div{ flex: "" }
+									= image_tag "fleche-credits.svg"
+									%md-tooltip{ "md-direction" => "top", "md-autohide" => "true" } {{'home.credits_to_spend' | t}}
+								.right-align{ flex: "" }
+									%md-button.md-fab.md-mini.md-primary.credit-add-icon{ "ui-sref" => "home.pro-credits", "aria-label" => "{{'home.add_credits' | t}}" }
+										%md-icon{ "md-svg-src" => asset_path('whitecross.svg') }
+									%md-tooltip{ "md-direction" => "top", "md-autohide" => "true" } {{'home.add_credits' | t}}
+					%br
+				.resp-col-profile
+					.line.button-stroke{ "ng-show" => "showEditProfileButton" }
+						.user-info
+							%button.button.button_js.grey_border_black_text.btn-block{ "ui-sref" => "home.users-edit" }
+								%span.button_label
+									%i.fa.fa-pencil-square-o
+									&nbsp; {{'home.edit_profile_label' | t}}
+					-# .line.button-stroke{ "ng-show" => "showMyFavoritesButton" }
+					-# 	.user-info
+					-# 		%button.button.button_js.grey_border_black_text.btn-block{ "ui-sref" => "home.fav-pros" }
+					-# 			%span.button_label
+					-# 				%i.fa.fa-heart.pink
+					-# 				&nbsp; {{'home.my_favorites_label' | t}}
+					.line.button-stroke{ "ng-show" => "session.user.user_type == 'pro'" }
+						.user-info
+							%button.button.button_js.orange_border_black_text.btn-block{ "ui-sref" => "pro({pid: session.user.pretty_name})" }
+								%span.button_label {{'home.view_public_profile_label' | t}}
+					.line.button-stroke{ "ng-show" => "showPostClassifiedAdButton" }
+						.user-info
+							%button.button.button_js.orange_border_black_text.btn-block{ "ui-sref" => "post-ad" }
+								%span.button_label {{'home.publish_classified_ad_label' | t}}
+					.line.button-stroke{ "ng-show" => "showVisibilityButton" }
+						.user-info
+							%button.button.button_js.orange_border_black_text.btn-block{ "ui-sref" => "home.pro-visibility" }
+								%span.button_label {{'home.boost_activity_label' | t}}
+					-# .line.button-stroke{ "ng-show" => "showMyDealsButton" }
+					-# 	.user-info
+					-# 		%button.button.button_js.orange_border_black_text.btn-block{ "ui-sref" => "home.deal-mgt" }
+					-# 			%span.button_label {{'home.my_deals_label' | t}}
+					.line.button-stroke{ "ng-show" => "showReferralButton" }
+						.user-info
+							%button.button.button_js.all-cyan.btn-block{ "ui-sref" => "home.referrals" }
+								%span.button_label {{'home.referrals_label' | t}}
+		-#%div{ flex: "5" }
+		%div.resp-home-right-panel{ "ui-view" => "", "flex-gt-sm" => "75", "flex" => "100" }
+		-# %div{ flex: "25", "flex-md" => "0", "flex-sm" => "100" }
+	-# %div{"ui-view" => "", "ng-show" => "session.connected", flex: "80"}

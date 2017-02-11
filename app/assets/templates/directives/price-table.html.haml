@@ -1,0 +1,28 @@
+.table-responsive.prices_table
+	%table.table.table-condensed
+		%thead
+			%tr
+				%th {{'prices.changing_rate' | t:{changeCredits: changeCredits} }}
+				%th {{'prices.pricing_in_credits' | t }}
+		%tbody
+			%tr
+				%td {{'prices.classified_ad_unlock' | t }}
+				%td {{classifiedAdUnlockCredits}}
+			%tr
+				%td {{'prices.sponsored_profile' | t }}
+				%td {{sponsoredProfileCredits}}
+			%tr
+				%td {{'prices.sponsored_map_profile' | t }}
+				%td {{sponsoredMapProfileCredits}}
+			%tr
+				%td {{'prices.deal_deals' | t }}
+				%td {{sponsoredDealCredits}}
+			%tr
+				%td {{'prices.deal_map' | t }}
+				%td {{sponsoredDealMapCredits}}
+			%tr
+				%td {{'prices.deal_homepage' | t }}
+				%td {{sponsoredDealHomepageCredits}}
+			%tr
+				%td {{'prices.bonus_signup' | t }}
+				%td {{bonusSignupCredits}}

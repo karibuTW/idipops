@@ -1,0 +1,67 @@
+/*
+ * This is manifest file for backend stylesheets
+ *= require_self
+ */
+$orange-300: #ffb74d;
+$orange-400: #ffa726;
+$orange-500: #ff9800;
+$orange-600: #fb8c00;
+$orange-700: #f57c00;
+$orange-800: #ef6c00;
+$orange-900: #e65100;
+$cyan-400: #26c6da;
+$cyan-500: #00bcd4;
+$cyan-600: #00acc1;
+$cyan-700: #0097a7;
+$border-grey: #d6dbdc;
+$border-black: #363738;
+$light-grey: #fafafa;
+$background-grey: #dde1e4;
+$background-light-grey: #f5f5f5;
+$background-dark-grey: #f2f2f2;
+$dark-grey: #888888;
+$grey-brown: #a88861;
+$text-grey: #a5a7a9;
+$text-black: #272829;
+$avatar-border-color: #957d5e;
+$green-accent: #00838f;
+$cyan: #00acc1;
+$heart-pink: #E91E63;
+$screen-sm-min: 600px; //768px
+$screen-md-min: 960px; //992px
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "bootstrap-wysihtml5/bootstrap3-wysihtml5";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import "admin";
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.eot'), '#{$icon-font-path}#{$icon-font-name}.eot'));
+  src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.eot?#iefix'), '#{$icon-font-path}#{$icon-font-name}.eot?#iefix')) format('embedded-opentype'),
+  url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.woff2'), '#{$icon-font-path}#{$icon-font-name}.woff2')) format('woff2'),
+  url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.woff'), '#{$icon-font-path}#{$icon-font-name}.woff')) format('woff'),
+  url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.ttf'), '#{$icon-font-path}#{$icon-font-name}.ttf')) format('truetype'),
+  url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.svg##{$icon-font-svg-id}'), '#{$icon-font-path}#{$icon-font-name}.svg##{$icon-font-svg-id}')) format('svg');
+}
+
+.rating {
+  font-size: 1.2em;
+
+  i {
+    padding: 0 0.2em;
+  }
+  i:first-child {
+    padding: 0 0.2em 0 0;
+  }
+
+  .on {
+    color: $orange-400;
+  }
+
+  .off {
+    color: $background-grey;
+  }
+}

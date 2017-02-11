@@ -1,0 +1,4 @@
+.button-stroke
+	%a.button.button_js.grey_border_black_text{ "ng-click" => "showProfessionSelectModal()", "ng-class" => "buttonClasses" }
+		%span.button_label
+			{{profession ? profession.name : defaultLabel}}

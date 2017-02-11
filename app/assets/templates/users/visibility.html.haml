@@ -1,0 +1,67 @@
+%div{ layout: "column", "ng-controller" => "VisibilityController"}
+	.button-stroke
+		%button.button.button_js.grey_border_black_text{ "ui-sref" => "home.pros-dashboard" }
+			%span.button_label
+				{{'general.back' | t}}
+	%h1 {{'visibility.title' | t}}
+	.grey-bg.center-column
+		.well.well-white.credit-well
+			%div{ layout: "row", "layout-align" => "space-between center", href: "", "ng-click" => "isIdeasCollapsed = !isIdeasCollapsed" }
+				= image_tag "booster/booster icons-01.svg", class: "booster-icon"
+				%h2.visibility{ flex: "" } {{'visibility.header1' | t}}
+				.collapsable-info-dropdown
+					%i.fa.fa-2x{ "ng-class" => "isIdeasCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+			%div{ "uib-collapse" => "isIdeasCollapsed", "ng-bind-html" => "'visibility.content1' | t" }
+		.well.well-white.credit-well
+			%div{ layout: "row", "layout-align" => "space-between center", href: "", "ng-click" => "isDifferentCollapsed = !isDifferentCollapsed" }
+				= image_tag "booster/booster icons-02.svg", class: "booster-icon big"
+				%div{ layout: "column", flex: "" }
+					%h2.visibility {{'visibility.header2' | t}}
+					.subheader-visibility {{'visibility.subheader2' | t}}
+				.collapsable-info-dropdown
+					%i.fa.fa-2x{ "ng-class" => "isDifferentCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+			
+			%div{ "uib-collapse" => "isDifferentCollapsed" }
+				%div{ "ng-bind-html" => "'visibility.content2a' | t" }
+				%div{ layout: "row", "layout-align" => "space-around center", "layout-wrap" => true, "layout-sm" => "column" }
+					.margin-bottom-sm{ flex: "" } {{'visibility.remaining_impressions_number' | t:{ impressions: session.user.profile_remaining_impressions } }}
+					%md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "isLoading_sponsored_profile" }
+					.button-stroke{ "ng-hide" => "isLoading_sponsored_profile" }
+						%button.button.button_js.orange_border_black_text.visibility-button{ "ng-click" => "addImpressionsForProfile()" }
+							%span.button_label {{'visibility.add_impressions_label' | t}}
+				.margin-top-2x-sm{ "ng-bind-html" => "'visibility.content2b' | t" }
+				%div{ layout: "row", "layout-align" => "space-around center", "layout-wrap" => true, "layout-sm" => "column" }
+					.margin-bottom-sm{ flex: "" } {{'visibility.remaining_impressions_number' | t:{ impressions: session.user.profile_map_remaining_impressions } }}
+					%md-progress-linear{ "md-mode" => "indeterminate", "ng-show" => "isLoading_sponsored_map_profile" }
+					.button-stroke{ "ng-hide" => "isLoading_sponsored_map_profile" }
+						%button.button.button_js.orange_border_black_text.visibility-button{ "ng-click" => "addImpressionsForMapProfile()" }
+							%span.button_label {{'visibility.add_impressions_label' | t}}
+		.well.well-white.credit-well
+			%div{ layout: "row", "layout-align" => "space-between center", href: "", "ng-click" => "isDealsCollapsed = !isDealsCollapsed" }
+				= image_tag "booster/booster icons-03.svg", class: "booster-icon big"
+				%div{ layout: "column", flex: "" }
+					%h2.visibility{ flex: "" } {{'visibility.header3' | t}}
+					.subheader-visibility {{'visibility.subheader3' | t}}
+				.collapsable-info-dropdown
+					%i.fa.fa-2x{ "ng-class" => "isDealsCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+			
+			%div{ "uib-collapse" => "isDealsCollapsed" }
+				%div{ "ng-bind-html" => "'visibility.content3' | t" }
+				.resp-visibility-buttons-column{ layout: "row", "layout-sm" => "column", "layout-align" => "start center" }
+					.button-stroke
+						%button.button.button_js.orange_border_black_text.visibility-button{ "ui-sref" => "home.post-deal" }
+							%span.button_label {{'visibility.post_deal_label' | t}}
+					-# .button-stroke
+					-# 	%button.button.button_js.orange_border_black_text.visibility-button{ "ui-sref" => "home.deal-mgt" }
+					-# 		%span.button_label {{'visibility.manage_deals_label' | t}}
+		.well.well-white.credit-well
+			%div{ layout: "row", "layout-align" => "space-between center", href: "", "ng-click" => "isTableCollapsed = !isTableCollapsed" }
+				= image_tag "booster/booster icons-04.svg", class: "booster-icon"
+				%h2.visibility{ flex: "" } {{'visibility.solutions_summary' | t}}
+				.collapsable-info-dropdown
+					%i.fa.fa-2x{ "ng-class" => "isTableCollapsed ? 'fa-angle-down' : 'fa-angle-up'" }
+			%div{ "uib-collapse" => "isTableCollapsed" }
+				%price-table
+				.button-stroke
+					%button.button.button_js.orange_border_black_text.visibility-button{ "ui-sref" => "home.pro-credits" }
+						%span.button_label Ajouter des flèches

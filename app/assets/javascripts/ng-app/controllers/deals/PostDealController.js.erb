@@ -1,0 +1,176 @@
+'use strict';
+
+angular
+  .module('uneo.controllers')
+  .controller(
+    'PostDealController',
+    ['$scope', '$rootScope', '$state', '$filter', 'Alerts', 'Profession', 'Deal', 'Pricings', 'Tags', PostDealController]
+  );
+
+function PostDealController($scope, $rootScope, $state, $filter, Alerts, Profession, Deal, Pricings, Tags) {
+  $scope.isPosting = false;
+  var now = new Date();
+  $scope.minDate = now;
+  $scope.maxDate;
+  $scope.isEndCalendarOpened = false;
+  $scope.promotion = { deal_homepage: false, deal_deals: false, deal_map: false, tags: [] };
+  $scope.promotionPrices = { deal_homepage: 0, deal_deals: 0, deal_map: 0 };
+  $scope.numberOfSelectedAddresses = 0;
+  $scope.additionalAddressesCost = 0;
+  $scope.NUMBER_OF_FREE_ADDRESSES = <%= ENV['NUMBER_OF_FREE_ADDRESSES_FOR_DEALS'] %>;
+
+  var setAdressesCost = function() {
+    if ($scope.promotionPrices.deal_more_addresses) {
+      $scope.additionalAddressesCost = ($scope.numberOfSelectedAddresses <= $scope.NUMBER_OF_FREE_ADDRESSES ? 0 : ($scope.numberOfSelectedAddresses -$scope.NUMBER_OF_FREE_ADDRESSES) * $scope.promotionPrices.deal_more_addresses);
+    }
+  };
+
+  var setAdresses = function() {
+    if ($scope.newDeal && $scope.promotionPrices.deal_more_addresses && $rootScope.session.user.addresses.length > 0) {
+      $scope.newDeal.selected_address_ids = [];
+      if ($scope.mode == "edit") {
+        angular.forEach($scope.newDeal.addresses, function(value, key) {
+          this[value.id] = true;
+          $scope.numberOfSelectedAddresses++;
+        }, $scope.newDeal.selected_address_ids);
+      } else {
+        angular.forEach($scope.session.user.addresses, function(value, key) {
+          this[value.id] = true;
+          $scope.numberOfSelectedAddresses++;
+        }, $scope.newDeal.selected_address_ids);
+      }
+      setAdressesCost();
+    }
+  };
+
+  $scope.setMaxDate = function() {
+    $scope.maxDate = new Date($scope.newDeal.endDate.getFullYear(), $scope.newDeal.endDate.getMonth(), $scope.newDeal.endDate.getDate()-1 );
+  };
+
+  var dealId = $state.params.did;
+  if (dealId) {
+    $rootScope.setTitle(I18n.t('deals.post.edit_title'));
+    $scope.mode = "edit";
+    $scope.isLoading = true;
+    Deal.getById(dealId)
+      .then(function(deal) {
+        $scope.isLoading = false;
+        $scope.newDeal = deal;
+        $scope.newDeal.startDate = new Date(deal.start_date);
+        $scope.newDeal.endDate = new Date(deal.end_date);
+        $scope.setMaxDate();
+        $scope.promotion.tags = deal.promotion_tag_list;
+        if ($rootScope.session.connected) {
+          setAdresses();
+        }
+      }, function(message) {
+        $scope.isLoading = false;
+        Alerts.add('danger', message);
+      });
+  } else {
+    $rootScope.setTitle(I18n.t('deals.post.title'));
+    $scope.mode = "create";
+    $scope.newDeal = { tagline: "", description: "", startDate: now, endDate: new Date(now.getFullYear(), now.getMonth()+1, now.getDate()), listImage: null, featuredImage: null, selected_address_ids: [] };
+    $scope.setMaxDate();
+    if ($scope.session.user.addresses) {
+      setAdresses();
+    }
+  }
+
+  $scope.addressChanged = function(elem) {
+    if (elem) {
+      $scope.numberOfSelectedAddresses++;
+    } else {
+      $scope.numberOfSelectedAddresses--;
+    }
+    setAdressesCost();
+  }
+
+  $scope.postDeal = function() {
+    if (!$scope.isPosting) {
+      if ($scope.numberOfSelectedAddresses == 0) {
+        Alerts.add('info', I18n.t('deals.post.select_at_leats_one_address'));
+        return;
+      }
+      if ($scope.totalAmount > $scope.session.user.balance) {
+        return;
+      }
+      $scope.isPosting = true;
+      if ($scope.mode == 'create') {
+        var address_ids = [];
+        angular.forEach($scope.newDeal.selected_address_ids, function(value, key) {
+          if (value) {
+            this.push(key);
+          }
+        }, address_ids);
+        Deal.postDeal( { address_ids: address_ids, tagline: $scope.newDeal.tagline, description: $scope.newDeal.description, start_date: $scope.newDeal.startDate.toISOString(), end_date: $scope.newDeal.endDate.toISOString(), list_image: $scope.newDeal.listImage, featured_image: $scope.newDeal.featuredImage, tag_list: transformTagsIntoArray($scope.promotion.tags), promotions: { deal_homepage: $scope.promotion.deal_homepage, deal_deals: $scope.promotion.deal_deals, deal_map: $scope.promotion.deal_map } })
+          .then(function(deal) {
+            $scope.isPosting = false;
+            $scope.session.user.balance = deal.balance;
+            $state.go('deal-details', { dealid: deal.id});
+            Alerts.add('success', I18n.t("deals.deal_published"));
+          }, function(messages) {
+            $scope.isPosting =  false;
+            for (var i=0; i<messages.length; i++) {
+              Alerts.add('danger', messages[i]);
+            }
+          });
+      } else {
+        Deal.updateDeal( dealId, { tagline: $scope.newDeal.tagline, description: $scope.newDeal.description, start_date: $scope.newDeal.startDate.toISOString(), end_date: $scope.newDeal.endDate.toISOString(), list_image: $scope.newDeal.listImage, featured_image: $scope.newDeal.featuredImage, tag_list: transformTagsIntoArray($scope.promotion.tags), promotions: { deal_homepage: $scope.promotion.deal_homepage, deal_deals: $scope.promotion.deal_deals, deal_map: $scope.promotion.deal_map } })
+        .then(function(deal) {
+          $scope.isPosting = false;
+          $scope.session.user.balance = deal.balance;
+          $state.go('deal-details', { dealid: deal.id});
+          Alerts.add('success', I18n.t("deals.deal_published"));
+        }, function(messages) {
+          $scope.isPosting =  false;
+          for (var i=0; i<messages.length; i++) {
+            Alerts.add('danger', messages[i]);
+          }
+        });
+      }
+      
+    }
+
+  };
+
+  $scope.totalAmount = function() {
+    var promotionTotal = ($scope.promotion.deal_homepage ? $scope.promotionPrices.deal_homepage : 0) + ($scope.promotion.deal_deals ? $scope.promotionPrices.deal_deals : 0) + ($scope.promotion.deal_map ? $scope.promotionPrices.deal_map : 0);
+    if (promotionTotal > 0) {
+      return promotionTotal + $scope.additionalAddressesCost;
+    } else {
+      return 0;
+    }
+  };
+
+  $scope.searchTags = function(query) {
+    return Tags.search(query);
+  };
+
+  $scope.checkTagLimit = function() {
+    return $scope.promotion.tags.length < 15;
+  };
+
+  Pricings.getDealPricings()
+    .then(function(pricings) {
+      for (var i=0; i<pricings.length; i++) {
+        $scope.promotionPrices[pricings[i].target] = pricings[i].credit_amount;
+      }
+      $scope.isLoading = false;
+      setAdresses();
+    }, function(message) {
+      Alerts.add('danger', message);
+    });
+
+  var initUserData = function() {
+    setAdresses();
+  }
+
+  if ($rootScope.session.connected) {
+    initUserData();
+  }
+
+  $rootScope.$on('user-loaded', function(event, args) {
+    initUserData();
+  });
+}
